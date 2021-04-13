@@ -19,6 +19,12 @@ def operation_to_message(op)
   end
 end
 
+class String
+  def numeric?
+    Float(self) != nil rescue false
+  end
+end
+
 prompt("Welcome to Calculator!  Enter your name:")
 
 name = ''
@@ -40,7 +46,7 @@ loop do #main loop
     prompt("Whats the first number?")
     number1 = Kernel.gets().chomp()
 
-    if valid_number?(number1)
+    if number1.numeric?
       break
     else
       prompt("Hmm...that doesn't look like a valid number")
@@ -52,7 +58,7 @@ loop do #main loop
     prompt("Whats the second number?")
     number2 = Kernel.gets().chomp()
 
-    if valid_number?(number2)
+    if number2.numeric?
       break
     else
       prompt("Hmm...that doesn't look like a valid number")
