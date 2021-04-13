@@ -6,6 +6,19 @@ def valid_number?(num)
   num.to_i() != 0
 end
 
+def operation_to_message(op)
+  case op
+  when '1'
+    'Adding'
+  when '2'
+    'Subtracting'
+  when '3'
+    'Multiplying'
+  when '4'
+    'Dividing'
+  end
+end
+
 prompt("Welcome to Calculator!  Enter your name:")
 
 name = ''
@@ -46,18 +59,16 @@ loop do #main loop
     end
   end
 
-  operator_prompt = <<-MSG
+  operator_prompt = <<-FBO
     What operation wwould you like to perform?
     1) add
     2) subtract
     3) multiply
     4) divide
-  MSG
+  FBO
 
   prompt(operator_prompt)
 
-  prompt("What operation would you like to perform? 1) add, 2) subtract 3) multiply 4) divide")
-  
   operator = ''
   loop do
     operator = Kernel.gets().chomp()
@@ -68,6 +79,8 @@ loop do #main loop
       prompt("Must choose 1, 2, 3, or 4")
     end
   end
+
+  prompt("#{operation_to_message(operator)} the two numbers...")
 
   result =  case operator
             when '1'
