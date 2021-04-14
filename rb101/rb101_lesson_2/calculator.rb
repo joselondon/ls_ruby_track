@@ -99,11 +99,11 @@ loop do #main loop
               number1.to_f() / number2.to_f()
   end
 
-  prompt("The result is  #{result}")
+  prompt "The result is  #{result}" 
 
   prompt("Do you want to perform anothercalculations?  (Y to calculate again)")
   answer = Kernel.gets().chomp()
   break unless answer.downcase().start_with?('y')
 end
 
-prompt("Thanks for using this calculator!  Goodbye!")
+prompt "Thanks for using this calculator!  Goodbye!"
