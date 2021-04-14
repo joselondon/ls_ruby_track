@@ -21,7 +21,7 @@ end
 
 class String
   def numeric?
-    Float(self) != nil rescue false
+    !Float(self).nil? rescue false
   end
 end
 
@@ -38,9 +38,9 @@ loop do
   end
 end
 
-prompt ("Hi #{name}!")
+prompt("Hi #{name}!")
 
-loop do #main loop
+loop do # main loop
   number1 = ''
   loop do
     prompt("Whats the first number?")
@@ -97,9 +97,9 @@ loop do #main loop
               number1.to_i() * number2.to_i()
             when '4'
               number1.to_f() / number2.to_f()
-  end
+            end
 
-  prompt "The result is  #{result}" 
+  prompt "The result is  #{result}"
 
   prompt("Do you want to perform anothercalculations?  (Y to calculate again)")
   answer = Kernel.gets().chomp()
