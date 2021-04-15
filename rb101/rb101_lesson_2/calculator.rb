@@ -1,3 +1,6 @@
+require 'yaml'
+MESSAGES = YAML.load_file('calculator_messages.yml')
+
 def prompt(message)
   Kernel.puts("=> #{message}")
 end
@@ -7,16 +10,20 @@ def valid_number?(num)
 end
 
 def operation_to_message(op)
-  case op
-  when '1'
-    'Adding'
-  when '2'
-    'Subtracting'
-  when '3'
-    'Multiplying'
-  when '4'
-    'Dividing'
-  end
+  operand = case op
+              when '1'
+                'Adding'
+              when '2'
+                'Subtracting'
+              when '3'
+                'Multiplying'
+              when '4'
+                'Dividing'
+              end
+
+   final_line_of_code = "blah"
+   
+   operand
 end
 
 class String
@@ -25,20 +32,20 @@ class String
   end
 end
 
-prompt("Welcome to Calculator!  Enter your name:")
+prompt(MESSAGES['welcome'])
 
 name = ''
 loop do
   name = Kernel.gets().chomp()
 
   if name.empty?()
-    prompt("Make sure to use a valid name.")
+    prompt(MESSAGES['valid_name'])
   else
     break
   end
 end
 
-prompt("Hi #{name}!")
+prompt(MESSAGES['greeting'] + " " + name + "!")
 
 loop do # main loop
   number1 = ''
@@ -101,7 +108,7 @@ loop do # main loop
 
   prompt "The result is  #{result}"
 
-  prompt("Do you want to perform anothercalculations?  (Y to calculate again)")
+  prompt("Do you want to perform another calculation?  (Y to calculate again)")
   answer = Kernel.gets().chomp()
   break unless answer.downcase().start_with?('y')
 end
