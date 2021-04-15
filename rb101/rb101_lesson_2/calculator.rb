@@ -50,37 +50,29 @@ prompt(MESSAGES['greeting'] + " " + name + "!")
 loop do # main loop
   number1 = ''
   loop do
-    prompt("Whats the first number?")
+    prompt(MESSAGES['first_number'])
     number1 = Kernel.gets().chomp()
 
     if number1.numeric?
       break
     else
-      prompt("Hmm...that doesn't look like a valid number")
+      prompt(MESSAGES['valid_number'])
     end
   end
 
   number2 = ''
   loop do
-    prompt("Whats the second number?")
+    prompt(MESSAGES['second_number'])
     number2 = Kernel.gets().chomp()
 
     if number2.numeric?
       break
     else
-      prompt("Hmm...that doesn't look like a valid number")
+      prompt(MESSAGES['valid_number'])
     end
   end
 
-  operator_prompt = <<-FBO
-    What operation wwould you like to perform?
-    1) add
-    2) subtract
-    3) multiply
-    4) divide
-  FBO
-
-  prompt(operator_prompt)
+  prompt(MESSAGES['operator_prompt'])
 
   operator = ''
   loop do
@@ -89,11 +81,11 @@ loop do # main loop
     if %w(1 2 3 4).include?(operator)
       break
     else
-      prompt("Must choose 1, 2, 3, or 4")
+      prompt(MESSAGES['valid_operator'])
     end
   end
 
-  prompt("#{operation_to_message(operator)} the two numbers...")
+  prompt(operation_to_message(operator) + " " + MESSAGES['operand_confirmation'])
 
   result =  case operator
             when '1'
@@ -106,11 +98,11 @@ loop do # main loop
               number1.to_f() / number2.to_f()
             end
 
-  prompt "The result is  #{result}"
+  prompt(MESSAGES['result ' + result.to_s])
 
-  prompt("Do you want to perform another calculation?  (Y to calculate again)")
+  prompt(MESSAGES['again'])
   answer = Kernel.gets().chomp()
   break unless answer.downcase().start_with?('y')
 end
 
-prompt "Thanks for using this calculator!  Goodbye!"
+prompt(MESSAGES['again'])
