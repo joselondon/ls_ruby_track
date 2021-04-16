@@ -19,4 +19,20 @@ en:
   goodbye:  "Thanks for using this calculator!  Goodbye!"
 es:
   welcome: "Bienvenido a la calculadora! Entre su nombre:"
+  greeting: "Hola"
   valid_name: "Asegúrese de entrar un nombre válido."
+  first_number: "Que es el numero uno?"
+  valid_number: "hmm ... ese no parece ser un número válido"
+  second_number:  "Que es el numero segundo?"
+  operator_prompt: "
+      ¿Qué operación le gustaría realizar? \n
+      1) agregar \n
+      2) sustraer \n
+      3) multiplicar \n
+      4) dividir 
+    "
+  valid_operator: "Debe elegir 1, 2, 3 o 4"
+  operand_confirmation: "los dos números ..."
+  result: "El resultado es"
+  again: "¿Quieres realizar otro cálculo? (Y para calcular de nuevo)"
+  goodbye:  "¡Gracias por usar esta calculadora! ¡Adiós!"

@@ -1,14 +1,14 @@
 require 'yaml'
 MESSAGES = YAML.load_file('calculator_messages.yml')
-LANGUAGE = 'en'
+LANGUAGE = 'es'
 
-def messages(message, lang='en', opt=nil)
+def messages(message, lang='en')
   MESSAGES[lang][message]
 end
 
-def prompt(key)
+def prompt(key,var=nil)
   message = messages(key, LANGUAGE)
-  Kernel.puts("=> #{message}")
+  Kernel.puts("=> #{message} #{var}")
 end
 
 def valid_number?(num)
@@ -51,7 +51,7 @@ loop do
   end
 end
 
-prompt('greeting')
+prompt('greeting', name)
 
 loop do # main loop
   number1 = ''
@@ -91,7 +91,7 @@ loop do # main loop
     end
   end
 
-  prompt(operation_to_message(operator) + " " + 'operand_confirmation')
+  puts "#{operation_to_message(operator)} #{MESSAGES[LANGUAGE]['operand_confirmation']}"
 
   result =  case operator
             when '1'
@@ -104,7 +104,7 @@ loop do # main loop
               number1.to_f() / number2.to_f()
             end
 
-  prompt('result ' + result.to_s)
+  prompt('result', result.to_s)
 
   prompt('again')
   answer = Kernel.gets().chomp()
