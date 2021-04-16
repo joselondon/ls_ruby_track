@@ -1,7 +1,13 @@
 require 'yaml'
 MESSAGES = YAML.load_file('calculator_messages.yml')
+LANGUAGE = 'en'
 
-def prompt(message)
+def messages(message, lang='en', opt=nil)
+  MESSAGES[lang][message]
+end
+
+def prompt(key)
+  message = messages(key, LANGUAGE)
   Kernel.puts("=> #{message}")
 end
 
@@ -32,47 +38,47 @@ class String
   end
 end
 
-prompt(MESSAGES['welcome'])
+prompt('welcome')
 
 name = ''
 loop do
   name = Kernel.gets().chomp()
 
   if name.empty?()
-    prompt(MESSAGES['valid_name'])
+    prompt('valid_name')
   else
     break
   end
 end
 
-prompt(MESSAGES['greeting'] + " " + name + "!")
+prompt('greeting')
 
 loop do # main loop
   number1 = ''
   loop do
-    prompt(MESSAGES['first_number'])
+    prompt('first_number')
     number1 = Kernel.gets().chomp()
 
     if number1.numeric?
       break
     else
-      prompt(MESSAGES['valid_number'])
+      prompt('valid_number')
     end
   end
 
   number2 = ''
   loop do
-    prompt(MESSAGES['second_number'])
+    prompt('second_number')
     number2 = Kernel.gets().chomp()
 
     if number2.numeric?
       break
     else
-      prompt(MESSAGES['valid_number'])
+      prompt('valid_number')
     end
   end
 
-  prompt(MESSAGES['operator_prompt'])
+  prompt('operator_prompt')
 
   operator = ''
   loop do
@@ -81,11 +87,11 @@ loop do # main loop
     if %w(1 2 3 4).include?(operator)
       break
     else
-      prompt(MESSAGES['valid_operator'])
+      prompt('valid_operator')
     end
   end
 
-  prompt(operation_to_message(operator) + " " + MESSAGES['operand_confirmation'])
+  prompt(operation_to_message(operator) + " " + 'operand_confirmation')
 
   result =  case operator
             when '1'
@@ -98,11 +104,11 @@ loop do # main loop
               number1.to_f() / number2.to_f()
             end
 
-  prompt(MESSAGES['result ' + result.to_s])
+  prompt('result ' + result.to_s)
 
-  prompt(MESSAGES['again'])
+  prompt('again')
   answer = Kernel.gets().chomp()
   break unless answer.downcase().start_with?('y')
 end
 
-prompt(MESSAGES['again'])
+prompt('again')
