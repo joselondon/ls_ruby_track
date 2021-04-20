@@ -1,70 +1,71 @@
 require 'pry'
+require 'yaml'
+MESSAGES = YAML.load_file('car_loan_calculator_messages.yml')
+LANGUAGE = 'en'
 
-# PSEUDO CODE
-# given the loan amount, APR, and and loan duration in years
-# caculate the monthly interest, loand duration in months, and the monthly payment
+def messages(message, lang='en')
+  MESSAGES[lang][message]
+end
 
-#STRUCTURED PSEUDO CODE
+def prompt(key, var1=nil, var2=nil)
+  message = messages(key, LANGUAGE)
+  Kernel.puts("=> #{message}#{var1}#{var2}")
+end
 
-#START
-
-# SET another_loan? = 'y'
-
-# WHILE another_loan? == 'y'
-
-  # GET "Enter the loan amount"
-  # SET principle
-  # GET "Enter the annual interest rate on the loan"
-  # SET apr
-  # GET "How many years is the loan for?"
-  # SET duration_years
-
-  # PRINT "Thank you - calculating..."
-
-  # SET duration_months = duration_years * 12
-  # SET monthly_int = apr / 12
-  # SET monthly_payment = principle * (monthly_int / (1 - (1 + monthly_int)**(-duration_months)))
-
-  # PRINT "Your monthy payment will be " + monthly_payment
-  # PRIMT "Your loan will replayments will continue for " + duration_months
-  # PRINT "your monthly interest rate will be " + monthly_int
-  # GET "Do you want to check another loan? ('y' for yes)"
-  # SET another_loan
-
-# END
-
-# END
-
-def prompt(message)
-  Kernel.puts(">> #{message}")
+def valid_number(num)
+  num.to_i() > 0
 end
 
 another_loan = 'y'
-  prompt("Welcome to the loan calculator.")
+prompt('welcome')
 
 while another_loan == 'y'
-  prompt("Please enter the loan amount:")
-  principle = Kernel.gets().chomp()
-  
-  prompt("Thank you, now enter the annual interest rate on the loan:")
-  apr = Kernel.gets().chomp().to_f / 100
+  principle = nil
+  prompt('principle')
+  loop do
+    principle = Kernel.gets().chomp()
+    if valid_number(principle)
+      break
+    else
+      prompt('valid_number')
+    end
+  end
+  apr = nil
+  prompt('apr')
+  loop do
+    apr = Kernel.gets().chomp()
+    if valid_number(apr)
+      apr = apr.to_f / 100
+      break
+    else
+      prompt('valid_number')
+    end
+  end
 
-  prompt("Now please enter the loan duration in years:")
-  duration_years = Kernel.gets().chomp()
+  duration_years = nil
+  prompt('duration')
+  loop do
+    duration_years = Kernel.gets().chomp()
+    if valid_number(duration_years)
+      break
+    else
+      prompt('valid_number')
+    end
+  end
 
-  prompt("Thank you, calculating you loan details...")
+  prompt('calculating')
 
   duration_months = duration_years.to_i * 12
   monthly_int = (apr / 12)
-  monthly_payment = principle.to_i * (monthly_int / (1 - (1 + monthly_int)**(-duration_months)))
+  monthly_payment = principle.to_i * 
+                    (monthly_int / (1 - (1 + monthly_int)**(-duration_months)))
 
-  prompt("Your monthy payment will be: £" + monthly_payment.round(2).to_s)
-  prompt("Your loan will repayments will continue for " + duration_months.to_s + " months")
-  prompt("your monthly interest rate will be " + monthly_int.round(4).to_s + "%")
+  prompt('monthly_payment', monthly_payment.round(2).to_s)
+  prompt('months', duration_months, " months")
+  prompt('monthly_int', monthly_int.round(4),"%")
 
-  prompt("Do you want to check another loan? ('y' for yes)")
-  another_loan = Kernel.gets().chomp()
+  prompt('again?')
+  another_loan = Kernel.gets().downcase().chomp()
 end
 
-prompt("Thank you for using the loan calculator.  Goodbye!")
-
+prompt('goodbye')
