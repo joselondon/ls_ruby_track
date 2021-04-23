@@ -4,24 +4,44 @@ def prompt(message)
   Kernel.puts(">> #{message}")
 end
 
-choice = ''
-loop do
-  prompt("Choose one: #{VALID_CHOICES.join(', ')}")
-  choice = Kernel.gets().chomp()
+def win?(first, second)
+  (first == 'rock' && second == 'scissors') ||
+    (first == 'paper' && second == 'rock') ||
+    (first == 'scissors' && second == 'paper')
+end
 
-  if VALID_CHOICES.include?(choice)
-    break
+def display_results(player, computer)
+  if win?(player, computer)
+    prompt("You won!")
+  elsif win?(computer, player)
+    prompt('Computer won!')
   else
-    prompt("That's not a valid choice.")
+    prompt('Its a tie!')
   end
 end
 
-computer_choice = VALID_CHOICES.sample()
+loop do
+  choice = ''
+  loop do
+    prompt("Choose one: #{VALID_CHOICES.join(', ')}")
+    choice = Kernel.gets().chomp()
 
-prompt("You chose: #{choice}; Computer chose: #{computer_choice}")
+    if VALID_CHOICES.include?(choice)
+      break
+    else
+      prompt("That's not a valid choice.")
+    end
+  end
 
-if (choice == 'rock' && computer_choice == 'scissors') ||
-    (choice == 'paper' && computer_choice == 'rock') ||
-    (choice == 'scissors' && computer_choice == 'paper')
-  prompt("You won!")
-elsif ()
+  computer_choice = VALID_CHOICES.sample()
+
+  prompt("You chose: #{choice}; Computer chose: #{computer_choice}")
+
+  display_results(choice, computer_choice)
+
+  prompt('Do you want to play again?')
+  answer = Kernel.gets().downcase().chomp()
+  break unless answer.start_with?('y')
+end
+
+prompt("Thank you for playing.  Goodbye!")
