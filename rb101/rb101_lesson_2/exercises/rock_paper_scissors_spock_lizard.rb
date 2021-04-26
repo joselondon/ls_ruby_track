@@ -45,10 +45,11 @@ PLAYER_MOVE_LOGIC = {
 }
 
 ABBREVIATION_MAPPER = {
-  r: :rock,
-  p: :paper,
-  s: :scissors,
-  l: :lizard
+  r:  :rock,
+  p:  :paper,
+  s:  :scissors,
+  sp: :spock,
+  l:  :lizard
 }
 
 def convert_abbr_to_hash_val(abbrev)
@@ -103,7 +104,6 @@ loop do
   
   choice = ABBREVIATION_MAPPER[choice]
   computer_choice = VALID_CHOICES.sample().to_sym
-  binding.pry
 
   prompt("You chose: #{choice.to_s}; Computer chose: #{computer_choice.to_s}")
   display_results(choice, computer_choice)
