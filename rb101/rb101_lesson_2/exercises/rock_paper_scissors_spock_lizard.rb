@@ -1,5 +1,6 @@
 require 'pry'
 VALID_CHOICES = ['rock', 'paper', 'scissors', 'spock', 'lizard']
+VALID_CHOICES_ABBR = ['r', 'p', 's', 'l']
 
 def prompt(message)
   Kernel.puts(">> #{message}")
@@ -43,6 +44,14 @@ PLAYER_MOVE_LOGIC = {
   }
 }
 
+def valid_input?(str)
+  if VALID_CHOICES.include?(str.to_s)
+    true
+  else
+    prompt("That's not a valid choice.")
+  end
+end
+
 def win?(first, second)
   PLAYER_MOVE_LOGIC[first][second]
 end
@@ -60,14 +69,14 @@ end
 loop do
   choice = ''
   loop do
-    prompt("Choose one: #{VALID_CHOICES.join(', ')}")
+
+    prompt("Choose one: #{VALID_CHOICES.join(', ')}, 
+    you can just type the first letter (or 'sp' for 'spock')")
+
     choice = Kernel.gets().chomp().to_sym
 
-    if VALID_CHOICES.include?(choice.to_s)
-      break
-    else
-      prompt("That's not a valid choice.")
-    end
+    break if valid_input?(choice)
+
   end
 
   computer_choice = VALID_CHOICES.sample().to_sym
