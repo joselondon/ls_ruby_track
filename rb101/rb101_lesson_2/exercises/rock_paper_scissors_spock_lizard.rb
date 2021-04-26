@@ -44,13 +44,37 @@ PLAYER_MOVE_LOGIC = {
   }
 }
 
+ABBREVIATION_MAPPER = {
+  r: :rock,
+  p: :paper,
+  s: :scissors,
+  l: :lizard
+}
+
+def convert_abbr_to_hash_val(abbrev)
+  ABBREVIATION_MAPPER.each do |key, val|
+    if abbrev.to_sym == key
+      abbrev = ABBREVIATION_MAPPER[abbrev]
+      binding.pry
+      return abbrev
+    end
+  end
+end
+
+
 def valid_input?(str)
   if VALID_CHOICES.include?(str.to_s)
     true
-  else
+  elsif str == :sp
+    convert_abbr_to_hash_val(str)
+    true
+  elsif VALID_CHOICES_ABBR.include?(str.to_s)
+    true
+   else
     prompt("That's not a valid choice.")
   end
 end
+
 
 def win?(first, second)
   PLAYER_MOVE_LOGIC[first][second]
@@ -74,12 +98,12 @@ loop do
     you can just type the first letter (or 'sp' for 'spock')")
 
     choice = Kernel.gets().chomp().to_sym
-
     break if valid_input?(choice)
-
   end
-
+  
+  choice = ABBREVIATION_MAPPER[choice]
   computer_choice = VALID_CHOICES.sample().to_sym
+  binding.pry
 
   prompt("You chose: #{choice.to_s}; Computer chose: #{computer_choice.to_s}")
   display_results(choice, computer_choice)
