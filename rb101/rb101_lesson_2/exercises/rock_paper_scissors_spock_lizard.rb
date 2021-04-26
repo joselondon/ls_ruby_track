@@ -56,7 +56,6 @@ def convert_abbr_to_hash_val(abbrev)
   ABBREVIATION_MAPPER.each do |key, val|
     if abbrev.to_sym == key
       abbrev = ABBREVIATION_MAPPER[abbrev]
-      binding.pry
       return abbrev
     end
   end
