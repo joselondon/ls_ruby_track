@@ -90,26 +90,68 @@ def display_results(player, computer)
   end  
 end
 
-loop do
-  choice = ''
-  loop do
-
-    prompt("Choose one: #{VALID_CHOICES.join(', ')}, 
-    you can just type the first letter (or 'sp' for 'spock')")
-
-    choice = Kernel.gets().chomp().to_sym
-    break if valid_input?(choice)
+def player_final_winner?(player, computer)
+  if player > computer
+    return true
+  else 
+    return false
   end
-  
-  choice = ABBREVIATION_MAPPER[choice]
-  computer_choice = VALID_CHOICES.sample().to_sym
+end
 
-  prompt("You chose: #{choice.to_s}; Computer chose: #{computer_choice.to_s}")
-  display_results(choice, computer_choice)
+def display_final_result(player, computer)
+  if player_final_winner(player, computer)
+    puts "Congratulations, you win the set!"
+  else
+    puts "Commiserations, computer won the set"
+  end
+end
 
-  prompt('Do you want to play again?')
-  answer = Kernel.gets().downcase().chomp()
-  break unless answer.start_with?('y')
+player_score = 0
+computer_score = 0
+round = 1
+
+loop do
+  while (player_score < 5) && (computer_score < 5) do
+    choice = ''
+    loop do 
+      prompt("Your score:     #{player_score}")
+      prompt("Computer score: #{computer_score}")
+      prompt("")
+      prompt("ROUND:  #{round}")
+      prompt("Choose one: #{VALID_CHOICES.join(', ')}, 
+      you can just type the first letter (or 'sp' for 'spock')")
+
+      choice = Kernel.gets().chomp().to_sym
+      break if valid_input?(choice)
+    end
+
+    choice = ABBREVIATION_MAPPER[choice]
+    computer_choice = VALID_CHOICES.sample().to_sym
+
+    prompt("You chose: #{choice.to_s}; Computer chose: #{computer_choice.to_s}")
+    display_results(choice, computer_choice)
+
+    if win?(choice, computer_choice) == 'tie'
+      next
+    elsif win?(choice, computer_choice) 
+      player_score += 1
+    elsif win?(choice, computer_choice) == false
+      computer_score += 1
+    end
+
+    prompt("At round #{round}")
+    prompt("Your score is: #{player_score}")
+    prompt("Computer score is: #{computer_score}")
+    prompt("-------------------")
+    prompt("Hit any key for next round")
+    system("clear") if input = gets() 
+
+    round += 1
+  end
+
+    prompt('Do you want to play again?')
+    answer = Kernel.gets().downcase().chomp()
+    break unless answer.start_with?('y')
 end
 
 prompt("Thank you for playing.  Goodbye!")
