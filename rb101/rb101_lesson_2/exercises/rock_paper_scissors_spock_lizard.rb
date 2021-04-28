@@ -99,19 +99,21 @@ def player_final_winner?(player, computer)
 end
 
 def display_final_result(player, computer)
-  if player_final_winner(player, computer)
+  if player > computer
     puts "Congratulations, you win the set!"
   else
-    puts "Commiserations, computer won the set"
+    puts "Commiserations, computer won the set!"
   end
 end
 
-player_score = 0
-computer_score = 0
-round = 1
+
 
 loop do
-  while (player_score < 5) && (computer_score < 5) do
+  player_score = 0
+  computer_score = 0
+  round = 1
+
+  loop do
     choice = ''
     loop do 
       prompt("Your score:     #{player_score}")
@@ -132,7 +134,7 @@ loop do
     display_results(choice, computer_choice)
 
     if win?(choice, computer_choice) == 'tie'
-      next
+      player_score += 0
     elsif win?(choice, computer_choice) 
       player_score += 1
     elsif win?(choice, computer_choice) == false
@@ -143,15 +145,18 @@ loop do
     prompt("Your score is: #{player_score}")
     prompt("Computer score is: #{computer_score}")
     prompt("-------------------")
+    break if (player_score == 5) || (computer_score == 5) 
     prompt("Hit any key for next round")
     system("clear") if input = gets() 
 
     round += 1
   end
 
+    display_final_result(player_score, computer_score)
     prompt('Do you want to play again?')
     answer = Kernel.gets().downcase().chomp()
     break unless answer.start_with?('y')
+    system("clear")
 end
 
 prompt("Thank you for playing.  Goodbye!")
