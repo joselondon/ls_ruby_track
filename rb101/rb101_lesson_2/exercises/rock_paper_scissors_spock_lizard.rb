@@ -126,7 +126,9 @@ loop do
       choice = Kernel.gets().chomp().to_sym
       break if valid_input?(choice)
     end
-
+    binding.pry
+    # choice = ABBREVIATION_MAPPER[choice] if ABBREVIATION_MAPPER has a key matching choice
+    
     choice = ABBREVIATION_MAPPER[choice]
     computer_choice = VALID_CHOICES.sample().to_sym
 
