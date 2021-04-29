@@ -10,51 +10,51 @@ PLAYER_MOVE_LOGIC = {
   rock:
   {
     rock: 'tie',
-    paper:  false,
+    paper: false,
     scissors: true,
-    spock:  false,
+    spock: false,
     lizard: true
   },
   paper:
   {
     rock: true,
-    paper:  'tie',
+    paper: 'tie',
     scissors: false,
-    spock:  true,
+    spock: true,
     lizard: false
   },
   scissors:
   {
     rock: false,
-    paper:  true,
+    paper: true,
     scissors: 'tie',
-    spock:  false,
+    spock: false,
     lizard: true
   },
   spock:
   {
     rock: true,
-    paper:  false,
+    paper: false,
     scissors: true,
-    spock:  'tie',
+    spock: 'tie',
     lizard: false
   },
   lizard:
   {
     rock: false,
-    paper:  true,
+    paper: true,
     scissors: false,
-    spock:  true,
+    spock: true,
     lizard: 'tie'
   }
 }
 
 FIRST_LETTER_TO_FULL_WORD_HASH = {
-  r:  :rock,
-  p:  :paper,
-  s:  :scissors,
+  r: :rock,
+  p: :paper,
+  s: :scissors,
   sp: :spock,
-  l:  :lizard
+  l: :lizard
 }
 
 def convert_abbr_to_hash_val(abbrev)
@@ -65,7 +65,6 @@ def convert_abbr_to_hash_val(abbrev)
     end
   end
 end
-
 
 def valid_input?(str)
   if VALID_CHOICES.include?(str.to_s)
@@ -80,7 +79,6 @@ def valid_input?(str)
   end
 end
 
-
 def win?(first, second)
   PLAYER_MOVE_LOGIC[first][second]
 end
@@ -92,15 +90,11 @@ def display_results(player, computer)
     puts "you win"
   else
     puts "you lose"
-  end  
+  end
 end
 
 def player_final_winner?(player, computer)
-  if player > computer
-    return true
-  else 
-    return false
-  end
+  player > computer
 end
 
 def display_final_result(player, computer)
@@ -111,8 +105,6 @@ def display_final_result(player, computer)
   end
 end
 
-
-
 loop do
   player_score = 0
   computer_score = 0
@@ -120,28 +112,29 @@ loop do
 
   loop do
     choice = ''
-    loop do 
+    loop do
       prompt("Your score:     #{player_score}")
       prompt("Computer score: #{computer_score}")
       prompt("")
       prompt("ROUND:  #{round}")
-      prompt("Choose one: #{VALID_CHOICES.join(', ')}, 
+      prompt("Choose one: #{VALID_CHOICES.join(', ')},
       you can just type the first letter (or 'sp' for 'spock')")
 
       choice = Kernel.gets().chomp().to_sym
       break if valid_input?(choice)
     end
 
-    choice = FIRST_LETTER_TO_FULL_WORD_HASH[choice] if FIRST_LETTER_TO_FULL_WORD_HASH.has_key?(choice) 
+    if FIRST_LETTER_TO_FULL_WORD_HASH.key?(choice)
+      choice = FIRST_LETTER_TO_FULL_WORD_HASH[choice]
+    end
     computer_choice = VALID_CHOICES.sample().to_sym
-
 
     prompt("You chose: #{choice}; Computer chose: #{computer_choice}")
     display_results(choice, computer_choice)
 
     if win?(choice, computer_choice) == 'tie'
       player_score += 0
-    elsif win?(choice, computer_choice) 
+    elsif win?(choice, computer_choice)
       player_score += 1
     elsif win?(choice, computer_choice) == false
       computer_score += 1
@@ -151,18 +144,18 @@ loop do
     prompt("Your score is: #{player_score}")
     prompt("Computer score is: #{computer_score}")
     prompt("-------------------")
-    break if (player_score == 5) || (computer_score == 5) 
+    break if (player_score == 5) || (computer_score == 5)
     prompt("Hit any key for next round")
-    system("clear") if gets() 
+    system("clear") if gets()
 
     round += 1
   end
 
-    display_final_result(player_score, computer_score)
-    prompt('Do you want to play again?')
-    answer = Kernel.gets().downcase().chomp()
-    break unless answer.start_with?('y')
-    system("clear")
+  display_final_result(player_score, computer_score)
+  prompt('Do you want to play again?')
+  answer = Kernel.gets().downcase().chomp()
+  break unless answer.start_with?('y')
+  system("clear")
 end
 
 prompt("Thank you for playing.  Goodbye!")
