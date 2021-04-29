@@ -44,7 +44,7 @@ PLAYER_MOVE_LOGIC = {
   }
 }
 
-ABBREVIATION_MAPPER = {
+FIRST_LETTER_TO_FULL_WORD_HASH = {
   r:  :rock,
   p:  :paper,
   s:  :scissors,
@@ -53,9 +53,9 @@ ABBREVIATION_MAPPER = {
 }
 
 def convert_abbr_to_hash_val(abbrev)
-  ABBREVIATION_MAPPER.each do |key, val|
+  FIRST_LETTER_TO_FULL_WORD_HASH.each do |key, val|
     if abbrev.to_sym == key
-      abbrev = ABBREVIATION_MAPPER[abbrev]
+      abbrev = FIRST_LETTER_TO_FULL_WORD_HASH[abbrev]
       return abbrev
     end
   end
@@ -70,7 +70,7 @@ def valid_input?(str)
     true
   elsif VALID_CHOICES_ABBR.include?(str.to_s)
     true
-   else
+  else
     prompt("That's not a valid choice.")
   end
 end
@@ -126,11 +126,10 @@ loop do
       choice = Kernel.gets().chomp().to_sym
       break if valid_input?(choice)
     end
-    binding.pry
-    # choice = ABBREVIATION_MAPPER[choice] if ABBREVIATION_MAPPER has a key matching choice
-    
-    choice = ABBREVIATION_MAPPER[choice]
+
+    choice = FIRST_LETTER_TO_FULL_WORD_HASH[choice] if FIRST_LETTER_TO_FULL_WORD_HASH.has_key?(choice) 
     computer_choice = VALID_CHOICES.sample().to_sym
+
 
     prompt("You chose: #{choice.to_s}; Computer chose: #{computer_choice.to_s}")
     display_results(choice, computer_choice)
