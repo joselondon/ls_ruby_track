@@ -7,40 +7,45 @@ def prompt(message)
 end
 
 PLAYER_MOVE_LOGIC = {
-  rock:     {
-    rock:     'tie',
-    paper:    false,
+  rock:
+  {
+    rock: 'tie',
+    paper:  false,
     scissors: true,
-    spock:    false,
-    lizard:   true
+    spock:  false,
+    lizard: true
   },
-  paper:    {
-    rock:     true,
-    paper:    'tie',
+  paper:
+  {
+    rock: true,
+    paper:  'tie',
     scissors: false,
-    spock:    true,
-    lizard:   false
+    spock:  true,
+    lizard: false
   },
-  scissors: {
-    rock:     false,
-    paper:    true,
+  scissors:
+  {
+    rock: false,
+    paper:  true,
     scissors: 'tie',
-    spock:    false,
-    lizard:   true
+    spock:  false,
+    lizard: true
   },
-  spock: {
-    rock:     true,
-    paper:    false,
+  spock:
+  {
+    rock: true,
+    paper:  false,
     scissors: true,
-    spock:    'tie',
-    lizard:   false
+    spock:  'tie',
+    lizard: false
   },
-  lizard: {
-    rock:     false,
-    paper:    true,
+  lizard:
+  {
+    rock: false,
+    paper:  true,
     scissors: false,
-    spock:    true,
-    lizard:   'tie'
+    spock:  true,
+    lizard: 'tie'
   }
 }
 
@@ -53,7 +58,7 @@ FIRST_LETTER_TO_FULL_WORD_HASH = {
 }
 
 def convert_abbr_to_hash_val(abbrev)
-  FIRST_LETTER_TO_FULL_WORD_HASH.each do |key, val|
+  FIRST_LETTER_TO_FULL_WORD_HASH.each do |key, _|
     if abbrev.to_sym == key
       abbrev = FIRST_LETTER_TO_FULL_WORD_HASH[abbrev]
       return abbrev
@@ -131,7 +136,7 @@ loop do
     computer_choice = VALID_CHOICES.sample().to_sym
 
 
-    prompt("You chose: #{choice.to_s}; Computer chose: #{computer_choice.to_s}")
+    prompt("You chose: #{choice}; Computer chose: #{computer_choice}")
     display_results(choice, computer_choice)
 
     if win?(choice, computer_choice) == 'tie'
@@ -148,7 +153,7 @@ loop do
     prompt("-------------------")
     break if (player_score == 5) || (computer_score == 5) 
     prompt("Hit any key for next round")
-    system("clear") if input = gets() 
+    system("clear") if gets() 
 
     round += 1
   end
