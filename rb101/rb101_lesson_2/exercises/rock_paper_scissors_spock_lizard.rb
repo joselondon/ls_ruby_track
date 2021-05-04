@@ -108,6 +108,7 @@ end
 
 def clear_console
   system('clear')
+  system('cls')
 end
 
 loop do
