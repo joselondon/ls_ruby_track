@@ -11,40 +11,30 @@ PLAYER_MOVE_LOGIC = {
   rock:
   {
     rock: 'tie',
-    paper: false,
     scissors: true,
-    spock: false,
     lizard: true
   },
   paper:
   {
     rock: true,
     paper: 'tie',
-    scissors: false,
-    spock: true,
-    lizard: false
+    spock: true
   },
   scissors:
   {
-    rock: false,
     paper: true,
     scissors: 'tie',
-    spock: false,
     lizard: true
   },
   spock:
   {
     rock: true,
-    paper: false,
     scissors: true,
-    spock: 'tie',
-    lizard: false
+    spock: 'tie'
   },
   lizard:
   {
-    rock: false,
     paper: true,
-    scissors: false,
     spock: true,
     lizard: 'tie'
   }
@@ -142,7 +132,7 @@ loop do
       player_score += 0
     elsif win?(choice, computer_choice)
       player_score += 1
-    elsif win?(choice, computer_choice) == false
+    else
       computer_score += 1
     end
 
