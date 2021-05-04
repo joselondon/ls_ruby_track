@@ -7,7 +7,7 @@ def prompt(message)
   Kernel.puts(">> #{message}")
 end
 
-PLAYER_MOVE_LOGIC = {
+PLAYER_WIN = {
   rock:
   {
     rock: 'tie',
@@ -16,7 +16,7 @@ PLAYER_MOVE_LOGIC = {
   },
   paper:
   {
-    rock: true,
+    
     paper: 'tie',
     spock: true
   },
@@ -35,6 +35,7 @@ PLAYER_MOVE_LOGIC = {
   lizard:
   {
     paper: true,
+
     spock: true,
     lizard: 'tie'
   }
@@ -71,7 +72,7 @@ def valid_input?(str)
 end
 
 def win?(first, second)
-  PLAYER_MOVE_LOGIC[first][second]
+  PLAYER_WIN[first][second]
 end
 
 def display_results(player, computer)
