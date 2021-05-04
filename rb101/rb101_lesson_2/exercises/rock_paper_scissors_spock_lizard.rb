@@ -16,9 +16,9 @@ PLAYER_WIN = {
   },
   paper:
   {
-    
     paper: 'tie',
-    spock: true
+    spock: true,
+    rock: true
   },
   scissors:
   {
@@ -35,7 +35,6 @@ PLAYER_WIN = {
   lizard:
   {
     paper: true,
-
     spock: true,
     lizard: 'tie'
   }
