@@ -1,6 +1,7 @@
 require 'pry'
 VALID_CHOICES = ['rock', 'paper', 'scissors', 'spock', 'lizard']
 VALID_CHOICES_ABBR = ['r', 'p', 's', 'l']
+WINING_GAME_SCORE = 5
 
 def prompt(message)
   Kernel.puts(">> #{message}")
@@ -105,6 +106,10 @@ def display_final_result(player, computer)
   end
 end
 
+def clear_console
+  system('clear')
+end
+
 loop do
   player_score = 0
   computer_score = 0
@@ -144,9 +149,10 @@ loop do
     prompt("Your score is: #{player_score}")
     prompt("Computer score is: #{computer_score}")
     prompt("-------------------")
-    break if (player_score == 5) || (computer_score == 5)
+    break if (player_score == WINING_GAME_SCORE) || 
+      (computer_score == WINING_GAME_SCORE)
     prompt("Hit any key for next round")
-    system("clear") if gets()
+    clear_console if gets()
 
     round += 1
   end
@@ -155,7 +161,7 @@ loop do
   prompt('Do you want to play again?')
   answer = Kernel.gets().downcase().chomp()
   break unless answer.start_with?('y')
-  system("clear")
+  clear_console
 end
 
 prompt("Thank you for playing.  Goodbye!")
