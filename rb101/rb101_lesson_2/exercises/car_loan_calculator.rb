@@ -57,12 +57,12 @@ while another_loan == 'y'
 
   duration_months = duration_years.to_i * 12
   monthly_int = (apr / 12)
-  monthly_payment = principle.to_i * 
+  monthly_payment = principle.to_i *
                     (monthly_int / (1 - (1 + monthly_int)**(-duration_months)))
 
   prompt('monthly_payment', monthly_payment.round(2).to_s)
   prompt('months', duration_months, " months")
-  prompt('monthly_int', monthly_int.round(4),"%")
+  prompt('monthly_int', monthly_int.round(4), "%")
 
   prompt('again?')
   another_loan = Kernel.gets().downcase().chomp()
