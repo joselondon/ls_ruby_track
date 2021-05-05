@@ -67,6 +67,14 @@ def valid_input?(str)
     true
   else
     prompt("That's not a valid choice.")
+    sleep(1)
+    prompt("|")
+    sleep(1)
+    prompt("|")
+    sleep(1)
+    prompt("|")
+    sleep(1)
+    clear_console
   end
 end
 
@@ -113,7 +121,7 @@ loop do
       prompt("Computer score: #{computer_score}")
       prompt("")
       prompt("ROUND:  #{round}")
-      prompt("Choose one: #{VALID_CHOICES.join(', ')},
+      prompt("   Choose one: #{VALID_CHOICES.join(', ')},
       you can just type the first letter (or 'sp' for 'spock')")
 
       choice = Kernel.gets().chomp().to_sym
@@ -136,13 +144,14 @@ loop do
       computer_score += 1
     end
 
-    prompt("At round #{round}")
+    prompt("AT ROUND:  #{round}")
+    prompt("-------------------")
     prompt("Your score is: #{player_score}")
     prompt("Computer score is: #{computer_score}")
     prompt("-------------------")
     break if (player_score == WINING_GAME_SCORE) || 
       (computer_score == WINING_GAME_SCORE)
-    prompt("Hit any key for next round")
+    prompt("Enter any key for next round")
     clear_console if gets()
 
     round += 1
