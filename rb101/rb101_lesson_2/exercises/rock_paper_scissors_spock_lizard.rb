@@ -57,6 +57,16 @@ def convert_abbr_to_hash_val(abbrev)
   end
 end
 
+def sleeper
+  sleep(1)
+  prompt("|")
+  sleep(1)
+  prompt("|")
+  sleep(1)
+  prompt("|")
+  sleep(1)
+end
+
 def valid_input?(str)
   if VALID_CHOICES.include?(str.to_s)
     true
@@ -67,13 +77,7 @@ def valid_input?(str)
     true
   else
     prompt("That's not a valid choice.")
-    sleep(1)
-    prompt("|")
-    sleep(1)
-    prompt("|")
-    sleep(1)
-    prompt("|")
-    sleep(1)
+    sleeper()
     clear_console
   end
 end
@@ -149,8 +153,8 @@ loop do
     prompt("Your score is: #{player_score}")
     prompt("Computer score is: #{computer_score}")
     prompt("-------------------")
-    break if (player_score == WINING_GAME_SCORE) || 
-      (computer_score == WINING_GAME_SCORE)
+    break if (player_score == WINING_GAME_SCORE) ||
+             (computer_score == WINING_GAME_SCORE)
     prompt("Enter any key for next round")
     clear_console if gets()
 
