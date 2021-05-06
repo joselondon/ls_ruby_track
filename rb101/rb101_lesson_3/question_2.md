@@ -15,7 +15,9 @@
 <br>
 3. `uniq!` in this case `!` at the end of a method name indicates the method is destructive to the caller.<br>
 <br>
-4. `?` before something would potentailly be using the ternary conditional operator but only in conjunction with `:` without the colon `?` will return an error
+4. `?` before something would potentailly be using the ternary conditional operator but only in conjunction with `:` without the colon `?` will return an error<br>
+<br>
+5. `!!username` the `!!` is the equivalent of `NOT NOT` logical operator which essentially sets the suername to `true`  
 
 
 
