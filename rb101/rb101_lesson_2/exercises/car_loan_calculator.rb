@@ -16,6 +16,10 @@ def valid_number(num)
   num.to_i() > 0
 end
 
+def valid_number_of_years(num)
+  (num.instance_of?(Integer)) && (num > 0)
+end
+
 another_loan = 'y'
 prompt('welcome')
 
@@ -46,10 +50,10 @@ while another_loan == 'y'
   prompt('duration')
   loop do
     duration_years = Kernel.gets().chomp()
-    if valid_number(duration_years)
+    if valid_number_of_years(duration_years)
       break
     else
-      prompt('valid_number')
+      prompt('valid_years')
     end
   end
 
