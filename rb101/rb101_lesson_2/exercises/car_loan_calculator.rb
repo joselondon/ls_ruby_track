@@ -1,7 +1,7 @@
-require 'pry'
 require 'yaml'
 MESSAGES = YAML.load_file('car_loan_calculator_messages.yml')
 LANGUAGE = 'en'
+REGEX_STRING_REAL_NUMS_GREATER_THAN_ZERO = /\A[1-9]\d*$\Z/
 
 def messages(message, lang='en')
   MESSAGES[lang][message]
@@ -16,8 +16,8 @@ def valid_number(num)
   num.to_i() > 0
 end
 
-def valid_number_of_years(num)
-  (num.instance_of?(Integer)) && (num > 0)
+def whole_years_input_validation(num)
+  !!REGEX_STRING_REAL_NUMS_GREATER_THAN_ZERO.match(num)
 end
 
 another_loan = 'y'
@@ -34,12 +34,15 @@ while another_loan == 'y'
       prompt('valid_number')
     end
   end
-  apr = nil
+
+  apr_integer = nil
+  apr_decimal = nil
   prompt('apr')
   loop do
-    apr = Kernel.gets().chomp()
+    apr = Kernel.gets().chomp().to_f
     if valid_number(apr)
-      apr = apr.to_f / 100
+      apr_decimal = apr.to_f / 100
+      apr_integer = apr
       break
     else
       prompt('valid_number')
@@ -50,7 +53,7 @@ while another_loan == 'y'
   prompt('duration')
   loop do
     duration_years = Kernel.gets().chomp()
-    if valid_number_of_years(duration_years)
+    if whole_years_input_validation(duration_years)
       break
     else
       prompt('valid_years')
@@ -60,13 +63,14 @@ while another_loan == 'y'
   prompt('calculating')
 
   duration_months = duration_years.to_i * 12
-  monthly_int = (apr / 12)
+  monthly_int = (apr_decimal / 12)
+  monthly_percentage = (apr_integer /12)
   monthly_payment = principle.to_i *
                     (monthly_int / (1 - (1 + monthly_int)**(-duration_months)))
 
   prompt('monthly_payment', monthly_payment.round(2).to_s)
   prompt('months', duration_months, " months")
-  prompt('monthly_int', monthly_int.round(4), "%")
+  prompt('monthly_int', monthly_percentage.round(4), "%")
 
   prompt('again?')
   another_loan = Kernel.gets().downcase().chomp()
