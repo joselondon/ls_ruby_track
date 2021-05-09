@@ -1,4 +1,5 @@
 require 'yaml'
+require 'pry'
 MESSAGES = YAML.load_file('car_loan_calculator_messages.yml')
 LANGUAGE = 'en'
 REGEX_STRING_REAL_NUMS_GREATER_THAN_ZERO = /\A[1-9]\d*$\Z/
@@ -12,6 +13,19 @@ end
 def prompt(key, var1=nil, var2=nil)
   message = messages(key, LANGUAGE)
   puts("=> #{message}#{var1}#{var2}")
+end
+
+def get_loan_amount
+  prompt('principle')
+  loop do
+    amount = gets.chomp
+    if valid_number(amount)
+      return amount
+      break
+    else
+      prompt('valid_number')
+    end
+  end
 end
 
 def valid_number(num)
@@ -28,7 +42,7 @@ def clear_console
 end
 
 def timer
-sleep(1)
+  sleep(1)
   puts('-')
   sleep(1)
   puts('-')
@@ -46,22 +60,15 @@ end
 
 prompt('welcome')
 
+principle = nil
+apr_decimal = nil
+apr_integer = nil
 loop do
   timer
   clear_console
-  principle = nil
-  prompt('principle')
-  loop do
-    principle = gets.chomp
-    if valid_number(principle)
-      break
-    else
-      prompt('valid_number')
-    end
-  end
 
-  apr_integer = nil
-  apr_decimal = nil
+  principle = get_loan_amount
+
   prompt('apr')
   loop do
     apr = gets.chomp.to_f
@@ -86,14 +93,13 @@ loop do
   end
 
   prompt('calculating')
-  
   timer
 
   duration_months = duration_years.to_i * 12
   monthly_int = (apr_decimal / 12)
   monthly_percentage = (apr_integer /12)
   monthly_payment = principle.to_i *
-                    (monthly_int / (1 - (1 + monthly_int)**(-duration_months)))
+                    (monthly_int / (1-(1 + monthly_int)**(-duration_months)))
 
   prompt('monthly_payment', monthly_payment.round(2).to_s)
   prompt('months', duration_months, " months")
