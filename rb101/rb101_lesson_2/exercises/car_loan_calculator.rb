@@ -11,11 +11,11 @@ end
 
 def prompt(key, var1=nil, var2=nil)
   message = messages(key, LANGUAGE)
-  Kernel.puts("=> #{message}#{var1}#{var2}")
+  puts("=> #{message}#{var1}#{var2}")
 end
 
 def valid_number(num)
-  num.to_i() > 0
+  num.to_i > 0
 end
 
 def whole_years_input_validation(num)
@@ -47,12 +47,12 @@ end
 prompt('welcome')
 
 loop do
-  timer()
+  timer
   clear_console
   principle = nil
   prompt('principle')
   loop do
-    principle = Kernel.gets().chomp()
+    principle = gets.chomp
     if valid_number(principle)
       break
     else
@@ -64,7 +64,7 @@ loop do
   apr_decimal = nil
   prompt('apr')
   loop do
-    apr = Kernel.gets().chomp().to_f
+    apr = gets.chomp.to_f
     if valid_number(apr)
       apr_decimal = apr.to_f / 100
       apr_integer = apr
@@ -77,7 +77,7 @@ loop do
   duration_years = nil
   prompt('duration')
   loop do
-    duration_years = Kernel.gets().chomp()
+    duration_years = gets.chomp
     if whole_years_input_validation(duration_years)
       break
     else
@@ -87,7 +87,7 @@ loop do
 
   prompt('calculating')
   
-  timer()
+  timer
 
   duration_months = duration_years.to_i * 12
   monthly_int = (apr_decimal / 12)
@@ -102,7 +102,7 @@ loop do
   another_loan = ''
   prompt('again?')
   loop do
-    another_loan = Kernel.gets().downcase().chomp()
+    another_loan = gets.downcase.chomp
     if valid_quit_options(another_loan) == false
       prompt('valid_quit')
     else
