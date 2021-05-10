@@ -21,6 +21,18 @@ def get_loan_amount
     amount = gets.chomp
     if valid_number(amount)
       return amount
+    else prompt('valid_number')
+    end
+  end
+end
+
+
+def get_loan_interest
+  prompt('apr')
+  loop do
+    apr = gets.chomp.to_f
+    if valid_number(apr)
+      return apr
       break
     else
       prompt('valid_number')
@@ -60,26 +72,16 @@ end
 
 prompt('welcome')
 
-principle = nil
-apr_decimal = nil
-apr_integer = nil
+principle = ''
+apr_decimal = ''
+
 loop do
   timer
   clear_console
 
   principle = get_loan_amount
-
-  prompt('apr')
-  loop do
-    apr = gets.chomp.to_f
-    if valid_number(apr)
-      apr_decimal = apr.to_f / 100
-      apr_integer = apr
-      break
-    else
-      prompt('valid_number')
-    end
-  end
+  
+  apr_decimal = get_loan_interest/100
 
   duration_years = nil
   prompt('duration')
@@ -94,10 +96,9 @@ loop do
 
   prompt('calculating')
   timer
-
   duration_months = duration_years.to_i * 12
   monthly_int = (apr_decimal / 12)
-  monthly_percentage = (apr_integer /12)
+  monthly_percentage = (apr_decimal / 12)
   monthly_payment = principle.to_i *
                     (monthly_int / (1-(1 + monthly_int)**(-duration_months)))
 
