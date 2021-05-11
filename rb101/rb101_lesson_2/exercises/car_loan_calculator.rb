@@ -92,8 +92,15 @@ def calculate_monthly_percentage(annual_int)
   annual_int * 100 / 12
 end
 
-def calculating_monthly_amount
+def calculate_monthly_amount(amount, monthly, months)
+  amount.to_i *
+    (monthly / (1-(1 + monthly)**(-months)))
+end
 
+def display_output(monthly_amount, months, monthly_percent)
+  prompt('monthly_payment', monthly_amount.round(2).to_s)
+  prompt('months', months, " months")
+  prompt('monthly_int', monthly_percent.round(4), "%")  
 end
 
 prompt('welcome')
@@ -116,12 +123,10 @@ loop do
   duration_months = calulate_duration_months(duration_years)
   monthly_int = calculate_monthly_int(apr_decimal)
   monthly_percentage = calculate_monthly_percentage(apr_decimal)
-  monthly_payment = principle.to_i *
-                    (monthly_int / (1-(1 + monthly_int)**(-duration_months)))
-
-  prompt('monthly_payment', monthly_payment.round(2).to_s)
-  prompt('months', duration_months, " months")
-  prompt('monthly_int', monthly_percentage.round(4), "%")
+  monthly_payment = calculate_monthly_amount(principle, monthly_int, 
+                                             duration_months)
+  
+  display_output(monthly_payment, duration_months, monthly_percentage)                                          
 
   another_loan = ''
   prompt('again?')
