@@ -15,6 +15,36 @@ def prompt(key, var1=nil, var2=nil)
   puts("=> #{message}#{var1}#{var2}")
 end
 
+def valid_number(num)
+  num.to_i > 0
+end
+
+def whole_years_input_validation(num)
+  !!REGEX_STRING_REAL_NUMS_GREATER_THAN_ZERO.match(num)
+end
+
+def clear_console
+  system('clear')
+  system('cls')
+end
+
+def timer
+  sleep(1)
+  puts('-')
+  sleep(1)
+  puts('-')
+  sleep(1)
+  puts('-')
+end
+
+def valid_quit_options(input)
+  if VALID_YES.include?(input) || VALID_NO.include?(input)
+    true
+  else
+    false
+  end
+end
+
 def get_loan_amount
   prompt('principle')
   loop do
@@ -50,34 +80,20 @@ def get_loan_duration
   end
 end
 
-def valid_number(num)
-  num.to_i > 0
+def calulate_duration_months(years)
+  months = years.to_i * 12
 end
 
-def whole_years_input_validation(num)
-  !!REGEX_STRING_REAL_NUMS_GREATER_THAN_ZERO.match(num)
+def calculate_monthly_int(annual_int)
+  monthly = (annual_int / 12)
 end
 
-def clear_console
-  system('clear')
-  system('cls')
+def calculate_monthly_percentage(annual_int)
+  annual_int * 100 / 12
 end
 
-def timer
-  sleep(1)
-  puts('-')
-  sleep(1)
-  puts('-')
-  sleep(1)
-  puts('-')
-end
+def calculating_monthly_amount
 
-def valid_quit_options(input)
-  if VALID_YES.include?(input) || VALID_NO.include?(input)
-    true
-  else
-    false
-  end
 end
 
 prompt('welcome')
@@ -96,10 +112,10 @@ loop do
 
   prompt('calculating')
   timer
-  
-  duration_months = duration_years.to_i * 12
-  monthly_int = (apr_decimal / 12)
-  monthly_percentage = (apr_decimal * 100 / 12)
+
+  duration_months = calulate_duration_months(duration_years)
+  monthly_int = calculate_monthly_int(apr_decimal)
+  monthly_percentage = calculate_monthly_percentage(apr_decimal)
   monthly_payment = principle.to_i *
                     (monthly_int / (1-(1 + monthly_int)**(-duration_months)))
 
