@@ -32,7 +32,7 @@ def get_loan_interest
   loop do
     apr = gets.chomp.to_f
     if valid_number(apr)
-      return apr
+      return apr/100
       break
     else
       prompt('valid_number')
@@ -70,6 +70,10 @@ def valid_quit_options(input)
   end
 end
 
+def get_loan_duration
+
+end
+
 prompt('welcome')
 
 principle = ''
@@ -81,7 +85,7 @@ loop do
 
   principle = get_loan_amount
   
-  apr_decimal = get_loan_interest/100
+  apr_decimal = get_loan_interest
 
   duration_years = nil
   prompt('duration')
@@ -98,7 +102,7 @@ loop do
   timer
   duration_months = duration_years.to_i * 12
   monthly_int = (apr_decimal / 12)
-  monthly_percentage = (apr_decimal / 12)
+  monthly_percentage = (apr_decimal * 100 / 12)
   monthly_payment = principle.to_i *
                     (monthly_int / (1-(1 + monthly_int)**(-duration_months)))
 
