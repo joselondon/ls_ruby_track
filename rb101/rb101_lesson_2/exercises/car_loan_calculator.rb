@@ -26,16 +26,26 @@ def get_loan_amount
   end
 end
 
-
 def get_loan_interest
   prompt('apr')
   loop do
     apr = gets.chomp.to_f
     if valid_number(apr)
       return apr/100
-      break
     else
       prompt('valid_number')
+    end
+  end
+end
+
+def get_loan_duration
+  prompt('duration')
+  loop do
+    years = gets.chomp
+    if whole_years_input_validation(years)
+      return years
+    else
+      prompt('valid_years')
     end
   end
 end
@@ -70,36 +80,23 @@ def valid_quit_options(input)
   end
 end
 
-def get_loan_duration
-
-end
-
 prompt('welcome')
 
 principle = ''
 apr_decimal = ''
+duration_years = ''
 
 loop do
   timer
   clear_console
 
   principle = get_loan_amount
-  
   apr_decimal = get_loan_interest
-
-  duration_years = nil
-  prompt('duration')
-  loop do
-    duration_years = gets.chomp
-    if whole_years_input_validation(duration_years)
-      break
-    else
-      prompt('valid_years')
-    end
-  end
+  duration_years = get_loan_duration
 
   prompt('calculating')
   timer
+  
   duration_months = duration_years.to_i * 12
   monthly_int = (apr_decimal / 12)
   monthly_percentage = (apr_decimal * 100 / 12)
