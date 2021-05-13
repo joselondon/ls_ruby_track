@@ -1,9 +1,14 @@
 require 'yaml'
+require 'pry'
 MESSAGES = YAML.load_file('car_loan_calculator_messages.yml')
 LANGUAGE = 'en'
 REGEX_STRING_REAL_NUMS_GREATER_THAN_ZERO = /\A[1-9]\d*$\Z/
 VALID_YES = ['y', 'yes']
 VALID_NO = ['n', 'no']
+
+def generic_calculate(message)
+  prompt(message)
+end
 
 def messages(message, lang='en')
   MESSAGES[lang][message]
@@ -131,7 +136,7 @@ def calculate_monthly_amount(amount, monthly, months)
   amount.to_i *
     (monthly / (1 - (1 + monthly)**(-months)))
 end
-
+binding.pry
 display_welcome_message
 
 principle = ''
