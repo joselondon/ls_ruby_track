@@ -80,6 +80,10 @@ def get_loan_duration
   end
 end
 
+def another_calculation
+  
+end
+
 def calulate_duration_months(years)
   months = years.to_i * 12
 end
@@ -103,32 +107,8 @@ def display_output(monthly_amount, months, monthly_percent)
   prompt('monthly_int', monthly_percent.round(4), "%")  
 end
 
-prompt('welcome')
-
-principle = ''
-apr_decimal = ''
-duration_years = ''
-
-loop do
-  timer
-  clear_console
-
-  principle = get_loan_amount
-  apr_decimal = get_loan_interest
-  duration_years = get_loan_duration
-
-  prompt('calculating')
-  timer
-
-  duration_months = calulate_duration_months(duration_years)
-  monthly_int = calculate_monthly_int(apr_decimal)
-  monthly_percentage = calculate_monthly_percentage(apr_decimal)
-  monthly_payment = calculate_monthly_amount(principle, monthly_int, 
-                                             duration_months)
-  
-  display_output(monthly_payment, duration_months, monthly_percentage)                                          
-
-  another_loan = ''
+def another_calculation?
+    another_loan = ''
   prompt('again?')
   loop do
     another_loan = gets.downcase.chomp
@@ -138,8 +118,44 @@ loop do
       break
     end
   end
-
-  VALID_NO.include?(another_loan) ? break : next
+  VALID_NO.include?(another_loan)
 end
 
-prompt('goodbye')
+def end_program?
+  another_calculation?
+end
+
+def display_welcome_message
+  prompt('welcome')
+end
+
+def display_calculating_message
+  prompt('calculating')  
+end
+
+def display_goodbye
+  prompt('goodbye')
+end
+
+display_welcome_message
+principle = ''
+apr_decimal = ''
+duration_years = ''
+loop do
+  timer
+  clear_console
+  principle = get_loan_amount
+  apr_decimal = get_loan_interest
+  duration_years = get_loan_duration
+  display_calculating_message
+  timer
+
+  duration_months = calulate_duration_months(duration_years)
+  monthly_int = calculate_monthly_int(apr_decimal)
+  monthly_percentage = calculate_monthly_percentage(apr_decimal)
+  monthly_payment = calculate_monthly_amount(principle, monthly_int, 
+                                             duration_months)
+  display_output(monthly_payment, duration_months, monthly_percentage)
+  end_program? ? break : next
+end
+display_goodbye
