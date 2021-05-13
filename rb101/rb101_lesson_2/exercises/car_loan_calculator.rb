@@ -1,5 +1,4 @@
 require 'yaml'
-require 'pry'
 MESSAGES = YAML.load_file('car_loan_calculator_messages.yml')
 LANGUAGE = 'en'
 REGEX_STRING_REAL_NUMS_GREATER_THAN_ZERO = /\A[1-9]\d*$\Z/
@@ -13,6 +12,14 @@ end
 def prompt(key, var1=nil, var2=nil)
   message = messages(key, LANGUAGE)
   puts("=> #{message}#{var1}#{var2}")
+end
+
+def valid_quit_options(input)
+  if VALID_YES.include?(input) || VALID_NO.include?(input)
+    true
+  else
+    false
+  end
 end
 
 def valid_number(num)
@@ -37,14 +44,6 @@ def timer
   puts('-')
 end
 
-def valid_quit_options(input)
-  if VALID_YES.include?(input) || VALID_NO.include?(input)
-    true
-  else
-    false
-  end
-end
-
 def get_loan_amount
   prompt('principle')
   loop do
@@ -61,7 +60,7 @@ def get_loan_interest
   loop do
     apr = gets.chomp.to_f
     if valid_number(apr)
-      return apr/100
+      return apr / 100
     else
       prompt('valid_number')
     end
@@ -80,35 +79,14 @@ def get_loan_duration
   end
 end
 
-def another_calculation
-  
-end
-
-def calulate_duration_months(years)
-  months = years.to_i * 12
-end
-
-def calculate_monthly_int(annual_int)
-  monthly = (annual_int / 12)
-end
-
-def calculate_monthly_percentage(annual_int)
-  annual_int * 100 / 12
-end
-
-def calculate_monthly_amount(amount, monthly, months)
-  amount.to_i *
-    (monthly / (1-(1 + monthly)**(-months)))
-end
-
 def display_output(monthly_amount, months, monthly_percent)
   prompt('monthly_payment', monthly_amount.round(2).to_s)
   prompt('months', months, " months")
-  prompt('monthly_int', monthly_percent.round(4), "%")  
+  prompt('monthly_int', monthly_percent.round(4), "%")
 end
 
 def another_calculation?
-    another_loan = ''
+  another_loan = ''
   prompt('again?')
   loop do
     another_loan = gets.downcase.chomp
@@ -130,17 +108,36 @@ def display_welcome_message
 end
 
 def display_calculating_message
-  prompt('calculating')  
+  prompt('calculating')
 end
 
 def display_goodbye
   prompt('goodbye')
 end
 
+def calulate_duration_months(years)
+  years.to_i * 12
+end
+
+def calculate_monthly_int(annual_int)
+  annual_int / 12
+end
+
+def calculate_monthly_percentage(annual_int)
+  annual_int * 100 / 12
+end
+
+def calculate_monthly_amount(amount, monthly, months)
+  amount.to_i *
+    (monthly / (1 - (1 + monthly)**(-months)))
+end
+
 display_welcome_message
+
 principle = ''
 apr_decimal = ''
 duration_years = ''
+
 loop do
   timer
   clear_console
@@ -148,14 +145,18 @@ loop do
   apr_decimal = get_loan_interest
   duration_years = get_loan_duration
   display_calculating_message
+
   timer
 
   duration_months = calulate_duration_months(duration_years)
   monthly_int = calculate_monthly_int(apr_decimal)
   monthly_percentage = calculate_monthly_percentage(apr_decimal)
-  monthly_payment = calculate_monthly_amount(principle, monthly_int, 
+  monthly_payment = calculate_monthly_amount(principle, monthly_int,
                                              duration_months)
+
   display_output(monthly_payment, duration_months, monthly_percentage)
+
   end_program? ? break : next
 end
+
 display_goodbye
