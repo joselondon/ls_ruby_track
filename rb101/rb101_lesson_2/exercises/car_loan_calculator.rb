@@ -6,7 +6,8 @@ REGEX_STRING_REAL_NUMS_GREATER_THAN_ZERO = /\A[1-9]\d*$\Z/
 VALID_YES = ['y', 'yes']
 VALID_NO = ['n', 'no']
 
-def generic_calculate(message)
+value = nil
+def generic_calulator(message)
   prompt(message)
 end
 
@@ -84,12 +85,6 @@ def get_loan_duration
   end
 end
 
-def display_output(monthly_amount, months, monthly_percent)
-  prompt('monthly_payment', monthly_amount.round(2).to_s)
-  prompt('months', months, " months")
-  prompt('monthly_int', monthly_percent.round(4), "%")
-end
-
 def another_calculation?
   another_loan = ''
   prompt('again?')
@@ -118,6 +113,12 @@ end
 
 def display_goodbye
   prompt('goodbye')
+end
+
+def display_output(monthly_amount, months, monthly_percent)
+  prompt('monthly_payment', monthly_amount.round(2).to_s)
+  prompt('months', months, " months")
+  prompt('monthly_int', monthly_percent.round(4), "%")
 end
 
 def calulate_duration_months(years)
