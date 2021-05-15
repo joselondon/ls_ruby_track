@@ -6,9 +6,18 @@ REGEX_STRING_REAL_NUMS_GREATER_THAN_ZERO = /\A[1-9]\d*$\Z/
 VALID_YES = ['y', 'yes']
 VALID_NO = ['n', 'no']
 
-value = nil
-def generic_calulator(message)
-  prompt(message)
+def generic_input_capture_validation(prompt, validator,
+                      validation_error_message, func1=nil, func2=true)
+  value = func1
+  prompt(prompt)
+  loop do
+    value = gets.chomp
+    if method(validator).call(value) == func2
+      return value
+    else
+      prompt(validation_error_message)
+    end
+  end
 end
 
 def messages(message, lang='en')
@@ -51,38 +60,19 @@ def timer
 end
 
 def get_loan_amount
-  prompt('principle')
-  loop do
-    amount = gets.chomp
-    if valid_number(amount)
-      return amount
-    else prompt('valid_number')
-    end
-  end
+  generic_input_capture_validation('principle', :valid_number,
+                                   'valid_number')
 end
 
 def get_loan_interest
-  prompt('apr')
-  loop do
-    apr = gets.chomp.to_f
-    if valid_number(apr)
-      return apr / 100
-    else
-      prompt('valid_number')
-    end
-  end
+  generic_input_capture_validation('apr', :valid_number,
+                                  'valid_number')
 end
 
 def get_loan_duration
-  prompt('duration')
-  loop do
-    years = gets.chomp
-    if whole_years_input_validation(years)
-      return years
-    else
-      prompt('valid_years')
-    end
-  end
+  generic_input_capture_validation('duration',
+                                   :whole_years_input_validation,
+                                   'valid_years')
 end
 
 def another_calculation?
@@ -137,7 +127,7 @@ def calculate_monthly_amount(amount, monthly, months)
   amount.to_i *
     (monthly / (1 - (1 + monthly)**(-months)))
 end
-binding.pry
+
 display_welcome_message
 
 principle = ''
@@ -148,7 +138,7 @@ loop do
   timer
   clear_console
   principle = get_loan_amount
-  apr_decimal = get_loan_interest
+  apr_decimal = get_loan_interest.to_f / 100
   duration_years = get_loan_duration
   display_calculating_message
 
