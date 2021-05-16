@@ -1,5 +1,5 @@
 require 'pry'
-VALID_CHOICES = ['rock', 'paper', 'scissors', 'spock', 'lizard']
+VALID_CHOICES = ['(r)ock', '(p)aper', '(s)cissors', '(sp)ock', '(l)izard']
 VALID_CHOICES_ABBR = ['r', 'p', 's', 'l']
 WINING_GAME_SCORE = 5
 
@@ -125,10 +125,9 @@ loop do
       prompt("Computer score: #{computer_score}")
       prompt("")
       prompt("ROUND:  #{round}")
-      prompt("   Choose one: #{VALID_CHOICES.join(', ')},
-      you can just type the first letter (or 'sp' for 'spock')")
+      prompt("   Choose one: #{VALID_CHOICES.join(', ')}")
 
-      choice = Kernel.gets().chomp().to_sym
+      choice = gets().chomp().downcase().strip().to_sym
       break if valid_input?(choice)
     end
 
