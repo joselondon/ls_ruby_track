@@ -6,9 +6,8 @@ REGEX_STRING_REAL_NUMS_GREATER_THAN_ZERO = /\A[1-9]\d*$\Z/
 VALID_YES = ['y', 'yes']
 VALID_NO = ['n', 'no']
 
-
 def generic_input_capture_validation(prompt, validator,
-                      validation_error_message)
+                                     validation_error_message)
   prompt(prompt)
   loop do
     value = gets.chomp.downcase
@@ -66,7 +65,7 @@ end
 
 def get_loan_interest
   generic_input_capture_validation('apr', :valid_number,
-                                  'valid_number')
+                                   'valid_number')
 end
 
 def get_loan_duration
@@ -76,7 +75,9 @@ def get_loan_duration
 end
 
 def another_calculation?
-  another_loan = generic_input_capture_validation('again?', :valid_quit_options, 'valid_quit')
+  another_loan = generic_input_capture_validation('again?',
+                                                  :valid_quit_options,
+                                                  'valid_quit')
   valid_no?(another_loan)
 end
 
