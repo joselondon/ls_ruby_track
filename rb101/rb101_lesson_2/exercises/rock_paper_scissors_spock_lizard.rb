@@ -79,6 +79,19 @@ def sleeper
   sleep(1)
 end
 
+def generic_input_capture_validation(prompt, validator,
+                                     validation_error_message)
+  prompt(prompt)
+  loop do
+    value = gets.chomp.downcase
+    if method(validator).call(value)
+      return true
+    else
+      prompt(validation_error_message)
+    end
+  end
+end
+
 def valid_input?(str)
   if VALID_CHOICES.include?(str.to_s)
     true
@@ -91,6 +104,14 @@ def valid_input?(str)
     prompt("That's not a valid choice.")
     sleeper()
     clear_console
+  end
+end
+
+def valid_quit_options(input)
+  if VALID_YES.include?(input) || VALID_NO.include?(input)
+    true
+  else
+    false
   end
 end
 
@@ -129,9 +150,29 @@ def display_final_result(player, computer)
   end
 end
 
+def another_game?
+  another_set = generic_input_capture_validation(display_again_message,
+    :valid_quit_options,
+    display_another_game_validation_error)
+
+valid_no?(another_set)
+end
+
+def end_program?
+  another_game?()
+end
+
 def clear_console
   system('clear')
   system('cls')
+end
+
+def display_again_message
+  prompt("Hit (y)es to play again or (n)o to quit")
+end
+
+def display_another_game_validation_error
+  prompt("Invalid entry.  Please try again")
 end
 
 clear_console()
@@ -187,10 +228,12 @@ loop do
   end
 
   display_final_result(player_score, computer_score)
-  prompt('Do you want to play again?')
-  answer = Kernel.gets().downcase().chomp()
-  break unless answer.start_with?('y')
-  clear_console
+  end_program?() ? break : next
+
+#  prompt('Do you want to play again?')
+#  answer = Kernel.gets().downcase().chomp()
+#  break unless answer.start_with?('y')
+#  clear_console
 end
 
 prompt("Thank you for playing.  Goodbye!")

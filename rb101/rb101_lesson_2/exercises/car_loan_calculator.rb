@@ -86,7 +86,7 @@ def valid_no?(input)
 end
 
 def end_program?
-  another_calculation?
+  another_calculation?()
 end
 
 def display_welcome_message
