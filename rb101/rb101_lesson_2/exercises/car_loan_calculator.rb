@@ -6,13 +6,13 @@ REGEX_STRING_REAL_NUMS_GREATER_THAN_ZERO = /\A[1-9]\d*$\Z/
 VALID_YES = ['y', 'yes']
 VALID_NO = ['n', 'no']
 
+
 def generic_input_capture_validation(prompt, validator,
-                      validation_error_message, func1=nil, func2=true)
-  value = func1
+                      validation_error_message)
   prompt(prompt)
   loop do
-    value = gets.chomp
-    if method(validator).call(value) == func2
+    value = gets.chomp.downcase
+    if method(validator).call(value)
       return value
     else
       prompt(validation_error_message)
@@ -29,6 +29,20 @@ def prompt(key, var1=nil, var2=nil)
   puts("=> #{message}#{var1}#{var2}")
 end
 
+def timer
+  sleep(1)
+  puts('-')
+  sleep(1)
+  puts('-')
+  sleep(1)
+  puts('-')
+end
+
+def clear_console
+  system('clear')
+  system('cls')
+end
+
 def valid_quit_options(input)
   if VALID_YES.include?(input) || VALID_NO.include?(input)
     true
@@ -43,20 +57,6 @@ end
 
 def whole_years_input_validation(num)
   !!REGEX_STRING_REAL_NUMS_GREATER_THAN_ZERO.match(num)
-end
-
-def clear_console
-  system('clear')
-  system('cls')
-end
-
-def timer
-  sleep(1)
-  puts('-')
-  sleep(1)
-  puts('-')
-  sleep(1)
-  puts('-')
 end
 
 def get_loan_amount
@@ -76,17 +76,12 @@ def get_loan_duration
 end
 
 def another_calculation?
-  another_loan = ''
-  prompt('again?')
-  loop do
-    another_loan = gets.downcase.chomp
-    if valid_quit_options(another_loan) == false
-      prompt('valid_quit')
-    else
-      break
-    end
-  end
-  VALID_NO.include?(another_loan)
+  another_loan = generic_input_capture_validation('again?', :valid_quit_options, 'valid_quit')
+  valid_no?(another_loan)
+end
+
+def valid_no?(input)
+  VALID_NO.include?(input)
 end
 
 def end_program?
