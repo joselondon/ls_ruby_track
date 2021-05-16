@@ -1,7 +1,19 @@
 require 'pry'
-VALID_CHOICES = ['(r)ock', '(p)aper', '(s)cissors', '(sp)ock', '(l)izard']
+VALID_CHOICES = ['rock', 'paper', 'scissors', 'spock', 'lizard']
 VALID_CHOICES_ABBR = ['r', 'p', 's', 'l']
 WINING_GAME_SCORE = 5
+WELCOME = "Welcome to Rock, Paper, Scissors, Spock, Lizard.
+To play:  When prompted, enter one of the following choices: 
+#{VALID_CHOICES.join(' , ')} , and hit return.   
+The compluter's choice will be displayed along with the 
+winner or a tied result. The first player to reach a score
+of #{WINING_GAME_SCORE} wins!
+
+WINNING COMBINATIONS ARE:-
+Scissors decapitate lizard, Scissors cuts paper, paper covers rock,
+rock crushes lizard, lizard poisons Spock, Spock smashes scissors,
+scissors decapitates lizard, lizard eats paper, paper disproves Spock,
+Spock vaporizes rock, and as it always has, rock crushes scissors."
 
 def prompt(message)
   Kernel.puts(">> #{message}")
@@ -86,6 +98,15 @@ def win?(first, second)
   PLAYER_WIN[first][second]
 end
 
+def display_welcome_message
+  prompt("#{WELCOME}")
+end
+
+def start?
+  prompt("HIT ANY KEY TO START")
+  clear_console if gets()
+end
+
 def display_results(player, computer)
   if win?(player, computer) == 'tie'
     puts "its a tie"
@@ -113,6 +134,10 @@ def clear_console
   system('cls')
 end
 
+clear_console()
+display_welcome_message()
+start?()
+
 loop do
   player_score = 0
   computer_score = 0
@@ -125,7 +150,8 @@ loop do
       prompt("Computer score: #{computer_score}")
       prompt("")
       prompt("ROUND:  #{round}")
-      prompt("   Choose one: #{VALID_CHOICES.join(', ')}")
+      prompt("   Choose one: (r)ock, (p)aper, (s)cissors,         
+      (l)izard, (sp)ock")
 
       choice = gets().chomp().downcase().strip().to_sym
       break if valid_input?(choice)
