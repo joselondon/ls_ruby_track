@@ -1,9 +1,13 @@
 require 'pry'
 VALID_CHOICES = ['rock', 'paper', 'scissors', 'spock', 'lizard']
 VALID_CHOICES_ABBR = ['r', 'p', 's', 'l']
+VALID_YES = ['y', 'yes']
+VALID_NO = ['n', 'no']
 WINING_GAME_SCORE = 5
-WELCOME = "Welcome to Rock, Paper, Scissors, Spock, Lizard.
-To play:  When prompted, enter one of the following choices: 
+WELCOME = "***Welcome to Rock, Paper, Scissors, Spock, Lizard***
+------------------------------------------------------------
+To play:  
+When prompted, enter one of the following choices: 
 #{VALID_CHOICES.join(' , ')} , and hit return.   
 The compluter's choice will be displayed along with the 
 winner or a tied result. The first player to reach a score
@@ -79,19 +83,6 @@ def sleeper
   sleep(1)
 end
 
-def generic_input_capture_validation(prompt, validator,
-                                     validation_error_message)
-  prompt(prompt)
-  loop do
-    value = gets.chomp.downcase
-    if method(validator).call(value)
-      return true
-    else
-      prompt(validation_error_message)
-    end
-  end
-end
-
 def valid_input?(str)
   if VALID_CHOICES.include?(str.to_s)
     true
@@ -104,14 +95,6 @@ def valid_input?(str)
     prompt("That's not a valid choice.")
     sleeper()
     clear_console
-  end
-end
-
-def valid_quit_options(input)
-  if VALID_YES.include?(input) || VALID_NO.include?(input)
-    true
-  else
-    false
   end
 end
 
@@ -150,16 +133,31 @@ def display_final_result(player, computer)
   end
 end
 
-def another_game?
-  another_set = generic_input_capture_validation(display_again_message,
-    :valid_quit_options,
-    display_another_game_validation_error)
-
-valid_no?(another_set)
+def valid_quit_options(input)
+  if VALID_YES.include?(input) || VALID_NO.include?(input)
+    true
+  else
+    false
+  end
 end
 
-def end_program?
-  another_game?()
+def another_game_input_validator
+  input = ''
+  display_again_message()
+  loop do
+    input = gets().chomp().downcase().strip()
+    if valid_quit_options(input) 
+      break
+    else
+      display_another_game_validation_error()
+    end
+  end
+  VALID_YES.include?(input) ? true : false
+end
+
+def another_game?
+  quit = another_game_input_validator()
+  return quit
 end
 
 def clear_console
@@ -177,11 +175,12 @@ end
 
 clear_console()
 display_welcome_message()
+prompt("")
 start?()
 
 loop do
-  player_score = 0
-  computer_score = 0
+  player_score = 4
+  computer_score = 4
   round = 1
 
   loop do
@@ -228,7 +227,7 @@ loop do
   end
 
   display_final_result(player_score, computer_score)
-  end_program?() ? break : next
+  another_game?() ? next : break
 
 #  prompt('Do you want to play again?')
 #  answer = Kernel.gets().downcase().chomp()
