@@ -31,51 +31,17 @@ WINNING_MOVES = {
   'spock' => ['scissors', 'rock']
  }
 
-PLAYER_WIN = {
-  rock:
-  {
-    rock: 'tie',
-    scissors: true,
-    lizard: true
-  },
-  paper:
-  {
-    paper: 'tie',
-    spock: true,
-    rock: true
-  },
-  scissors:
-  {
-    paper: true,
-    scissors: 'tie',
-    lizard: true
-  },
-  spock:
-  {
-    rock: true,
-    scissors: true,
-    spock: 'tie'
-  },
-  lizard:
-  {
-    paper: true,
-    spock: true,
-    lizard: 'tie'
-  }
-}
-
 FIRST_LETTER_TO_FULL_WORD_HASH = {
-  r: :rock,
-  p: :paper,
-  s: :scissors,
-  sp: :spock,
-  l: :lizard
+  'r' => 'rock',
+  'p' => 'paper',
+  's' => 'scissors',
+  'sp' => 'spock',
+  'l' => 'lizard'
 }
-
 
 def convert_abbr_to_hash_val(abbrev)
   FIRST_LETTER_TO_FULL_WORD_HASH.each do |key, _|
-    if abbrev.to_sym == key
+    if abbrev == key
       abbrev = FIRST_LETTER_TO_FULL_WORD_HASH[abbrev]
       return abbrev
     end
@@ -95,7 +61,7 @@ end
 def valid_input?(str)
   if VALID_CHOICES.include?(str.to_s)
     true
-  elsif str == :sp
+  elsif str == 'sp'
     convert_abbr_to_hash_val(str)
     true
   elsif VALID_CHOICES_ABBR.include?(str.to_s)
@@ -107,8 +73,8 @@ def valid_input?(str)
   end
 end
 
-def win?(first, second)
-  PLAYER_WIN[first][second]
+def win?(player_choice)
+  WINNING_MOVES[player_choice]
 end
 
 def display_welcome_message
@@ -121,9 +87,9 @@ def start?
 end
 
 def display_results(player, computer)
-  if win?(player, computer) == 'tie'
+  if player == computer
     puts "its a tie"
-  elsif win?(player, computer)
+  elsif WINNING_MOVES[player].include?(computer)
     puts "you win"
   else
     puts "you lose"
@@ -188,9 +154,9 @@ prompt("")
 start?()
 
 loop do
-  player_score = 4
-  computer_score = 4
-  round = 1
+  player_score = 4      # for speed during refactoring and testing
+  computer_score = 4    # player scores are set initial value
+  round = 1             # of 4
 
   loop do
     choice = ''
@@ -202,21 +168,21 @@ loop do
       prompt("   Choose one: (r)ock, (p)aper, (s)cissors,         
       (l)izard, (sp)ock")
 
-      choice = gets().chomp().downcase().strip().to_sym
+      choice = gets().chomp().downcase().strip()
       break if valid_input?(choice)
     end
 
     if FIRST_LETTER_TO_FULL_WORD_HASH.key?(choice)
       choice = FIRST_LETTER_TO_FULL_WORD_HASH[choice]
     end
-    computer_choice = VALID_CHOICES.sample().to_sym
+    computer_choice = VALID_CHOICES.sample()
 
     prompt("You chose: #{choice}; Computer chose: #{computer_choice}")
     display_results(choice, computer_choice)
 
-    if win?(choice, computer_choice) == 'tie'
+    if choice == computer_choice
       player_score += 0
-    elsif win?(choice, computer_choice)
+    elsif WINNING_MOVES[choice].include?(computer_choice)
       player_score += 1
     else
       computer_score += 1
