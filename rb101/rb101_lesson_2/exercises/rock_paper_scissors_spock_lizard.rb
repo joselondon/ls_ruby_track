@@ -23,6 +23,14 @@ def prompt(message)
   Kernel.puts(">> #{message}")
 end
 
+WINNING_MOVES = {
+  'rock' => ['scissors', 'lizard'],
+  'paper' => ['rock', 'spock'],
+  'scissors' => ['paper', 'lizard'],
+  'lizard' => ['spock', 'paper'],
+  'spock' => ['scissors', 'rock']
+ }
+
 PLAYER_WIN = {
   rock:
   {
@@ -63,6 +71,7 @@ FIRST_LETTER_TO_FULL_WORD_HASH = {
   sp: :spock,
   l: :lizard
 }
+
 
 def convert_abbr_to_hash_val(abbrev)
   FIRST_LETTER_TO_FULL_WORD_HASH.each do |key, _|
