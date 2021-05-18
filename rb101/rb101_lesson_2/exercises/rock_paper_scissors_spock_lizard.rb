@@ -220,8 +220,8 @@ loop do
   display_final_result(scores[:player_score], scores[:computer_score])
   another_game?() ? sleeper : break
   clear_console()
-  clear_scores(scores, [:player_score],
-    [:computer_score])
+  clear_scores(scores, :player_score,
+    :computer_score)
   next
 end
 
