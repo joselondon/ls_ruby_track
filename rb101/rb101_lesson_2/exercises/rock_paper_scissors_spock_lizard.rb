@@ -39,6 +39,13 @@ FIRST_LETTER_TO_FULL_WORD_HASH = {
   'l' => 'lizard'
 }
 
+scores = {
+  player_score: 4,
+  computer_score: 4
+}
+
+round = 1
+
 def convert_abbr_to_hash_val(abbrev)
   FIRST_LETTER_TO_FULL_WORD_HASH.each do |key, _|
     if abbrev == key
@@ -56,6 +63,11 @@ def sleeper
   sleep(1)
   prompt("|")
   sleep(1)
+end
+
+def clear_scores(score_tab, player_a, player_b)
+  score_tab[player_a] = 0
+  score_tab[player_b] = 0
 end
 
 def valid_input?(str)
@@ -79,6 +91,20 @@ end
 
 def display_welcome_message
   prompt("#{WELCOME}")
+end
+
+def player_chooses(score_counter, round_counter)
+  prompt("Your score:     #{score_counter[:player_score]}")
+  prompt("Computer score: #{score_counter[:computer_score]}")
+  prompt("")
+  prompt("ROUND:  #{round_counter}")
+  prompt("Choose one: (r)ock, (p)aper, (s)cissors,         
+  (l)izard, (sp)ock")
+  gets().chomp().downcase().strip()
+end
+
+def computer_chooses
+  VALID_CHOICES.sample()
 end
 
 def start?
@@ -154,30 +180,18 @@ prompt("")
 start?()
 
 loop do
-  scores = {
-    player_score: 4,
-    computer_score: 4
-  }
-  round = 1             
-
   loop do
     choice = ''
     loop do
-      prompt("Your score:     #{scores[:player_score]}")
-      prompt("Computer score: #{scores[:computer_score]}")
-      prompt("")
-      prompt("ROUND:  #{round}")
-      prompt("   Choose one: (r)ock, (p)aper, (s)cissors,         
-      (l)izard, (sp)ock")
-
-      choice = gets().chomp().downcase().strip()
+      choice = player_chooses(scores, round)
       break if valid_input?(choice)
     end
 
     if FIRST_LETTER_TO_FULL_WORD_HASH.key?(choice)
       choice = FIRST_LETTER_TO_FULL_WORD_HASH[choice]
     end
-    computer_choice = VALID_CHOICES.sample()
+
+    computer_choice = computer_chooses()
 
     prompt("You chose: #{choice}; Computer chose: #{computer_choice}")
     display_results(choice, computer_choice)
@@ -206,6 +220,8 @@ loop do
   display_final_result(scores[:player_score], scores[:computer_score])
   another_game?() ? sleeper : break
   clear_console()
+  clear_scores(scores, [:player_score],
+    [:computer_score])
   next
 end
 
