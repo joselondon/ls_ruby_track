@@ -154,15 +154,17 @@ prompt("")
 start?()
 
 loop do
-  player_score = 4      # for speed during refactoring and testing
-  computer_score = 4    # player scores are set initial value
-  round = 1             # of 4
+  scores = {
+    player_score: 4,
+    computer_score: 4
+  }
+  round = 1             
 
   loop do
     choice = ''
     loop do
-      prompt("Your score:     #{player_score}")
-      prompt("Computer score: #{computer_score}")
+      prompt("Your score:     #{scores[:player_score]}")
+      prompt("Computer score: #{scores[:computer_score]}")
       prompt("")
       prompt("ROUND:  #{round}")
       prompt("   Choose one: (r)ock, (p)aper, (s)cissors,         
@@ -181,33 +183,30 @@ loop do
     display_results(choice, computer_choice)
 
     if choice == computer_choice
-      player_score += 0
+      scores[:player_score] += 0
     elsif WINNING_MOVES[choice].include?(computer_choice)
-      player_score += 1
+      scores[:player_score] += 1
     else
-      computer_score += 1
+      scores[:computer_score] += 1
     end
 
     prompt("AT ROUND:  #{round}")
     prompt("-------------------")
-    prompt("Your score is: #{player_score}")
-    prompt("Computer score is: #{computer_score}")
+    prompt("Your score is: #{scores[:player_score]}")
+    prompt("Computer score is: #{scores[:computer_score]}")
     prompt("-------------------")
-    break if (player_score == WINING_GAME_SCORE) ||
-             (computer_score == WINING_GAME_SCORE)
+    break if (scores[:player_score] == WINING_GAME_SCORE) ||
+             (scores[:computer_score] == WINING_GAME_SCORE)
     prompt("Enter any key for next round")
     clear_console if gets()
 
     round += 1
   end
 
-  display_final_result(player_score, computer_score)
-  another_game?() ? next : break
-
-#  prompt('Do you want to play again?')
-#  answer = Kernel.gets().downcase().chomp()
-#  break unless answer.start_with?('y')
-#  clear_console
+  display_final_result(scores[:player_score], scores[:computer_score])
+  another_game?() ? sleeper : break
+  clear_console()
+  next
 end
 
 prompt("Thank you for playing.  Goodbye!")
