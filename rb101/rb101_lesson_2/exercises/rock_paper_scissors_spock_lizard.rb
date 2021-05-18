@@ -156,6 +156,17 @@ def another_game_input_validator
   VALID_YES.include?(input) ? true : false
 end
 
+def update_scores(round_counter, score_counter,
+                  player_a, player_b)
+  prompt("AT ROUND:  #{round_counter}")
+  prompt("-------------------")
+  prompt("Your score is: #{score_counter[player_a]}")
+  prompt("Computer score is: #{score_counter[player_b]}")
+  prompt("-------------------")
+  break if (score_counter[player_a] == WINING_GAME_SCORE) ||
+           (score_counter[player_b] == WINING_GAME_SCORE)
+end
+
 def another_game?
   quit = another_game_input_validator()
   return quit
@@ -204,13 +215,14 @@ loop do
       scores[:computer_score] += 1
     end
 
-    prompt("AT ROUND:  #{round}")
-    prompt("-------------------")
-    prompt("Your score is: #{scores[:player_score]}")
-    prompt("Computer score is: #{scores[:computer_score]}")
-    prompt("-------------------")
-    break if (scores[:player_score] == WINING_GAME_SCORE) ||
-             (scores[:computer_score] == WINING_GAME_SCORE)
+    update_scores(round, scores)
+    #prompt("AT ROUND:  #{round}")
+    #prompt("-------------------")
+    #prompt("Your score is: #{scores[:player_score]}")
+    #prompt("Computer score is: #{scores[:computer_score]}")
+    #prompt("-------------------")
+    #break if (scores[:player_score] == WINING_GAME_SCORE) ||
+    #         (scores[:computer_score] == WINING_GAME_SCORE)
     prompt("Enter any key for next round")
     clear_console if gets()
 
