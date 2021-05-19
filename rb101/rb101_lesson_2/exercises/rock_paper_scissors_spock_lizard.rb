@@ -162,9 +162,12 @@ def update_scores(round_counter, score_counter,
   prompt("-------------------")
   prompt("Your score is: #{score_counter[player_a]}")
   prompt("Computer score is: #{score_counter[player_b]}")
-  prompt("-------------------")
-  break if (score_counter[player_a] == WINING_GAME_SCORE) ||
-           (score_counter[player_b] == WINING_GAME_SCORE)
+  prompt("-------------------") 
+end
+
+def game_over(score_counter, player_a, player_b)
+  (score_counter[player_a] == WINING_GAME_SCORE) ||
+  (score_counter[player_b] == WINING_GAME_SCORE)
 end
 
 def another_game?
@@ -215,13 +218,14 @@ loop do
       scores[:computer_score] += 1
     end
 
-    update_scores(round, scores)
+    update_scores(round, scores, :player_score, :computer_score)
     #prompt("AT ROUND:  #{round}")
     #prompt("-------------------")
     #prompt("Your score is: #{scores[:player_score]}")
     #prompt("Computer score is: #{scores[:computer_score]}")
     #prompt("-------------------")
-    #break if (scores[:player_score] == WINING_GAME_SCORE) ||
+    break if game_over(scores, :player_score, :computer_score)
+    #(scores[:player_score] == WINING_GAME_SCORE) ||
     #         (scores[:computer_score] == WINING_GAME_SCORE)
     prompt("Enter any key for next round")
     clear_console if gets()
