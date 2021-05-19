@@ -219,14 +219,7 @@ loop do
     end
 
     update_scores(round, scores, :player_score, :computer_score)
-    #prompt("AT ROUND:  #{round}")
-    #prompt("-------------------")
-    #prompt("Your score is: #{scores[:player_score]}")
-    #prompt("Computer score is: #{scores[:computer_score]}")
-    #prompt("-------------------")
     break if game_over(scores, :player_score, :computer_score)
-    #(scores[:player_score] == WINING_GAME_SCORE) ||
-    #         (scores[:computer_score] == WINING_GAME_SCORE)
     prompt("Enter any key for next round")
     clear_console if gets()
 
