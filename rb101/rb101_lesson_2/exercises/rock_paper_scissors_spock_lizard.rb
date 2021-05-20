@@ -55,6 +55,15 @@ def convert_abbr_to_hash_val(abbrev)
   end
 end
 
+def check_and_convert_if_abbrev(abbrev)
+
+  if FIRST_LETTER_TO_FULL_WORD_HASH.key?(abbrev)
+   abbrev = FIRST_LETTER_TO_FULL_WORD_HASH[abbrev]
+  else
+    abbrev
+  end
+end
+
 def sleeper
   sleep(1)
   prompt("|")
@@ -201,10 +210,7 @@ loop do
       break if valid_input?(choice)
     end
 
-    if FIRST_LETTER_TO_FULL_WORD_HASH.key?(choice)
-      choice = FIRST_LETTER_TO_FULL_WORD_HASH[choice]
-    end
-
+    choice = check_and_convert_if_abbrev(choice)
     computer_choice = computer_chooses()
 
     prompt("You chose: #{choice}; Computer chose: #{computer_choice}")
