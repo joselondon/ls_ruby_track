@@ -79,6 +79,13 @@ def clear_scores(score_tab, player_a, player_b)
   score_tab[player_b] = 0
 end
 
+def confirm_valid_choice(input, score_counter, round_counter)
+  loop do
+  input = player_chooses(score_counter, round_counter)
+  break if valid_input?(input)
+  end
+end
+
 def valid_input?(str)
   if VALID_CHOICES.include?(str.to_s)
     true
@@ -205,10 +212,7 @@ start?()
 loop do
   loop do
     choice = ''
-    loop do
-      choice = player_chooses(scores, round)
-      break if valid_input?(choice)
-    end
+    confirm_valid_choice(choice, scores, round)
 
     choice = check_and_convert_if_abbrev(choice)
     computer_choice = computer_chooses()
