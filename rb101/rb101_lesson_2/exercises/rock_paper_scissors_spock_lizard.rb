@@ -56,9 +56,8 @@ def convert_abbr_to_hash_val(abbrev)
 end
 
 def check_and_convert_if_abbrev(abbrev)
-
   if FIRST_LETTER_TO_FULL_WORD_HASH.key?(abbrev)
-   abbrev = FIRST_LETTER_TO_FULL_WORD_HASH[abbrev]
+    abbrev = FIRST_LETTER_TO_FULL_WORD_HASH[abbrev]
   else
     abbrev
   end
@@ -79,11 +78,14 @@ def clear_scores(score_tab, player_a, player_b)
   score_tab[player_b] = 0
 end
 
-def confirm_valid_choice(input, score_counter, round_counter)
+def player_chooses_and_validate_choice(input,
+                                       score_counter,
+                                       round_counter)
   loop do
   input = player_chooses(score_counter, round_counter)
   break if valid_input?(input)
   end
+  input
 end
 
 def valid_input?(str)
@@ -140,6 +142,10 @@ end
 
 def player_final_winner?(player, computer)
   player > computer
+end
+
+def display_choices(player, computer)
+  prompt("You chose: #{player}; Computer chose: #{computer}")
 end
 
 def display_final_result(player, computer)
@@ -204,29 +210,33 @@ def display_another_game_validation_error
   prompt("Invalid entry.  Please try again")
 end
 
+def assign_score(player, computer, score_counter)
+  if player == computer
+    score_counter[:player_score] += 0
+  elsif WINNING_MOVES[player].include?(computer)
+    score_counter[:player_score] += 1
+  else
+    score_counter[:computer_score] += 1
+  end
+end
+
 clear_console()
 display_welcome_message()
 prompt("")
 start?()
 
 loop do
+  choice = ''
   loop do
-    choice = ''
-    confirm_valid_choice(choice, scores, round)
-
+    choice = player_chooses_and_validate_choice(choice,
+                                                scores,
+                                                round)
     choice = check_and_convert_if_abbrev(choice)
     computer_choice = computer_chooses()
 
-    prompt("You chose: #{choice}; Computer chose: #{computer_choice}")
+    display_choices(choice, computer_choice)
     display_results(choice, computer_choice)
-
-    if choice == computer_choice
-      scores[:player_score] += 0
-    elsif WINNING_MOVES[choice].include?(computer_choice)
-      scores[:player_score] += 1
-    else
-      scores[:computer_score] += 1
-    end
+    assign_score(choice, computer_choice, scores)
 
     update_scores(round, scores, :player_score, :computer_score)
     break if game_over(scores, :player_score, :computer_score)
