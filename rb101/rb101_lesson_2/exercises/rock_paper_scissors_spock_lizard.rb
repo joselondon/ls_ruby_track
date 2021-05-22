@@ -46,15 +46,6 @@ scores = {
 
 round = 1
 
-def convert_abbr_to_hash_val(abbrev)
-  FIRST_LETTER_TO_FULL_WORD_HASH.each do |key, _|
-    if abbrev == key
-      abbrev = FIRST_LETTER_TO_FULL_WORD_HASH[abbrev]
-      return abbrev
-    end
-  end
-end
-
 def check_and_convert_if_abbrev(abbrev)
   if FIRST_LETTER_TO_FULL_WORD_HASH.key?(abbrev)
     abbrev = FIRST_LETTER_TO_FULL_WORD_HASH[abbrev]
@@ -97,25 +88,21 @@ def win?(player_choice)
   WINNING_MOVES[player_choice]
 end
 
-def player_chooses_and_validate_choice(input,
-                                       score_counter,
-                                       round_counter)
-  loop do
-  input = player_chooses(score_counter, round_counter)
-  break if valid_input?(input)
-  end
-  input
-end
-
 def display_welcome_message
   prompt("#{WELCOME}")
 end
 
-def player_chooses(score_counter, round_counter)
-  prompt("Your score:     #{score_counter[:player_score]}")
-  prompt("Computer score: #{score_counter[:computer_score]}")
+def display_current_round_and_scores(round_counter,
+                                     score_counter,
+                                     player_a,
+                                     player_b)
+  prompt("Your score:     #{score_counter[player_a]}")
+  prompt("Computer score: #{score_counter[player_b]}")
   prompt("")
   prompt("ROUND:  #{round_counter}")
+end
+
+def get_player_choice
   prompt("Choose one: (r)ock, (p)aper, (s)cissors,         
   (l)izard, (sp)ock")
   gets().chomp().downcase().strip()
@@ -241,10 +228,15 @@ start?()
 loop do
   choice = ''
   loop do
-    choice = player_chooses_and_validate_choice(choice,
-                                                scores,
-                                                round)
-    choice = check_and_convert_if_abbrev(choice)
+    display_current_round_and_scores(round, scores,
+                                     :player_score,
+                                     :computer_score)
+    loop do
+      choice = get_player_choice()
+      choice = check_and_convert_if_abbrev(choice)
+      break if valid_input?(choice)
+    end
+
     computer_choice = computer_chooses()
 
     display_choices(choice, computer_choice)
