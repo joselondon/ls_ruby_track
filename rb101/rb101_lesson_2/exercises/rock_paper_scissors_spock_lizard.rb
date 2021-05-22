@@ -78,16 +78,6 @@ def clear_scores(score_tab, player_a, player_b)
   score_tab[player_b] = 0
 end
 
-def player_chooses_and_validate_choice(input,
-                                       score_counter,
-                                       round_counter)
-  loop do
-  input = player_chooses(score_counter, round_counter)
-  break if valid_input?(input)
-  end
-  input
-end
-
 def valid_input?(str)
   if VALID_CHOICES.include?(str.to_s)
     true
@@ -105,6 +95,16 @@ end
 
 def win?(player_choice)
   WINNING_MOVES[player_choice]
+end
+
+def player_chooses_and_validate_choice(input,
+                                       score_counter,
+                                       round_counter)
+  loop do
+  input = player_chooses(score_counter, round_counter)
+  break if valid_input?(input)
+  end
+  input
 end
 
 def display_welcome_message
@@ -220,6 +220,19 @@ def assign_score(player, computer, score_counter)
   end
 end
 
+def prompt_for_next_round
+  prompt("Enter any key for next round")
+  clear_console if gets()
+end 
+
+def increment_round_by_one(round_counter)
+  round_counter += 1
+end
+
+def goodbye
+  prompt("Thank you for playing.  Goodbye!")
+end
+
 clear_console()
 display_welcome_message()
 prompt("")
@@ -240,18 +253,18 @@ loop do
 
     update_scores(round, scores, :player_score, :computer_score)
     break if game_over(scores, :player_score, :computer_score)
-    prompt("Enter any key for next round")
-    clear_console if gets()
-
-    round += 1
+    prompt_for_next_round()
+    increment_round_by_one(round)
   end
 
   display_final_result(scores[:player_score], scores[:computer_score])
   another_game?() ? sleeper : break
   clear_console()
   clear_scores(scores, :player_score,
-    :computer_score)
+               :computer_score)
   next
 end
 
-prompt("Thank you for playing.  Goodbye!")
+goodbye()
+
+
