@@ -6,10 +6,10 @@ VALID_NO = ['n', 'no']
 WINING_GAME_SCORE = 5
 WELCOME = "***Welcome to Rock, Paper, Scissors, Spock, Lizard***
 ------------------------------------------------------------
-To play:  
-When prompted, enter one of the following choices: 
-#{VALID_CHOICES.join(' , ')} , and hit return.   
-The compluter's choice will be displayed along with the 
+To play:
+When prompted, enter one of the following choices:
+#{VALID_CHOICES.join(' , ')} , and hit return.
+The compluter's choice will be displayed along with the
 winner or a tied result. The first player to reach a score
 of #{WINING_GAME_SCORE} wins!
 
@@ -29,7 +29,7 @@ WINNING_MOVES = {
   'scissors' => ['paper', 'lizard'],
   'lizard' => ['spock', 'paper'],
   'spock' => ['scissors', 'rock']
- }
+}
 
 FIRST_LETTER_TO_FULL_WORD_HASH = {
   'r' => 'rock',
@@ -48,7 +48,7 @@ round = 1
 
 def check_and_convert_if_abbrev(abbrev)
   if FIRST_LETTER_TO_FULL_WORD_HASH.key?(abbrev)
-    abbrev = FIRST_LETTER_TO_FULL_WORD_HASH[abbrev]
+    FIRST_LETTER_TO_FULL_WORD_HASH[abbrev]
   else
     abbrev
   end
@@ -102,7 +102,7 @@ def another_game_input_validator
   display_again_message()
   loop do
     input = gets().chomp().downcase().strip()
-    if valid_quit_options(input) 
+    if valid_quit_options(input)
       break
     else
       display_another_game_validation_error()
@@ -116,12 +116,12 @@ def win?(player_choice)
 end
 
 def increment_round_by_one(round_counter)
-  round_counter += 1
+  round_counter + 1
 end
 
 def another_game?
   quit = another_game_input_validator()
-  return quit
+  quit
 end
 
 def player_final_winner?(player, computer)
@@ -149,11 +149,11 @@ end
 
 def game_over(score_counter, player_a, player_b)
   (score_counter[player_a] == WINING_GAME_SCORE) ||
-  (score_counter[player_b] == WINING_GAME_SCORE)
+    (score_counter[player_b] == WINING_GAME_SCORE)
 end
 
 def display_welcome_message
-  prompt("#{WELCOME}")
+  prompt(WELCOME.to_s)
 end
 
 def display_current_round_and_scores(round_counter,
@@ -167,12 +167,12 @@ def display_current_round_and_scores(round_counter,
 end
 
 def update_scores(round_counter, score_counter,
-  player_a, player_b)
-prompt("AT ROUND:  #{round_counter}")
-prompt("-------------------")
-prompt("Your score is: #{score_counter[player_a]}")
-prompt("Computer score is: #{score_counter[player_b]}")
-prompt("-------------------") 
+                  player_a, player_b)
+  prompt("AT ROUND:  #{round_counter}")
+  prompt("-------------------")
+  prompt("Your score is: #{score_counter[player_a]}")
+  prompt("Computer score is: #{score_counter[player_b]}")
+  prompt("-------------------")
 end
 
 def display_results(player, computer)
@@ -215,7 +215,7 @@ def prompt_for_next_round
 end
 
 def get_player_choice
-  prompt("Choose one: (r)ock, (p)aper, (s)cissors,         
+  prompt("Choose one: (r)ock, (p)aper, (s)cissors,
   (l)izard, (sp)ock")
   gets().chomp().downcase().strip()
 end
@@ -258,5 +258,3 @@ loop do
 end
 
 display_goodbye()
-
-
