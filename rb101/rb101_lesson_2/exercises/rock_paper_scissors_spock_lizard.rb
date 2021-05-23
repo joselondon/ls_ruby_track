@@ -1,4 +1,3 @@
-require 'pry'
 VALID_CHOICES = ['rock', 'paper', 'scissors', 'spock', 'lizard']
 VALID_CHOICES_ABBR = ['r', 'p', 's', 'l']
 VALID_YES = ['y', 'yes']
