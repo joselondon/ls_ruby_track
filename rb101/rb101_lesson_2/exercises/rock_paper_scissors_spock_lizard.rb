@@ -69,6 +69,11 @@ def clear_scores(score_tab, player_a, player_b)
   score_tab[player_b] = 0
 end
 
+def clear_console
+  system('clear')
+  system('cls')
+end
+
 def valid_input?(str)
   if VALID_CHOICES.include?(str.to_s)
     true
@@ -81,65 +86,6 @@ def valid_input?(str)
     prompt("That's not a valid choice.")
     sleeper()
     clear_console
-  end
-end
-
-def win?(player_choice)
-  WINNING_MOVES[player_choice]
-end
-
-def display_welcome_message
-  prompt("#{WELCOME}")
-end
-
-def display_current_round_and_scores(round_counter,
-                                     score_counter,
-                                     player_a,
-                                     player_b)
-  prompt("Your score:     #{score_counter[player_a]}")
-  prompt("Computer score: #{score_counter[player_b]}")
-  prompt("")
-  prompt("ROUND:  #{round_counter}")
-end
-
-def get_player_choice
-  prompt("Choose one: (r)ock, (p)aper, (s)cissors,         
-  (l)izard, (sp)ock")
-  gets().chomp().downcase().strip()
-end
-
-def computer_chooses
-  VALID_CHOICES.sample()
-end
-
-def start?
-  prompt("HIT ANY KEY TO START")
-  clear_console if gets()
-end
-
-def display_results(player, computer)
-  if player == computer
-    puts "its a tie"
-  elsif WINNING_MOVES[player].include?(computer)
-    puts "you win"
-  else
-    puts "you lose"
-  end
-end
-
-def player_final_winner?(player, computer)
-  player > computer
-end
-
-def display_choices(player, computer)
-  prompt("You chose: #{player}; Computer chose: #{computer}")
-end
-
-def display_final_result(player, computer)
-  if player > computer
-    puts "Congratulations, you win the set!"
-  else
-    puts "Commiserations, computer won the set!"
   end
 end
 
@@ -165,18 +111,12 @@ def another_game_input_validator
   VALID_YES.include?(input) ? true : false
 end
 
-def update_scores(round_counter, score_counter,
-                  player_a, player_b)
-  prompt("AT ROUND:  #{round_counter}")
-  prompt("-------------------")
-  prompt("Your score is: #{score_counter[player_a]}")
-  prompt("Computer score is: #{score_counter[player_b]}")
-  prompt("-------------------") 
+def win?(player_choice)
+  WINNING_MOVES[player_choice]
 end
 
-def game_over(score_counter, player_a, player_b)
-  (score_counter[player_a] == WINING_GAME_SCORE) ||
-  (score_counter[player_b] == WINING_GAME_SCORE)
+def increment_round_by_one(round_counter)
+  round_counter += 1
 end
 
 def another_game?
@@ -184,17 +124,17 @@ def another_game?
   return quit
 end
 
-def clear_console
-  system('clear')
-  system('cls')
+def player_final_winner?(player, computer)
+  player > computer
 end
 
-def display_again_message
-  prompt("Hit (y)es to play again or (n)o to quit")
+def computer_chooses
+  VALID_CHOICES.sample()
 end
 
-def display_another_game_validation_error
-  prompt("Invalid entry.  Please try again")
+def start?
+  prompt("HIT ANY KEY TO START")
+  clear_console if gets()
 end
 
 def assign_score(player, computer, score_counter)
@@ -207,17 +147,77 @@ def assign_score(player, computer, score_counter)
   end
 end
 
+def game_over(score_counter, player_a, player_b)
+  (score_counter[player_a] == WINING_GAME_SCORE) ||
+  (score_counter[player_b] == WINING_GAME_SCORE)
+end
+
+def display_welcome_message
+  prompt("#{WELCOME}")
+end
+
+def display_current_round_and_scores(round_counter,
+                                     score_counter,
+                                     player_a,
+                                     player_b)
+  prompt("Your score:     #{score_counter[player_a]}")
+  prompt("Computer score: #{score_counter[player_b]}")
+  prompt("")
+  prompt("ROUND:  #{round_counter}")
+end
+
+def update_scores(round_counter, score_counter,
+  player_a, player_b)
+prompt("AT ROUND:  #{round_counter}")
+prompt("-------------------")
+prompt("Your score is: #{score_counter[player_a]}")
+prompt("Computer score is: #{score_counter[player_b]}")
+prompt("-------------------") 
+end
+
+def display_results(player, computer)
+  if player == computer
+    puts "its a tie"
+  elsif WINNING_MOVES[player].include?(computer)
+    puts "you win"
+  else
+    puts "you lose"
+  end
+end
+
+def display_final_result(player, computer)
+  if player > computer
+    puts "Congratulations, you win the set!"
+  else
+    puts "Commiserations, computer won the set!"
+  end
+end
+
+def display_choices(player, computer)
+  prompt("You chose: #{player}; Computer chose: #{computer}")
+end
+
+def display_another_game_validation_error
+  prompt("Invalid entry.  Please try again")
+end
+
+def display_again_message
+  prompt("Hit (y)es to play again or (n)o to quit")
+end
+
+def display_goodbye
+  prompt("Thank you for playing.  Goodbye!")
+end
+
 def prompt_for_next_round
   prompt("Enter any key for next round")
   clear_console if gets()
-end 
-
-def increment_round_by_one(round_counter)
-  round_counter += 1
 end
 
-def goodbye
-  prompt("Thank you for playing.  Goodbye!")
+def get_player_choice
+  prompt("Choose one: (r)ock, (p)aper, (s)cissors,         
+  (l)izard, (sp)ock")
+  gets().chomp().downcase().strip()
 end
 
 clear_console()
@@ -228,10 +228,10 @@ start?()
 loop do
   choice = ''
   loop do
-    display_current_round_and_scores(round, scores,
-                                     :player_score,
-                                     :computer_score)
     loop do
+      display_current_round_and_scores(round, scores,
+                                       :player_score,
+                                       :computer_score)
       choice = get_player_choice()
       choice = check_and_convert_if_abbrev(choice)
       break if valid_input?(choice)
@@ -257,6 +257,6 @@ loop do
   next
 end
 
-goodbye()
+display_goodbye()
 
 
