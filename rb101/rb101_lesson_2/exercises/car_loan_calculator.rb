@@ -1,5 +1,4 @@
 require 'yaml'
-require 'pry'
 MESSAGES = YAML.load_file('car_loan_calculator_messages.yml')
 LANGUAGE = 'en'
 REGEX_STRING_REAL_NUMS_GREATER_THAN_ZERO = /\A[1-9]\d*$\Z/
