@@ -80,3 +80,7 @@ advice.slice(0..38) # will still return "Few things in life are as important as 
 statement = "The Flintstones Rock!"
 statement.count('t')
 #-----------------------------------------------------------------------------------
+
+# q10
+title = "Flintstone Family Members"
+title.center(40)
