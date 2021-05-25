@@ -1,5 +1,3 @@
-VALID_CHOICES = ['rock', 'paper', 'scissors', 'spock', 'lizard']
-VALID_CHOICES_ABBR = ['r', 'p', 's', 'l']
 VALID_YES = ['y', 'yes']
 VALID_NO = ['n', 'no']
 WINING_GAME_SCORE = 5
@@ -7,7 +5,7 @@ WELCOME = "***Welcome to Rock, Paper, Scissors, Spock, Lizard***
 ------------------------------------------------------------
 To play:
 When prompted, enter one of the following choices:
-#{VALID_CHOICES.join(' , ')} , and hit return.
+Rock, Paper, Scissors, Spock, Lizard, and hit return.
 The compluter's choice will be displayed along with the
 winner or a tied result. The first player to reach a score
 of #{WINING_GAME_SCORE} wins!
@@ -74,12 +72,12 @@ def clear_console
 end
 
 def valid_input?(str)
-  if VALID_CHOICES.include?(str.to_s)
+  if WINNING_MOVES.keys.include?(str.to_s)
     true
   elsif str == 'sp'
     convert_abbr_to_hash_val(str)
     true
-  elsif VALID_CHOICES_ABBR.include?(str.to_s)
+  elsif FIRST_LETTER_TO_FULL_WORD_HASH.keys.include?(str.to_s)
     true
   else
     prompt("That's not a valid choice.")
@@ -128,7 +126,7 @@ def player_final_winner?(player, computer)
 end
 
 def computer_chooses
-  VALID_CHOICES.sample()
+  WINNING_MOVES.keys.sample()
 end
 
 def start?
