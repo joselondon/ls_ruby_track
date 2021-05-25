@@ -1,3 +1,5 @@
+
+
 VALID_YES = ['y', 'yes']
 VALID_NO = ['n', 'no']
 WINING_GAME_SCORE = 5
@@ -212,9 +214,15 @@ def prompt_for_next_round
 end
 
 def get_player_choice
-  prompt("Choose one: (r)ock, (p)aper, (s)cissors,
-  (l)izard, (sp)ock")
-  gets().chomp().downcase().strip()
+  choice = ''
+  loop do
+    prompt("Choose one: (r)ock, (p)aper, (s)cissors,
+    (l)izard, (sp)ock")
+    choice = gets().chomp().downcase().strip()
+    choice = check_and_convert_if_abbrev(choice)
+    break if valid_input?(choice)
+  end
+  choice
 end
 
 clear_console()
@@ -223,22 +231,20 @@ prompt("")
 start?()
 
 loop do
-  choice = ''
+  player_choice = ''
   loop do
-    loop do
       display_current_round_and_scores(round, scores,
                                        :player_score,
                                        :computer_score)
-      choice = get_player_choice()
-      choice = check_and_convert_if_abbrev(choice)
-      break if valid_input?(choice)
-    end
-
+      #choice = get_player_choice()
+      #choice = check_and_convert_if_abbrev(choice)
+      #break if valid_input?(choice)
+    player_choice = get_player_choice()
     computer_choice = computer_chooses()
 
-    display_choices(choice, computer_choice)
-    display_results(choice, computer_choice)
-    assign_score(choice, computer_choice, scores)
+    display_choices(player_choice, computer_choice)
+    display_results(player_choice, computer_choice)
+    assign_score(player_choice, computer_choice, scores)
 
     update_scores(round, scores, :player_score, :computer_score)
     break if game_over(scores, :player_score, :computer_score)
