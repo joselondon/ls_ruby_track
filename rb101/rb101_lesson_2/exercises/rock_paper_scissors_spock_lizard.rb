@@ -1,5 +1,3 @@
-
-
 VALID_YES = ['y', 'yes']
 VALID_NO = ['n', 'no']
 WINING_GAME_SCORE = 5
@@ -233,12 +231,9 @@ start?()
 loop do
   player_choice = ''
   loop do
-      display_current_round_and_scores(round, scores,
-                                       :player_score,
-                                       :computer_score)
-      #choice = get_player_choice()
-      #choice = check_and_convert_if_abbrev(choice)
-      #break if valid_input?(choice)
+    display_current_round_and_scores(round, scores,
+                                     :player_score,
+                                     :computer_score)
     player_choice = get_player_choice()
     computer_choice = computer_chooses()
 
