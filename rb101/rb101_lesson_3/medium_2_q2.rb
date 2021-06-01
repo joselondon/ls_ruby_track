@@ -100,3 +100,6 @@ out of method and back into fun_with_ids()
 "c_outer is #{[42]} with an id of: #{77777} BEFORE and: #{77777} AFTER the method call."
 "d_outer is #{42} with an id of: #{85} BEFORE and: #{85} AFTER the method call."
 # none of variables were mutated by activity within the an_illustrative_method() 
+
+"ugh ohhhh" as a_inner etc variables are not available outside the an_illustrative_method()
+

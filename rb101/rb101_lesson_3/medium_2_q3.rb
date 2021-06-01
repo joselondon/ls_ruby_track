@@ -21,7 +21,7 @@ puts "My array looks like this now: #{my_array}"
 # "pumpkins".  Re-asssignement does not mutate the original String.  It points to a new object
 
 # Array#<< does mutate the original object.  Adding a new element to the existing Array object. therefore the inner and outer 
-# scope variables still point to the original object.
+# scope variables still point to the original object.  The original object id is reused
 
 
 

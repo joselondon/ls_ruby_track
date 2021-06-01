@@ -44,7 +44,7 @@ def fun_with_ids
     b_inner = b_outer # "thirty three" id 223
     c_inner = c_outer # [44] id 500
     d_inner = c_inner[0] # 44 id 20
-binding.pry
+
     a_inner_id = a_inner.object_id
     b_inner_id = b_inner.object_id
     c_inner_id = c_inner.object_id
