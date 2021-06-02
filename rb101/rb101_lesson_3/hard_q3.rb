@@ -1,8 +1,8 @@
 # A)
 def mess_with_vars(one, two, three)
-  one = two
-  two = three
-  three = one
+  one = two     # "two"
+  two = three   # "three"
+  three = one   # "one"
 end
 
 one = "one"
@@ -11,9 +11,9 @@ three = "three"
 
 mess_with_vars(one, two, three)
 
-puts "one is: #{one}"
-puts "two is: #{two}"
-puts "three is: #{three}"
+puts "one is: #{one}"     # "one"
+puts "two is: #{two}"     #"two"
+puts "three is: #{three}" #"three"
 
 
 
@@ -35,9 +35,9 @@ three = "three"
 
 mess_with_vars(one, two, three)
 
-puts "one is: #{one}"
-puts "two is: #{two}"
-puts "three is: #{three}"
+puts "one is: #{one}"     # "one"
+puts "two is: #{two}"     # "two"
+puts "three is: #{three}" # "three"
 
 
 
