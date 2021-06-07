@@ -69,8 +69,42 @@ end
 # needs to iterate over the letters 'h', 'a', and 'l' we can skip 'o' as there are no 
 # substrings with at least 2 characters that start with 'o'.
 
+# Within the first loop we need to iterate over the substrings at the given starting index
+# It's easiest to start with th esubstring of length 2, then the substring of length 3 and
+# so on.   
+# ===========================================================================================
+# Resulting Algorithm loop
+# for each starting index from 0 through to the next to last position
+#   for each substring length from 2 until there are no substrings of that length
+#     extract the substring of the indicated length starting at the indicated index position
+#   end of inner loop
+# end of outer loop
 
+# ============================================================================================
+# We can determine that the outer loop iterates over the indexes from 0 to the length of the 
+# next to the last index position (e.g., string.length - 2). We can also see that the inner 
+# loop ranges from 2 to the original string length minus the  starting index
+# (string.length - startingIndex).   We can now write te full algorithm: -
+# ============================================================================================
 
+# FULL ALGORITHM
+
+# - create an empty array called 'result' that willcontain all required substrings
+# - create a 'starting_index' variable (value '0') for the starting index of a substring
+# - start a loop tha iterates over 'starting_index' from '0' to th elength of the string minus 2
+#   - create a 'num_chars' variable (value '2')  for the length of a substring
+#   - start an inner loop that iterates over 'num_chars' from '2' to 'string.length -starting_index'
+#     - extract asubstring of length 'num_chars' from 'string' starting at 'starting_index'
+#     - append the extracted substring to the 'result' array
+#     - increment the 'num_chars' variable by '1'
+#   - end the inner loop
+#   - increment the 'starting_index' variable by '1'
+# - end the outer loop
+# - return the 'result' array
+
+# ============================================================================================
+# Optional step could be to turn this into psuedocode: 
+# ============================================================================================
 
 
 
