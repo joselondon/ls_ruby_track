@@ -25,6 +25,11 @@ Given a string, produce a new string with every other word removed.
     - Words are delimited by spaces
 
 ##  E:  Examples and Test Cases
+
+- Can confirm/ refute assumptions
+- Help to answer questions about implicit requirements
+- Act as assertions which help to codify the rules and boundaries
+
 ##  D:  Data Structures
 ##  A:  Algorithms
 ##  C:  Code a solution
@@ -46,6 +51,15 @@ Imagine a sequence of consecutive even integers begining with 2.  The integers a
 - Inputs: a single integer
   - Identifies a 'row', which is a subset of a sequence of integers
 - Output: a single integer
-  - The sum of the integers in the row indentified by the input integer
-  
+  - The sum of the integers in the row indentified by the input integer<br><br>
 
+ -  Sequence:
+ 2, 4, 6, 8, 10, 12, 16, 18, 20 ...
+
+ 2
+ 4, 6
+ 8, 10, 12
+ 14, 16, 18, 20
+ ....
+
+- How do we create the structure?
