@@ -119,12 +119,38 @@ Testing our asumptions of the row structures (above) we see that this works:-
 
  **Algorithm**
 
-1.  Create anempty 'rows' array to contain all of the rows
+1.  Create an empty 'rows' array to contain all of the rows
 2.  Create a 'row' array and add it to the overall 'rows' array
 3.  Repeat step 2 until all the neccessary rows have been created
+  - all rows have been created when the length of th e 'rows' array is equal to the input integer
 4.  Sum the final row
 5.  Return the sum
 
 *Problem: Create a Row*
 
+Rules:
+- Row is an array
+- Arrays contain integers
+- Integers are consecutuve even numbers
+- Integers in each row form part of an overall larger sequence
+- Rows are of different lengths
+- Input:  the information needed to create the output
+  - The starting integer
+  - Length of the row
+- Output:  the row intelf: '[8, 10, 12]'
+
+Examples:
+start:  2, length: 1 --> [2]
+start:  4, length: 2 --> [4, 6]
+start:  8, length: 3 --> [8, 10, 12]
+
+Data structures:
+- An array of integers
+
+Algorithm:
+1.  Create an empty 'row' to contain the integers
+2.  Add the starting integer
+3.  Increment the starting integer bby 2 to get the next integer in the sequence
+4.  Repeat steps 2 & 3 until the array has reached the correct length
+5.  Return the 'row' array
 
