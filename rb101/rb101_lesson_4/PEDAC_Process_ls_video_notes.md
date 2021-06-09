@@ -38,10 +38,17 @@ Given a string, produce a new string with every other word removed.
 - Data structures closely linked to algorithm
   - Set of steps from input to output
   - Involves structuring data in a certain way
-
-
+- Stay abstract/ high-level
+  - Avoid implementation detail
+  - Don't worry about efficiency for now
 
 ##  A:  Algorithms
+
+- A logical sequence of steps for accomplishinga task or objective
+  - Closely linked to data structures
+  - Series of steps to structure data to produce the required output
+
+
 ##  C:  Code a solution
 
 -----------------------
@@ -108,5 +115,16 @@ Testing our asumptions of the row structures (above) we see that this works:-
    [14, 16, 18, 20],
    ....
  ]
+
+
+ **Algorithm**
+
+1.  Create anempty 'rows' array to contain all of the rows
+2.  Create a 'row' array and add it to the overall 'rows' array
+3.  Repeat step 2 until all the neccessary rows have been created
+4.  Sum the final row
+5.  Return the sum
+
+*Problem: Create a Row*
 
 
