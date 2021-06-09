@@ -51,6 +51,15 @@ Given a string, produce a new string with every other word removed.
 
 ##  C:  Code a solution
 
+- Translating solution algorithm to code
+- Think about algorithm in context of programming language
+  - Language features and constaints
+  - Characteristics of data structures
+  - Built in functions/ methods
+  - Syntax and coding patterns
+- Create test cases
+- Code with intent
+
 -----------------------
 
 ##  Sum Even Number Rows
