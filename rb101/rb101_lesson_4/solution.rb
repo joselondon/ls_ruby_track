@@ -4,7 +4,12 @@ end
 
 def create_row(start_integer, row_length)
   row = []
-  # steps 2 -4
+  current_integer = start_integer
+  loop do
+    row << current_integer
+    current_integer += 2
+    break if row.length == row_length
+  end
   row
 end
 
@@ -23,8 +28,8 @@ end
 # start:  8, length: 3 --> [8, 10, 12]
 
 p create_row(2, 1) == [2]         # true
-p create_row(2, 1) == [4, 6]      # true
-p create_row(2, 1) == [8, 10, 12] # true
+p create_row(4, 2) == [4, 6]      # true
+p create_row(8, 3) == [8, 10, 12] # true
 
 # Create row algorithm:
 # 1.  Create an empty 'row' to contain the integers
@@ -32,3 +37,8 @@ p create_row(2, 1) == [8, 10, 12] # true
 # 3.  Increment the starting integer bby 2 to get the next integer in the sequence
 # 4.  Repeat steps 2 & 3 until the array has reached the correct length
 # 5.  Return the 'row' array
+
+# Start the loop 
+#   - Add the start integer to the row
+#   - Increment the start integer by 2
+#   - Break out of the loop if length of row equals row_length

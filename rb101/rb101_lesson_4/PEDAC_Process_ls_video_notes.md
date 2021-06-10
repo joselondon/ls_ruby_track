@@ -1,4 +1,4 @@
-## Notestranscript of Launch School Video covering PEDAC
+  ## Notestranscript of Launch School Video covering PEDAC
 
 # The PEDAC Process
 
