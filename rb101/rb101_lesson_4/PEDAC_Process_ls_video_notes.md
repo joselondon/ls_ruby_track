@@ -125,6 +125,14 @@ Testing our asumptions of the row structures (above) we see that this works:-
    ....
  ]
 
+ Calculating the start integer:
+ Rule:  First integer of row == last integer of preceding row + 2
+ Alorithm:
+  - Get the last row of the rows array
+  - Get the last integer of that row
+  - add 2 to the integer
+
+
 
  **Algorithm**
 
@@ -163,3 +171,9 @@ Algorithm:
 4.  Repeat steps 2 & 3 until the array has reached the correct length
 5.  Return the 'row' array
 
+##  Final Thoughts
+
+- PEDAC not a completely linear process
+- Move back and forward through the steps
+- Switch from implementation mode to abstract problem solving mode when neccessary
+- Don't try to problem solve at the code level

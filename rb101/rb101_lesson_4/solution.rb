@@ -1,7 +1,11 @@
 def sum_even_number_row(row_number)
   rows = []
-  # steps 2 & 3
-  rows # TODO: sum the final row and return the sum
+  start_integer = 2
+  (1..row_number).each do |currrent_row_number|
+    rows << create_row(start_integer, currrent_row_number)
+    start_integer = rows.last.last + 2
+  end
+  rows.last.sum
 end
 
 def create_row(start_integer, row_length)
@@ -19,19 +23,18 @@ end
 # row number: 2 --> sum of integers in row: 10
 # row number: 4 --> sum of integers in row: 68
 
-p sum_even_number_row(1) # == 2  # true
-# p sum_even_number_row(2) == 10  # true
-# p sum_even_number_row(4) == 68  # true
-
+p sum_even_number_row(1)  == 2  # true
+p sum_even_number_row(2)  == 10  # true
+p sum_even_number_row(4)  == 68  # true
 
 
 # start:  2, length: 1 --> [2]
 # start:  4, length: 2 --> [4, 6]
 # start:  8, length: 3 --> [8, 10, 12]
 
-# p create_row(2, 1) == [2]         # true
-# p create_row(4, 2) == [4, 6]      # true
-# p create_row(8, 3) == [8, 10, 12] # true
+p create_row(2, 1) == [2]         # true
+p create_row(4, 2) == [4, 6]      # true
+p create_row(8, 3) == [8, 10, 12] # true
 
 # Create row algorithm:
 # 1.  Create an empty 'row' to contain the integers
@@ -53,3 +56,11 @@ p sum_even_number_row(1) # == 2  # true
 #   - all rows have been created when the length of the 'rows' array is equal to the input integer
 # 4.  Sum the final row
 # 5.  Return the sum
+
+# [
+#  [2],
+#  [4, 6],
+#  [8, 10, 12],
+#  [14, 16, 18, 20],
+#  ....
+# ]
