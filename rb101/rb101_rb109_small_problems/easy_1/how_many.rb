@@ -18,22 +18,26 @@ def count_occurrences(arr)
   count_hash = Hash.new
   count = 0
   while count < arr.length
-    puts arr[count]
-    count += 1s
+    if count_hash.has_key?(arr[count])
+      count_hash[arr[count]] += 1
+    else
+      count_hash[arr[count]] = 1
+    end
+    count += 1
   end
+  count_hash.each {|k, v| puts "#{k} => #{v}"}
 end
 
-
 vehicles = [
-  'car', 'car', 'truck', 'car', 'SUV', 'truck',
+  'car', 'car', 'truck', 'car', 'SUV', 'suv', 'truck',
   'motorcycle', 'motorcycle', 'car', 'truck'
 ]
-# 
+
 count_occurrences(vehicles)
-# 
-# expected output
+
+# expected output/test
 # car => 4
 # truck => 3
 # SUV => 1
 # motorcycle => 2
-
+# suv => 1
