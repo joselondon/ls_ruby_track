@@ -31,3 +31,21 @@ puts average([1, 6]) == 3 # integer division: (1 + 6) / 2 -> 3
 puts average([1, 5, 87, 45, 8, 8]) == 25
 puts average([9, 47, 23, 95, 16, 52]) == 40
 
+# further exploration
+# allow for floating numbers: -
+
+def average_2(arr)
+  arr.reduce {|sum, num| sum + num.to_f} / arr.length
+end
+
+
+# tests/examples
+puts
+puts "Floating"
+puts average_2([1, 6]) == 3.5
+puts average_2([2.4, 10.1, 8]) == 6.833333333333333
+
+
+
+
+
