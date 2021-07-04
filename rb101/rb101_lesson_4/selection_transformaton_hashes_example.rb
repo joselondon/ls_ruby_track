@@ -16,13 +16,15 @@ produce = {
   'broccoli' => 'Vegetable'
 }
 
-# def select_fruit(produce)
-#   fruits = Hash.new
-#   produce.each do |product, category|
-#     fruits[product] = category if category == 'Fruit'
-#   end
-#   fruits
-# end
+def select_fruit(produce)
+  fruits = Hash.new
+  produce.each do |product, category|
+    fruits[product] = category if category == 'Fruit'
+  end
+  fruits
+end
+
+#OR
 
 def select_fruit(produce_list)
   produce_keys = produce_list.keys
