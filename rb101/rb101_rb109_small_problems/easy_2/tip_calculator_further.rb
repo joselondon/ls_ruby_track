@@ -32,8 +32,8 @@ def tip_calculator
   total = bill_amount + tip
 
   puts
-  puts "The tip is $#{sprint("%.2f", tip)}"
-  puts "The total is $#{total}"
+  puts "The tip is $#{sprintf("%.2f", tip)}"
+  puts "The total is $#{sprintf("%.2f", total)}"
 end
 
 tip_calculator()
