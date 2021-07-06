@@ -8,18 +8,18 @@
 # outputs:  string, float
 # 1. run program
 # 2. program prompts user for a bill_amount float
-# 3. (implied) program should accept floats and disregard more than 2 decimal places
+# 3. (implied) program should accept floats
 # 4. program should prompt for a tip rate integer
 # 5. compute tip = bill_amount * (tip_rate / 100)
 # 6. compute total = tip + amount
-# 7. Display tip and total to user 
+# 7. Display tip and total to user as currency format (2 dcimal places)
 
 # EXAMPLE:
 # What is the bill? 200
 # What is the tip percentage? 15
 # 
-# The tip is $30.0
-# The total is $230.0
+# The tip is $30.00
+# The total is $230.00
 
 def tip_calculator
   puts "What is the bill?"
@@ -32,7 +32,7 @@ def tip_calculator
   total = bill_amount + tip
 
   puts
-  puts "The tip is $#{tip}"
+  puts "The tip is $#{sprint("%.2f", tip)}"
   puts "The total is $#{total}"
 end
 
