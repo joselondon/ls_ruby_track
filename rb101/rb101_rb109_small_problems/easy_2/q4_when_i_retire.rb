@@ -20,3 +20,20 @@
 # 5. Calculate retirment year = current_year + years_to_go
 # 6. Display message with current_year, retirement_year and and 
 # years_to_go
+
+def retirement_age
+  puts "What is your age?"
+  current_age = gets.to_i
+  puts "At what age would you like to retire?"
+  retirement_age = gets.to_i
+  puts
+
+  current_year = Time.now.year
+  years_to_go = retirement_age - current_age
+  retirement_year = current_year + years_to_go
+
+  puts "Its #{current_year}. You will retire in #{retirement_year}."
+  puts "You only have #{years_to_go} years of work to go!"
+end
+
+retirement_age()
