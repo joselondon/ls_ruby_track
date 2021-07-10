@@ -13,34 +13,47 @@
 #     is 's' or 'p' respectively
 # 4. outputs the sum for 's' or pruduct for 'p'
 
+def integer_greater_than_zero?(int)
+  int.is_a?(Integer) && int > 0
+end
 
-  
 
+def get_valid_integer
+  upper_int = nil
+  loop do
+    puts "Please enter an integer greater than 0:"
+    upper_int = gets.to_i
+    break if integer_greater_than_zero?(upper_int)
+  end
+  upper_int
+end
 
-
-
-def sum_or_product
-  puts "Please enter an integer greater than 0:"
-  initial_int = gets.to_i
-  puts
-  puts "Enter 's' to compute the sum, 'p' to compute the product."
-  choice = gets.chomp.downcase
-
-  array = (1..initial_int).to_a
-  sum = 0
-  prod = 1
-loop do
-  break if array.size == 0
-  if choice == 's'
-    sum = sum + array.shift
-  elsif choice == 'p'
-  prod = array[0] * array.shift
+def get_valid_operation
+  choice = nil
+  loop do
+    puts "Enter 's' to compute the sum, 'p' to compute the product"
+    choice  = gets.chomp.downcase
+    if choice == 's' 
+      return 's'
+    elsif choice == 'p'
+      return 'p'
+    else
+      puts "Invalid operation please try again"
+    end
   end
 end
-p sum
 
-
-
+def display_operation_result(integer, operation)
+  if operation == 's'
+    sum = (1..integer).reduce(:+)
+    puts "The sum of the integers between 1 and #{integer} is #{sum}"
+  elsif operation == 'p'
+    product = (1..integer).reduce(:*)
+    puts "The product of the integers between 1 and #{integer} is #{product}"
+  end
 end
 
-sum_or_product()
+
+integer = get_valid_integer()
+operation = get_valid_operation()
+display_operation_result(integer, operation)
