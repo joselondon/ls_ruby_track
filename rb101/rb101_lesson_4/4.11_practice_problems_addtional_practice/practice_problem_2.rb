@@ -6,4 +6,6 @@ age = ages.reduce(0) { |sum,(key,val)| sum + val }
 
 p age
 
+# or
+
 p ages.values.reduce(:+)
