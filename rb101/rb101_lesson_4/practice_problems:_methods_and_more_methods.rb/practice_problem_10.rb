@@ -8,3 +8,6 @@
   end
 end
 
+# => [1, nil, nil]
+
+# on iterations 2 and 3, puts returns nil from the block
