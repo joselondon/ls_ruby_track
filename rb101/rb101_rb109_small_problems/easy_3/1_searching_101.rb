@@ -48,35 +48,60 @@
 # 1.  input should be integers
 
 
-SS_ORDS = {
-  1=>'st',
-  2=>'nd',
-  3=>'rd',
-  4=>'th',
-  5=>'th'
-}
+# SS_ORDS = {
+#   1=>'st',
+#   2=>'nd',
+#   3=>'rd',
+#   4=>'th',
+#   5=>'th'
+# }
+# 
+# def get_num_array
+#   num_array = []
+# 
+#   for i in (1..6)
+#     if i == 6
+#       puts "Please enter the last number:"
+#     else 
+#       puts "Please enter the #{i}#{SS_ORDS[i]} number:"
+#     end
+#     num_array << gets.to_i
+#   end
+#   num_array
+# end
+# 
+# def calculate_response(num_array)
+#   num_array
+#   if num_array[0..4].include?(num_array[5])
+#     puts "The number #{num_array[5]} appears in #{num_array[0..4]}."
+#   else
+#     puts "The number #{num_array[5]}  does not appear in #{num_array[0..4]}"
+#   end
+# end
 
-def get_num_array
-  num_array = []
+# OR MORE ELEGANT
 
-  for i in (1..6)
-    if i == 6
-      puts "Please enter the last number:"
-    else 
-      puts "Please enter the #{i}#{SS_ORDS[i]} number:"
-    end
-    num_array << gets.to_i
+def get_num
+  ["1st", "2nd", "3rd", "4th", "5th", "last"].map do |ss_ord|
+    puts "Enter the #{ss_ord} number:"
+    gets.chomp.to_i
   end
-  num_array
+end
+
+def print_contains(num_array)
+  "The number #{num_array.last} appears in #{num_array}."
+end
+
+def print_not_contain(num_array)
+  "The number #{num_array.last} does not appears in #{num_array}."
 end
 
 def calculate_response(num_array)
-  num_array
-  if num_array[0..4].include?(num_array[5])
-    puts "The number #{num_array[5]} appears in #{num_array[0..4]}."
+  if num_array[0..4].include?(num_array.last)
+    print_contains(n um_array)
   else
-    puts "The number #{num_array[5]}  does not appear in #{num_array[0..4]}"
+    print_not_contain(num_array)
   end
 end
 
-calculate_response(get_num_array())
+calculate_response(get_num)
