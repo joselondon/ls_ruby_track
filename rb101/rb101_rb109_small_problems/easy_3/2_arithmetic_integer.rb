@@ -38,11 +38,11 @@ int_2 = gets.chomp.to_i
 # puts "#{int_1} % #{int_2} = #{int_1 % int_2} " 
 # puts "#{int_1} ** #{int_2} = #{int_1 ** int_2} " 
 
-operators = [:+, :-, :*, :/, :%, :**]
+operators = ["+", "-", "*", "/", "%", "**"]
 
-operators.map do |operator| p int_1.public_send(operator, int_2)
-  p operator
-  # puts "==> #{int_1} #{operator} #{int_2} = #{int_1 operator int_2}"
+operators.each do |operator| 
+  answer = int_1.public_send(operator, int_2)
+  puts "==> #{int_1} #{operator} #{int_2} = #{answer}"
 end
 
 
