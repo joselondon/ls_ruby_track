@@ -25,11 +25,11 @@
 # 3. Output result as part of a string including the two integers and operator.
 
 
-puts "Enter the first number:"
-int_1 = gets.chomp.to_i
+def get_number(ss_ordinator)
+  puts "Please enter #{ss_ordinator} number"
+  number = gets.chomp.to_f
+end
 
-puts "Enter the second number:"
-int_2 = gets.chomp.to_i
 
 # puts "#{int_1} + #{int_2} = #{int_1 + int_2} " 
 # puts "#{int_1} - #{int_2} = #{int_1 - int_2} " 
@@ -37,6 +37,18 @@ int_2 = gets.chomp.to_i
 # puts "#{int_1} / #{int_2} = #{int_1 / int_2} " 
 # puts "#{int_1} % #{int_2} = #{int_1 % int_2} " 
 # puts "#{int_1} ** #{int_2} = #{int_1 ** int_2} " 
+int_1 = get_number("first")
+puts
+
+
+int_2 = ''
+loop do 
+int_2 = get_number("second")
+break if int_2 > 0
+puts "Please enter number greater than zero"
+end
+
+p int_2
 
 operators = ["+", "-", "*", "/", "%", "**"]
 
