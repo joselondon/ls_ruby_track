@@ -23,33 +23,22 @@
 # 1. Get 2 +ve integers
 # 2. Perform each calculation ( +, - , *, /, %, **) using the two inpouted integers
 # 3. Output result as part of a string including the two integers and operator.
-
-
 def get_number(ss_ordinator)
   puts "Please enter #{ss_ordinator} number"
   number = gets.chomp.to_f
 end
 
-
-# puts "#{int_1} + #{int_2} = #{int_1 + int_2} " 
-# puts "#{int_1} - #{int_2} = #{int_1 - int_2} " 
-# puts "#{int_1} * #{int_2} = #{int_1 * int_2} " 
-# puts "#{int_1} / #{int_2} = #{int_1 / int_2} " 
-# puts "#{int_1} % #{int_2} = #{int_1 % int_2} " 
-# puts "#{int_1} ** #{int_2} = #{int_1 ** int_2} " 
-int_1 = get_number("first")
-puts
-
-
-int_2 = ''
-loop do 
-int_2 = get_number("second")
-break if int_2 > 0
-puts "Please enter number greater than zero"
+def greater_than_zero?(number)
+  until number > 0
+    puts "Please enter a number greater than zero"
+    number = gets.chomp.to_f
+  end
+  number
 end
 
-p int_2
-
+int_1 = get_number("first")
+puts
+int_2 = greater_than_zero?(get_number("second"))
 operators = ["+", "-", "*", "/", "%", "**"]
 
 operators.each do |operator| 
