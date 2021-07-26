@@ -8,17 +8,9 @@ end
 def square(num)
   multiply(num, num)
 end
-# Test/Example:
-p square(5)
-p square(-8)
 
-def power_up(power, num)
-  if power == 2
-    multiply(num, num)
-  else
-    multiply(num, num) ** power
-  end
+def power_up(num, power)
+  multiply(num, num**(power-1)) 
 end
 
-p power_up(3, 3)
-
+p power_up(3, 5)
