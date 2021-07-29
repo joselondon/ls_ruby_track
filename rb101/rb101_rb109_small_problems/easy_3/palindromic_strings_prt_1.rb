@@ -17,7 +17,7 @@ puts palindrome?("madam i'm adam") == false # (all characters matter)
 puts palindrome?('356653') == true
 
 def palindrome_array?(array)
-  array -- array.reverse
+  array == array.reverse
 end
 
 puts palindrome_array?([1,2,2,1]) == true
