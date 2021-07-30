@@ -17,9 +17,21 @@ puts palindrome?("madam i'm adam") == false # (all characters matter)
 puts palindrome?('356653') == true
 
 def palindrome_array?(array)
-  array -- array.reverse
+  array == array.reverse
 end
 
 puts palindrome_array?([1,2,2,1]) == true
 puts palindrome_array?([1,2,3,4]) == false
 puts palindrome_array?([1,2,'a',2,1]) == true
+
+def palindrome_3?(object)
+  object == object.reverse
+end
+
+puts palindrome_3?([1,2,2,1]) == true
+puts palindrome_3?([1,2,3,4]) == false
+puts palindrome_3?([1,2,'a',2,1]) == true
+puts palindrome_3?('madam') == true
+puts palindrome_3?('Madam') == false          # (case matters)
+puts palindrome_3?("madam i'm adam") == false # (all characters matter)
+puts palindrome_3?('356653') == true
