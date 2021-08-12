@@ -10,4 +10,7 @@ end
 | Line     | Action    | Object     |  Side Effect | Return Value | Is Return Value Used? |
 |:--------------:|:------------:|:------------:|:------------:|:------------:|:-----------:|
 | 1 | Method call `select` | Outer array | None | `[{ :c => "cat" }]` | No, but shown on line 6 |
-| 2 | Method call `all?` | Each sub-hash | None | `false` | 
+| 1-5 | Block execution | Sub-hash | None | `true` | Yes, used by `select` |
+| 2 | Method call `all?` | Each sub-hash | None | Boolean value | Yes, used by `select` |
+| 2-5 | block execution | Each sub-hash | None | Boolean value | Yes, used by `all?` |
+| 3 | == comparison operator | Element 0 of the each hash value of each sub-array|  None | Boolean | Yes, used by `all` |
