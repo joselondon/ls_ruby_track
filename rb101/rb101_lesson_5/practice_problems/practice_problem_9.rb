@@ -9,4 +9,4 @@ sorted_arr = arr.map do |array|
   end
 end
 
-p sorted_arr
+# => [["c", "b", "a"], [3, 2, 1], ["green", "blue", "black"]]
