@@ -26,18 +26,18 @@
 # 4.  Join the separate strings together using '-' as a separator
 # 5. Print the returned string to the user.
 
-AN = [('a'..'z'), ('0'..'9')].map(&:to_a).flatten
+AN = [('a'..'f'), ('0'..'9')].map(&:to_a).flatten
 
 def gen_eight
-  (1..8).map { AN[rand(36)] }.join
+  (1..8).map { AN[rand(15)] }.join
 end
 
 def gen_four
-  (1..4).map { AN[rand(36)] }.join
+  (1..4).map { AN[rand(15)] }.join
 end
 
 def gen_twelve
-  (1..12).map { AN[rand(36)] }.join
+  (1..12).map { AN[rand(15)] }.join
 end
 
 def generate_hex
