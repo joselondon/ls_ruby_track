@@ -10,6 +10,7 @@ end
 
 def display_board(brd)
   system 'clear'
+  puts "You're a #{PLAYER_MARKER}. Computer is an #{COMPUTER_MARKER}"
   puts ""
   puts "     |     |"
   puts " #{brd[1]}   |  #{brd[2]}  |  #{brd[3]}"
@@ -78,20 +79,27 @@ def detect_winner(brd)
   nil
 end
 
-board = initialize_board
-
 loop do
+  board = initialize_board
+
+  loop do
+    display_board(board)
+    player_places_piece!(board)
+    break if someone_won?(board) || board_full?(board)
+    computer_places_piece!(board)
+    break if someone_won?(board) || board_full?(board)
+  end
+
   display_board(board)
-  player_places_piece!(board)
-  break if someone_won?(board) || board_full?(board)
-  computer_places_piece!(board)
-  break if someone_won?(board) || board_full?(board)
+
+  if someone_won?(board)
+    prompt("#{detect_winner(board)} won!")
+  else
+    prompt("Its a tie!")
+  end
+  prompt("Play again? (y or n)")
+  answer = gets.chomp
+  break unless answer.downcase.start_with?('y')
 end
 
-display_board(board)
-
-if someone_won?(board)
-  prompt("#{detect_winner(board)} won!")
-else
-  prompt("Its a tie!")
-end
+prompt("Thanks for playing tic tac toe.  Goodby!")
