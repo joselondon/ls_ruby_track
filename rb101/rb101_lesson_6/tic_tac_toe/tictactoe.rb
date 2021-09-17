@@ -90,27 +90,51 @@ def detect_winner(brd)
   nil
 end
 
-loop do
-  board = initialize_board
-
-  loop do
-    display_board(board)
-    player_places_piece!(board)
-    break if someone_won?(board) || board_full?(board)
-    computer_places_piece!(board)
-    break if someone_won?(board) || board_full?(board)
-  end
-
-  display_board(board)
-
-  if someone_won?(board)
-    prompt("#{detect_winner(board)} won!")
+def game_winner?
+  if player_score == 5 || computer_score == 5
+    return true
   else
-    prompt("Its a tie!")
+    false
+end
+
+def winner
+  
+end
+
+player_score = 0
+computer_score = 0
+
+loop do
+  loop do
+    board = initialize_board
+
+    loop do
+      display_board(board)
+      player_places_piece!(board)
+      break if someone_won?(board) || board_full?(board)
+      computer_places_piece!(board)
+      break if someone_won?(board) || board_full?(board)
+    end
+
+    display_board(board)
+
+    if someone_won?(board)
+      prompt("#{detect_winner(board)} won!")
+    else
+      prompt("Its a tie!")
+    end
+    prompt("Play again? (y or n)")
+    answer = gets.chomp
+    break unless answer.downcase.start_with?('y')
   end
-  prompt("Play again? (y or n)")
-  answer = gets.chomp
-  break unless answer.downcase.start_with?('y')
+
+  if detect_winner(board) == 'Player' 
+    player_score += 1
+  elsif detect_winner(board) == 'Computer'
+    computer_score += 1
+  end
+
+  game_winner? ? p winner : break
 end
 
 prompt("Thanks for playing tic tac toe.  Goodbye!")
