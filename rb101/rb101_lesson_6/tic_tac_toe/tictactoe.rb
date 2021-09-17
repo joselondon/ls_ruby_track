@@ -12,17 +12,18 @@ def prompt(msg)
   puts "=> #{msg}"
 end
 
-def joinor(arr, final='or')
-  str = ""
-  arr.each do |element|
-    if element != arr.last
-      str << "#{element}, "
-    else
-      str << "#{final} #{element}"
-    end
+
+def joinor(arr, delimiter=', ', word='or')
+  case arr.size
+  when 0 then ''
+  when 1 then arr.first
+  when 2 then arr.join(" #{word} ")
+  else
+    arr[-1] = "#{word} #{arr.last}"
+    arr.join(delimiter)
   end
-  str
 end
+
 # rubocop:disable Metrics/AbcSize
 def display_board(brd)
   system 'clear'
@@ -58,6 +59,7 @@ def player_places_piece!(brd)
   loop do
     prompt "Choose a square #{joinor(empty_squares(brd))}"
     square = gets.chomp.to_i
+    binding.pry
     break if empty_squares(brd).include?(square)
     prompt("Sorry, that's not a valid choice. ")
   end
