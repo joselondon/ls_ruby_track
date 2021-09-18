@@ -59,7 +59,6 @@ def player_places_piece!(brd)
   loop do
     prompt "Choose a square #{joinor(empty_squares(brd))}"
     square = gets.chomp.to_i
-    binding.pry
     break if empty_squares(brd).include?(square)
     prompt("Sorry, that's not a valid choice. ")
   end
@@ -90,51 +89,63 @@ def detect_winner(brd)
   nil
 end
 
-def game_winner?
-  if player_score == 5 || computer_score == 5
+def tournament_winner?(play,comp)
+  if play == 5 || comp == 5
     return true
   else
     false
+  end
 end
 
-def winner
-  
+def champion(play, comp)
+  play == 5 ? 'Player '  : 'Computer '
 end
-
-player_score = 0
-computer_score = 0
 
 loop do
+  player_score = 0
+  computer_score = 0
+  round = 1
+  
   loop do
     board = initialize_board
-
     loop do
       display_board(board)
+      puts "Round #{round}"
+      puts "Player score: #{player_score}"
+      puts "Computer score: #{computer_score}"
+      puts
+  
       player_places_piece!(board)
       break if someone_won?(board) || board_full?(board)
       computer_places_piece!(board)
       break if someone_won?(board) || board_full?(board)
     end
-
     display_board(board)
-
     if someone_won?(board)
       prompt("#{detect_winner(board)} won!")
     else
       prompt("Its a tie!")
     end
-    prompt("Play again? (y or n)")
-    answer = gets.chomp
-    break unless answer.downcase.start_with?('y')
-  end
+    
+    if detect_winner(board) == 'Player'
+      player_score += 1
+    elsif detect_winner(board) == 'Computer'
+      computer_score += 1
+    end
+    round += 1
+    sleep(1)
 
-  if detect_winner(board) == 'Player' 
-    player_score += 1
-  elsif detect_winner(board) == 'Computer'
-    computer_score += 1
+    if tournament_winner?(player_score, computer_score)
+      puts "============================================"
+      prompt "#{champion(player_score, computer_score)} wins the tournament!" 
+      puts
+      break
+    end
   end
-
-  game_winner? ? p winner : break
+  prompt("Play again? (y or n)")
+  answer = gets.chomp
+  # binding.pry
+  break unless answer.downcase.start_with?('y')
 end
 
 prompt("Thanks for playing tic tac toe.  Goodbye!")
