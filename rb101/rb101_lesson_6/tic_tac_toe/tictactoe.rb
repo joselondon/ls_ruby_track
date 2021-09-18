@@ -78,6 +78,13 @@ def someone_won?(brd)
   !!detect_winner(brd)
 end
 
+def defence(brd)
+  WINNING_LINES.each do |line|
+    if board.values_at(*line).count >=2 
+      Key = key(" ")
+      brd[key] = COMPUTER_MARKER
+end
+
 def detect_winner(brd)
   WINNING_LINES.each do |line|
     if brd.values_at(*line).all?(PLAYER_MARKER)
@@ -101,6 +108,7 @@ def champion(play, comp)
   play == 5 ? 'Player '  : 'Computer '
 end
 
+binding.pry
 loop do
   player_score = 0
   computer_score = 0
