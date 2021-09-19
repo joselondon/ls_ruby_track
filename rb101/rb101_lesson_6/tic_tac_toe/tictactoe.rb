@@ -66,8 +66,8 @@ def player_places_piece!(brd)
 end
 
 def computer_places_piece!(brd)
-  square = empty_squares(brd).sample
-  brd[square] = COMPUTER_MARKER
+    square = empty_squares(brd).sample
+    brd[square] = COMPUTER_MARKER
 end
 
 def board_full?(brd)
@@ -78,10 +78,9 @@ def someone_won?(brd)
   !!detect_winner(brd)
 end
 
-def defence(brd)
-  WINNING_LINES.each do |line|
-    if board.values_at(*line).count >=2 
-      Key = key(" ")
+
+def computer_defends(brd) 
+      key = key(" ")
       brd[key] = COMPUTER_MARKER
 end
 
@@ -108,7 +107,6 @@ def champion(play, comp)
   play == 5 ? 'Player '  : 'Computer '
 end
 
-binding.pry
 loop do
   player_score = 0
   computer_score = 0
