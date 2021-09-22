@@ -66,8 +66,12 @@ def player_places_piece!(brd)
 end
 
 def computer_places_piece!(brd)
-    square = empty_squares(brd).sample
-    brd[square] = COMPUTER_MARKER
+    if player_threat?(brd) == false
+      square = empty_squares(brd).sample
+      brd[square] = COMPUTER_MARKER
+    else
+      computer_defends!(brd)
+    end
 end
 
 def board_full?(brd)
@@ -78,10 +82,25 @@ def someone_won?(brd)
   !!detect_winner(brd)
 end
 
+def player_threat?(brd)
+  bool = false
+  WINNING_LINES.each do |line|
+    if (brd.values_at(*line).count("X") >= 2) && (brd.values_at(*line).count(" ") > 0)
+      bool = true
+      break
+    end
+  end
+  bool
+end
 
-def computer_defends(brd) 
-      key = key(" ")
-      brd[key] = COMPUTER_MARKER
+def computer_defends!(brd) 
+  WINNING_LINES.each do |line|
+    if (brd.values_at(*line).count("X") >= 2)
+      line.each do |key|
+        brd[key] = COMPUTER_MARKER if brd[key] == INITIAL_MARKER
+      end
+    end
+  end
 end
 
 def detect_winner(brd)
