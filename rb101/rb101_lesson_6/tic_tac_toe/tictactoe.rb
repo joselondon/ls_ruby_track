@@ -83,14 +83,14 @@ def someone_won?(brd)
 end
 
 def player_threat?(brd)
-  bool = false
+  threat = false
   WINNING_LINES.each do |line|
     if (brd.values_at(*line).count("X") >= 2) && (brd.values_at(*line).count(" ") > 0)
-      bool = true
+      threat = true
       break
     end
   end
-  bool
+  threat
 end
 
 def computer_defends!(brd) 
