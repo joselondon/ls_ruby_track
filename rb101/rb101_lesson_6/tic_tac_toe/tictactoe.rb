@@ -169,7 +169,6 @@ loop do
   end
   prompt("Play again? (y or n)")
   answer = gets.chomp
-  # binding.pry
   break unless answer.downcase.start_with?('y')
 end
 
