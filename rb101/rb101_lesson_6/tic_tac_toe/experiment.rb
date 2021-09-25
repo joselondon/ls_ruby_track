@@ -65,17 +65,6 @@ def player_places_piece!(brd)
   brd[square] = PLAYER_MARKER
 end
 
-def computer_places_piece!(brd)
-  if computer_opportunity?(brd)
-    computer_exploits(brd)
-  elsif player_threat?(brd)
-    computer_defends!(brd)
-  else
-    square = empty_squares(brd).sample
-    brd[square] = COMPUTER_MARKER
-  end
-end
-
 def board_full?(brd)
   empty_squares(brd).empty?
 end
@@ -84,47 +73,29 @@ def someone_won?(brd)
   !!detect_winner(brd)
 end
 
-def player_threat?(brd)
-  threat = false
-  WINNING_LINES.each do |line|
-    if (brd.values_at(*line).count(PLAYER_MARKER) >= 2) && (brd.values_at(*line).count(INITIAL_MARKER) > 0)
-      threat = true
-      break
-    end
-  end
-  threat
-end
-
-def computer_opportunity?(brd)
-  opportunity = false
-  WINNING_LINES.each do |line|
-    if (brd.values_at(*line).count(COMPUTER_MARKER) >= 2) && (brd.values_at(*line).count(INITIAL_MARKER) > 0)
-      opportunity = true
-      break
-    end
-  end
-  opportunity
-end
-
-def computer_exploits(brd)
-  WINNING_LINES.each do |line|
-    if (brd.values_at(*line).count(COMPUTER_MARKER) >= 2)
-      line.each do |key|
-        brd[key] = COMPUTER_MARKER if brd[key] == INITIAL_MARKER
-      end
-    end
+def find_at_risk_square(line, board)
+  if board.values_at(*line).count('X') == 2
+    binding.pry
+    board.select{|k,v| line.include?(k) && v == ' '}.keys.first
+  else
+    nil
   end
 end
 
-def computer_defends!(brd) 
-  WINNING_LINES.each do |line|
-    if (brd.values_at(*line).count(PLAYER_MARKER) >= 2)
-      line.each do |key|
-        brd[key] = COMPUTER_MARKER if brd[key] == INITIAL_MARKER
-      end
-    end
+def computer_places_piece!(brd)
+  square = nil
+  WINNING_LINES.each do |line| 
+    square = find_at_risk_square(line, brd)
+    break if square
   end
+
+  if !square
+    square = empty_squares(brd).sample
+  end
+
+  brd[square] = COMPUTER_MARKER
 end
+
 
 def detect_winner(brd)
   WINNING_LINES.each do |line|
@@ -197,3 +168,4 @@ loop do
 end
 
 prompt("Thanks for playing tic tac toe.  Goodbye!")
+
