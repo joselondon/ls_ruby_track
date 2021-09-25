@@ -66,7 +66,9 @@ def player_places_piece!(brd)
 end
 
 def computer_places_piece!(brd)
-  if computer_opportunity?(brd)
+  if brd[5] == INITIAL_MARKER
+    brd[5] = COMPUTER_MARKER
+  elsif computer_opportunity?(brd)
     computer_exploits(brd)
   elsif player_threat?(brd)
     computer_defends!(brd)
