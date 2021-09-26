@@ -51,12 +51,22 @@ def initialize_board
 end
 
 def choose_starting_player
-  prompt "Enter 'c' for computer to start, or any other key for human to start"
+  options = ['player', 'ai']
+  prompt "Enter 'h' for human to start, 'c' for the AI to start or any other key to let computer choose"
   first_player = gets.chomp.downcase
   if first_player.start_with?('h')
-    return true
+    puts "Human starts..."
+    sleep(2)
+    return options[0]
+  elsif first_player.start_with?('c')
+    puts "Computer starts..."
+    sleep(2)
+    return options[1]
   else
-    return false
+    ai_choice = options.sample
+    puts "Computer chooses #{ai_choice} to go first"
+    sleep(2)
+    return ai_choice
   end
 end
 
@@ -170,19 +180,19 @@ loop do
   loop do
     board = initialize_board
     system 'clear'
-    player_starts = choose_starting_player
+    starting_player = choose_starting_player
     loop do
       display_board(board)
       puts "Round #{round}"
       puts "Player score: #{player_score}"
       puts "Computer score: #{computer_score}"
       puts
-      if player_starts == true
+      if starting_player == 'player'
         player_places_piece!(board)
         break if someone_won?(board) || board_full?(board)
         computer_places_piece!(board)
         break if someone_won?(board) || board_full?(board)
-      elsif player_starts == false
+      elsif starting_player == 'ai'
         computer_places_piece!(board)
         display_board(board)
         break if someone_won?(board) || board_full?(board)
