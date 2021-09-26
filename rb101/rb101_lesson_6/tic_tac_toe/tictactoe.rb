@@ -50,6 +50,16 @@ def initialize_board
   new_board
 end
 
+def choose_starting_player
+  prompt "Enter 'c' for computer to start, or any other key for human to start"
+  first_player = gets.chomp.downcase
+  if first_player.start_with?('h')
+    return true
+  else
+    return false
+  end
+end
+
 def empty_squares(brd)
   brd.keys.select { |num| brd[num] == INITIAL_MARKER }
 end
@@ -159,17 +169,26 @@ loop do
 
   loop do
     board = initialize_board
+    system 'clear'
+    player_starts = choose_starting_player
     loop do
       display_board(board)
       puts "Round #{round}"
       puts "Player score: #{player_score}"
       puts "Computer score: #{computer_score}"
       puts
-  
-      player_places_piece!(board)
-      break if someone_won?(board) || board_full?(board)
-      computer_places_piece!(board)
-      break if someone_won?(board) || board_full?(board)
+      if player_starts == true
+        player_places_piece!(board)
+        break if someone_won?(board) || board_full?(board)
+        computer_places_piece!(board)
+        break if someone_won?(board) || board_full?(board)
+      elsif player_starts == false
+        computer_places_piece!(board)
+        display_board(board)
+        break if someone_won?(board) || board_full?(board)
+        player_places_piece!(board)
+        break if someone_won?(board) || board_full?(board)
+      end
     end
     display_board(board)
     if someone_won?(board)
@@ -184,7 +203,7 @@ loop do
       computer_score += 1
     end
     round += 1
-    sleep(1)
+    sleep(3)
 
     if tournament_winner?(player_score, computer_score)
       puts "============================================"
