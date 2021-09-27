@@ -51,7 +51,7 @@ def initialize_board
 end
 
 def choose_starting_player
-  options = ['player', 'ai']
+  options = ['human', 'computer']
   prompt "Enter 'h' for human to start, 'c' for the AI to start or any other key to let computer choose"
   first_player = gets.chomp.downcase
   if first_player.start_with?('h')
@@ -171,6 +171,30 @@ def champion(play, comp)
   play == 5 ? 'Player '  : 'Computer '
 end
 
+def place_piece!(brd, player)
+  if player == 'human'
+    player_places_piece!(brd)
+  elsif player == 'computer'
+    computer_places_piece!(brd)
+  end
+end
+
+def alternate_player(current_player)
+  if current_player == 'human'
+    current_player = 'computer'
+  elsif current_player == 'computer'
+    current_player = 'human'
+  end
+  current_player
+end
+
+def display_scores(rnd, human_score, ai_score)
+  puts "Round #{rnd}"
+  puts "Player score: #{human_score}"
+  puts "Computer score: #{ai_score}"
+  puts
+end
+
 loop do
   player_score = 0
   computer_score = 0
@@ -180,25 +204,15 @@ loop do
   loop do
     board = initialize_board
     system 'clear'
-    starting_player = choose_starting_player
+    display_scores(round, player_score, computer_score)
+    current_player = choose_starting_player
     loop do
       display_board(board)
-      puts "Round #{round}"
-      puts "Player score: #{player_score}"
-      puts "Computer score: #{computer_score}"
-      puts
-      if starting_player == 'player'
-        player_places_piece!(board)
-        break if someone_won?(board) || board_full?(board)
-        computer_places_piece!(board)
-        break if someone_won?(board) || board_full?(board)
-      elsif starting_player == 'ai'
-        computer_places_piece!(board)
-        display_board(board)
-        break if someone_won?(board) || board_full?(board)
-        player_places_piece!(board)
-        break if someone_won?(board) || board_full?(board)
-      end
+      display_scores(round, player_score, computer_score)
+
+      place_piece!(board, current_player)
+      current_player = alternate_player(current_player)
+      break if someone_won?(board) || board_full?(board)
     end
     display_board(board)
     if someone_won?(board)
