@@ -133,7 +133,7 @@ end
 def computer_opportunity?(brd)
   opportunity = false
   WINNING_LINES.each do |line|
-    if brd.values_at(*line).count(COMPUTER_MARKER) >= 2 && 
+    if brd.values_at(*line).count(COMPUTER_MARKER) >= 2 &&
        brd.values_at(*line).count(INITIAL_MARKER) > 0
       opportunity = true
       break
@@ -144,7 +144,7 @@ end
 
 def computer_exploits(brd)
   WINNING_LINES.each do |line|
-    if (brd.values_at(*line).count(COMPUTER_MARKER) >= 2)
+    if brd.values_at(*line).count(COMPUTER_MARKER) >= 2
       line.each do |key|
         brd[key] = COMPUTER_MARKER if brd[key] == INITIAL_MARKER
       end
@@ -152,10 +152,10 @@ def computer_exploits(brd)
   end
 end
 
-def computer_defends!(brd) 
+def computer_defends!(brd)
   plays = 0
   WINNING_LINES.each do |line|
-    if (brd.values_at(*line).count(PLAYER_MARKER) >= 2)
+    if brd.values_at(*line).count(PLAYER_MARKER) >= 2
       line.each do |key|
         if brd[key] == INITIAL_MARKER
           brd[key] = COMPUTER_MARKER
@@ -179,16 +179,16 @@ def detect_winner(brd)
   nil
 end
 
-def tournament_winner?(play,comp)
+def tournament_winner?(play, comp)
   if play == 5 || comp == 5
-    return true
+    true
   else
     false
   end
 end
 
-def champion(play, comp)
-  play == 5 ? 'Player '  : 'Computer '
+def champion(play)
+  play == 5 ? 'Player ' : 'Computer '
 end
 
 def place_piece!(brd, player)
