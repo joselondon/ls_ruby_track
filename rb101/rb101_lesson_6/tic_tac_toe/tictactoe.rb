@@ -7,11 +7,11 @@ WINNING_LINES = [[1, 2, 3], [4, 5, 6], [7, 8, 9]] + # rows
 INITIAL_MARKER = ' '
 PLAYER_MARKER = 'X'
 COMPUTER_MARKER = 'O'
+PLAYER_OPTIONS = ['human', 'computer']
 
 def prompt(msg)
   puts "=> #{msg}"
 end
-
 
 def joinor(arr, delimiter=', ', word='or')
   case arr.size
@@ -50,23 +50,34 @@ def initialize_board
   new_board
 end
 
+def display_human_start
+  puts "Human starts..."
+  sleep(2)
+  return PLAYER_OPTIONS[0]
+end
+
+def display_ai_start
+  puts "Computer starts..."
+  sleep(2)
+  return PLAYER_OPTIONS[1]
+end
+
+def ai_chooses_start
+  ai_choice = PLAYER_OPTIONS.sample
+  puts "Computer chooses #{ai_choice} to go first"
+  sleep(2)
+  return ai_choice
+end
+
 def choose_starting_player
-  options = ['human', 'computer']
   prompt "Enter 'h' for human to start, 'c' for the AI to start or any other key to let computer choose"
   first_player = gets.chomp.downcase
   if first_player.start_with?('h')
-    puts "Human starts..."
-    sleep(2)
-    return options[0]
+    display_human_start
   elsif first_player.start_with?('c')
-    puts "Computer starts..."
-    sleep(2)
-    return options[1]
+    display_ai_start
   else
-    ai_choice = options.sample
-    puts "Computer chooses #{ai_choice} to go first"
-    sleep(2)
-    return ai_choice
+    ai_chooses_start
   end
 end
 
