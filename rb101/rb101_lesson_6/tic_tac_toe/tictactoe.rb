@@ -53,24 +53,25 @@ end
 def display_human_start
   puts "Human starts..."
   sleep(2)
-  return PLAYER_OPTIONS[0]
+  PLAYER_OPTIONS[0]
 end
 
 def display_ai_start
   puts "Computer starts..."
   sleep(2)
-  return PLAYER_OPTIONS[1]
+  PLAYER_OPTIONS[1]
 end
 
 def ai_chooses_start
   ai_choice = PLAYER_OPTIONS.sample
   puts "Computer chooses #{ai_choice} to go first"
   sleep(2)
-  return ai_choice
+  ai_choice
 end
 
 def choose_starting_player
-  prompt "Enter 'h' for human to start, 'c' for the AI to start or any other key to let computer choose"
+  prompt "Enter 'h', or 'c' for either the human or computer player to start"
+  prompt "or hit any other key to let ai decide"
   first_player = gets.chomp.downcase
   if first_player.start_with?('h')
     display_human_start
@@ -120,7 +121,8 @@ end
 def player_threat?(brd)
   threat = false
   WINNING_LINES.each do |line|
-    if (brd.values_at(*line).count(PLAYER_MARKER) >= 2) && (brd.values_at(*line).count(INITIAL_MARKER) > 0)
+    if brd.values_at(*line).count(PLAYER_MARKER) >= 2 &&
+       brd.values_at(*line).count(INITIAL_MARKER) > 0
       threat = true
       break
     end
@@ -131,7 +133,8 @@ end
 def computer_opportunity?(brd)
   opportunity = false
   WINNING_LINES.each do |line|
-    if (brd.values_at(*line).count(COMPUTER_MARKER) >= 2) && (brd.values_at(*line).count(INITIAL_MARKER) > 0)
+    if brd.values_at(*line).count(COMPUTER_MARKER) >= 2 && 
+       brd.values_at(*line).count(INITIAL_MARKER) > 0
       opportunity = true
       break
     end
@@ -150,11 +153,17 @@ def computer_exploits(brd)
 end
 
 def computer_defends!(brd) 
+  plays = 0
   WINNING_LINES.each do |line|
     if (brd.values_at(*line).count(PLAYER_MARKER) >= 2)
       line.each do |key|
-        brd[key] = COMPUTER_MARKER if brd[key] == INITIAL_MARKER
+        if brd[key] == INITIAL_MARKER
+          brd[key] = COMPUTER_MARKER
+          plays += 1
+        end
+        break if plays > 0
       end
+      break
     end
   end
 end
