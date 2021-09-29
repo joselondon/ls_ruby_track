@@ -219,7 +219,6 @@ loop do
   player_score = 0
   computer_score = 0
   round = 1
-  
 
   loop do
     board = initialize_board
@@ -240,7 +239,7 @@ loop do
     else
       prompt("Its a tie!")
     end
-    
+
     if detect_winner(board) == 'Player'
       player_score += 1
     elsif detect_winner(board) == 'Computer'
@@ -251,7 +250,7 @@ loop do
 
     if tournament_winner?(player_score, computer_score)
       puts "============================================"
-      prompt "#{champion(player_score, computer_score)} wins the tournament!" 
+      prompt "#{champion(player_score, computer_score)} wins the tournament!"
       puts
       break
     end
