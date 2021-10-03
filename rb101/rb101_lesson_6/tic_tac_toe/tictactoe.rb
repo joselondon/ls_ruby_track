@@ -48,8 +48,9 @@ def display_welcome_text
   puts "Welcome to Tic Tac Toe"
   puts "RULES"
   puts "When prompted place your player piece ('X'), the computer will"
-  puts "then move.  First player to get 3 in a row (vertical, horizonal or diaganol,"
-  puts "wins the game.  First person to win 5 games wins the tounament!"
+  puts "then move.  First player to get 3 in a row"
+  puts "(vertical, horizonal or diaganol, wins the game."
+  puts "First person to win 5 games wins the tounament!"
   display_board_numbers
 end
 
@@ -61,9 +62,9 @@ def display_board_numbers
 end
 
 def break_out_of_welcome
-  prompt "Enter any key to continue to the game tournament"
+  prompt "Hit enter to continue to the game tournament"
   go_to_game = gets.chomp
-  true if go_to_game != nil
+  !go_to_game.nil?
 end
 
 def initialize_board
