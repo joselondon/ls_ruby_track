@@ -44,6 +44,28 @@ def display_board(brd)
 end
 # rubocop:enable Metrics/AbcSize
 
+def display_welcome_text
+  puts "Welcome to Tic Tac Toe"
+  puts "RULES"
+  puts "When prompted place your player piece ('X'), the computer will"
+  puts "then move.  First player to get 3 in a row (vertical, horizonal or diaganol,"
+  puts "wins the game.  First person to win 5 games wins the tounament!"
+  display_board_numbers
+end
+
+def display_board_numbers
+  puts "Board spaces are numbered as follows: - "
+  puts "1 | 2 | 3"
+  puts "4 | 5 | 6"
+  puts "7 | 8 | 9"
+end
+
+def break_out_of_welcome
+  prompt "Enter any key to continue to the game tournament"
+  go_to_game = gets.chomp
+  true if go_to_game != nil
+end
+
 def initialize_board
   new_board = {}
   (1..9).each { |num| new_board[num] = INITIAL_MARKER }
@@ -216,6 +238,9 @@ def display_scores(rnd, human_score, ai_score)
 end
 
 loop do
+  display_welcome_text
+  break_out_of_welcome
+
   player_score = 0
   computer_score = 0
   round = 1
@@ -250,7 +275,7 @@ loop do
 
     if tournament_winner?(player_score, computer_score)
       puts "============================================"
-      prompt "#{champion(player_score, computer_score)} wins the tournament!"
+      prompt "#{champion(player_score)} wins the tournament!"
       puts
       break
     end
