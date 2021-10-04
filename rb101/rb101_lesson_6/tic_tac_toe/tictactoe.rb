@@ -1,3 +1,5 @@
+require 'pry-byebug'
+
 WINNING_LINES = [[1, 2, 3], [4, 5, 6], [7, 8, 9]] + # rows
                 [[1, 4, 7], [2, 5, 8], [3, 6, 9]] + # cols
                 [[1, 5, 9], [3, 5, 7]]              # diagonals
@@ -185,7 +187,6 @@ def computer_defends!(brd)
         end
         break if plays > 0
       end
-      break
     end
   end
 end
@@ -253,7 +254,6 @@ loop do
     loop do
       display_board(board)
       display_scores(round, player_score, computer_score)
-
       place_piece!(board, current_player)
       current_player = alternate_player(current_player)
       break if someone_won?(board) || board_full?(board)
