@@ -8,6 +8,8 @@ INITIAL_MARKER = ' '
 PLAYER_MARKER = 'X'
 COMPUTER_MARKER = 'O'
 PLAYER_OPTIONS = ['human', 'computer']
+VALID_YES = "yes" || "y"
+VALID_NO = "no" || "n"
 
 def prompt(msg)
   puts "=> #{msg}"
@@ -50,7 +52,7 @@ def display_welcome_text
   puts "When prompted place your player piece ('X'), the computer will"
   puts "then move.  First player to get 3 in a row"
   puts "(vertical, horizonal or diaganol, wins the game."
-  puts "First person to win 5 games wins the tounament!"
+  puts "First person to win 5 games wins the tournament!"
   display_board_numbers
 end
 
@@ -280,9 +282,18 @@ loop do
       break
     end
   end
-  prompt("Play again? (y or n)")
-  answer = gets.chomp
-  break unless answer.downcase.start_with?('y')
+
+  loop do
+    prompt "Play again?"
+    response = gets.chomp.downcase
+    if response == 'n' || response == 'no'
+      break
+    end
+  end
+  break
+  # prompt("Play again? (y or n)")
+  # answer = gets.chomp.downcase
+  # break unless answer.downcase.start_with?('y')
 end
 
 prompt("Thanks for playing tic tac toe.  Goodbye!")
