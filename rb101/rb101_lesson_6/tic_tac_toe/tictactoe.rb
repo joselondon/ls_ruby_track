@@ -289,14 +289,14 @@ loop do
   loop do
     prompt "Play again?"
     response = gets.chomp.downcase
-    if response == 'n' || response == 'no' || response == 'y' || response == 'yes'
+    if VALID_YES.include?(response) || VALID_NO.include?(response)
       break
     else 
       prompt "Invalid answer, try again."
     end
   end
 
-  break if response == 'n' || response == 'no'
+  break if VALID_NO.include?(response)
 
   # prompt("Play again? (y or n)")
   # answer = gets.chomp.downcase
