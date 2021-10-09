@@ -47,12 +47,14 @@ end
 # rubocop:enable Metrics/AbcSize
 
 def display_welcome_text
+  system 'clear'
   puts "Welcome to Tic Tac Toe"
   puts "RULES"
   puts "When prompted place your player piece ('X'), the computer will"
   puts "then move.  First player to get 3 in a row"
   puts "(vertical, horizonal or diaganol, wins the game."
   puts "First person to win 5 games wins the tournament!"
+  puts
   display_board_numbers
 end
 
@@ -244,7 +246,7 @@ loop do
   display_welcome_text
   break_out_of_welcome?
 
-  player_score = 0
+  player_score = 5
   computer_score = 0
   round = 1
 
@@ -283,17 +285,22 @@ loop do
     end
   end
 
+  response = ''
   loop do
     prompt "Play again?"
     response = gets.chomp.downcase
-    if response == 'n' || response == 'no'
+    if response == 'n' || response == 'no' || response == 'y' || response == 'yes'
       break
+    else 
+      prompt "Invalid answer, try again."
     end
   end
-  break
+
+  break if response == 'n' || response == 'no'
+
   # prompt("Play again? (y or n)")
   # answer = gets.chomp.downcase
   # break unless answer.downcase.start_with?('y')
 end
-
+system 'clear'
 prompt("Thanks for playing tic tac toe.  Goodbye!")
