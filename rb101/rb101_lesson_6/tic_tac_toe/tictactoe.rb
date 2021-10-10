@@ -97,12 +97,12 @@ def ai_chooses_start
 end
 
 def choose_starting_player
-  prompt "Enter 'h', or 'c' for either the human or computer player to start"
+  prompt "Enter '(h)uman', or '(c)omputer' for either the human or computer player to start"
   prompt "or hit any other key to let ai decide"
-  first_player = gets.chomp.downcase
-  if first_player.start_with?('h')
+  choice = gets.chomp.downcase
+  if choice.start_with?('h')
     display_human_start
-  elsif first_player.start_with?('c')
+  elsif choice.start_with?('c')
     display_ai_start
   else
     ai_chooses_start
