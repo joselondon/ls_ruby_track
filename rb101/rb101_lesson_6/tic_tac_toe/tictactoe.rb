@@ -98,8 +98,8 @@ def ai_chooses_start
 end
 
 def choose_starting_player
-  prompt "Enter '(h)uman', or '(c)omputer' for either the human or computer player to start"
-  prompt "or hit any other key to let ai decide"
+  prompt "Enter '(h)uman', or '(c)omputer' for human or computer player "
+  prompt "to start or hit any other key to let ai decide"
   choice = gets.chomp.downcase
   if choice == PLAYER_OPTIONS[0] || choice == PLAYER_OPTIONS[0][0]
     display_human_start
@@ -293,13 +293,11 @@ loop do
     response = gets.chomp.downcase
     if VALID_YES.include?(response) || VALID_NO.include?(response)
       break
-    else 
+    else
       prompt "Invalid answer, try again."
     end
   end
-
   break if VALID_NO.include?(response)
-
 end
 system 'clear'
 prompt("Thanks for playing tic tac toe.  Goodbye!")
