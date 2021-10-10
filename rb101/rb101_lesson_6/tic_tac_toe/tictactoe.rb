@@ -11,6 +11,7 @@ PLAYER_OPTIONS = ['human', 'computer']
 VALID_YES = "yes" || "y"
 VALID_NO = "no" || "n"
 WINNING_SCORE = 5
+CENTRE_SQUARE = 5
 
 def prompt(msg)
   puts "=> #{msg}"
@@ -127,8 +128,8 @@ def player_places_piece!(brd)
 end
 
 def computer_places_piece!(brd)
-  if brd[5] == INITIAL_MARKER
-    brd[5] = COMPUTER_MARKER
+  if brd[CENTRE_SQUARE] == INITIAL_MARKER
+    brd[CENTRE_SQUARE] = COMPUTER_MARKER
   elsif computer_opportunity?(brd)
     computer_exploits(brd)
   elsif player_threat?(brd)
