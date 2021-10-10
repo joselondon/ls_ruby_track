@@ -10,6 +10,7 @@ COMPUTER_MARKER = 'O'
 PLAYER_OPTIONS = ['human', 'computer']
 VALID_YES = "yes" || "y"
 VALID_NO = "no" || "n"
+WINNING_SCORE = 5
 
 def prompt(msg)
   puts "=> #{msg}"
@@ -191,6 +192,7 @@ def computer_defends!(brd)
         end
         break if plays > 0
       end
+      break
     end
   end
 end
@@ -207,7 +209,7 @@ def detect_winner(brd)
 end
 
 def tournament_winner?(play, comp)
-  if play == 5 || comp == 5
+  if play == WINNING_SCORE || comp == WINNING_SCORE
     true
   else
     false
@@ -298,9 +300,6 @@ loop do
 
   break if VALID_NO.include?(response)
 
-  # prompt("Play again? (y or n)")
-  # answer = gets.chomp.downcase
-  # break unless answer.downcase.start_with?('y')
 end
 system 'clear'
 prompt("Thanks for playing tic tac toe.  Goodbye!")
