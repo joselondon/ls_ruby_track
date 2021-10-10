@@ -209,7 +209,7 @@ def detect_winner(brd)
 end
 
 def tournament_winner?(play, comp)
-  if play == WINNING_SCORE || comp == WINNING_SCORE
+  if play >= WINNING_SCORE || comp >= WINNING_SCORE
     true
   else
     false
@@ -217,7 +217,7 @@ def tournament_winner?(play, comp)
 end
 
 def champion(play)
-  play == 5 ? 'Player ' : 'Computer '
+  play >= 5 ? 'Player ' : 'Computer '
 end
 
 def place_piece!(brd, player)
@@ -248,7 +248,7 @@ loop do
   display_welcome_text
   break_out_of_welcome?
 
-  player_score = 5
+  player_score = 0
   computer_score = 0
   round = 1
 
