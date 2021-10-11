@@ -210,11 +210,7 @@ def detect_winner(brd)
 end
 
 def tournament_winner?(play, comp)
-  if play >= WINNING_SCORE || comp >= WINNING_SCORE
-    true
-  else
-    false
-  end
+  play >= WINNING_SCORE || comp >= WINNING_SCORE
 end
 
 def champion(play)
