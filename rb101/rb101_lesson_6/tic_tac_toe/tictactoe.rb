@@ -183,7 +183,6 @@ def computer_exploits(brd)
 end
 
 def computer_defends!(brd)
-  # binding.pry
   plays = 0
   WINNING_LINES.each do |line|
     if brd.values_at(*line).count(PLAYER_MARKER) >= 2
@@ -242,17 +241,28 @@ def display_scores(rnd, human_score, ai_score)
   puts
 end
 
+
+
+def update_score(brd, scores, player, computer)
+  if detect_winner(brd) == 'Player'
+    scores[player] += 1
+  elsif detect_winner(brd) == 'Computer'
+    scores[computer] += 1
+  end
+end
+
 loop do
   display_welcome_text
   break_out_of_welcome?
 
+  scores = { player: 0, computer: 0 }
   player_score = 0
   computer_score = 0
   round = 1
 
   loop do
     # board = initialize_board
-    board = {1=>" ", 2=>" ", 3=>"O", 4=>" ", 5=>"X", 6=>"O", 7=>"X", 8=>" ", 9=>"X"}
+    board = {1=>" ", 2=>" ", 3=>" ", 4=>" ", 5=>" ", 6=>" ", 7=>" ", 8=>" ", 9=>" "}
 
     system 'clear'
     display_scores(round, player_score, computer_score)
@@ -271,11 +281,13 @@ loop do
       prompt("Its a tie!")
     end
 
-    if detect_winner(board) == 'Player'
-      player_score += 1
-    elsif detect_winner(board) == 'Computer'
-      computer_score += 1
-    end
+    update_score(board, scores, :player, :computer)
+    binding.pry
+    # if detect_winner(board) == 'Player'
+    #   player_score += 1
+    # elsif detect_winner(board) == 'Computer'
+    #   computer_score += 1
+    # end
     round += 1
     sleep(3)
 
