@@ -241,8 +241,6 @@ def display_scores(rnd, human_score, ai_score)
   puts
 end
 
-
-
 def update_score(brd, scores, player, computer)
   if detect_winner(brd) == 'Player'
     scores[player] += 1
@@ -256,20 +254,17 @@ loop do
   break_out_of_welcome?
 
   scores = { player: 0, computer: 0 }
-  player_score = 0
-  computer_score = 0
+
   round = 1
 
   loop do
-    # board = initialize_board
-    board = {1=>" ", 2=>" ", 3=>" ", 4=>" ", 5=>" ", 6=>" ", 7=>" ", 8=>" ", 9=>" "}
-
+    board = initialize_board
     system 'clear'
-    display_scores(round, player_score, computer_score)
+    display_scores(round, scores[:player], scores[:computer])
     current_player = choose_starting_player
     loop do
       display_board(board)
-      display_scores(round, player_score, computer_score)
+      display_scores(round, scores[:player], scores[:computer])
       place_piece!(board, current_player)
       current_player = alternate_player(current_player)
       break if someone_won?(board) || board_full?(board)
@@ -282,18 +277,13 @@ loop do
     end
 
     update_score(board, scores, :player, :computer)
-    binding.pry
-    # if detect_winner(board) == 'Player'
-    #   player_score += 1
-    # elsif detect_winner(board) == 'Computer'
-    #   computer_score += 1
-    # end
+
     round += 1
     sleep(3)
 
-    if tournament_winner?(player_score, computer_score)
+    if tournament_winner?(scores[:player], scores[:computer])
       puts "============================================"
-      prompt "#{champion(player_score)} wins the tournament!"
+      prompt "#{champion(scores[:player])} wins the tournament!"
       puts
       break
     end
