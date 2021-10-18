@@ -183,6 +183,7 @@ def computer_exploits(brd)
 end
 
 def computer_defends!(brd)
+  # binding.pry
   plays = 0
   WINNING_LINES.each do |line|
     if brd.values_at(*line).count(PLAYER_MARKER) >= 2
@@ -193,8 +194,8 @@ def computer_defends!(brd)
         end
         break if plays > 0
       end
-      break
     end
+    break if plays > 0
   end
 end
 
@@ -250,7 +251,9 @@ loop do
   round = 1
 
   loop do
-    board = initialize_board
+    # board = initialize_board
+    board = {1=>" ", 2=>" ", 3=>"O", 4=>" ", 5=>"X", 6=>"O", 7=>"X", 8=>" ", 9=>"X"}
+
     system 'clear'
     display_scores(round, player_score, computer_score)
     current_player = choose_starting_player
