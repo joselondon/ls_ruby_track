@@ -249,11 +249,25 @@ def update_score(brd, scores, player, computer)
   end
 end
 
+def play_again?
+  response = ''
+  loop do
+    prompt "Play again?"
+    response = gets.chomp.downcase
+    if VALID_YES.include?(response) || VALID_NO.include?(response)
+      break
+    else
+      prompt "Invalid answer, try again."
+    end
+  end
+  VALID_YES.include?(response)
+end
+
 loop do
   display_welcome_text
   break_out_of_welcome?
 
-  scores = { player: 0, computer: 0 }
+  scores = { player: 0, computer: 4 }
 
   round = 1
 
@@ -289,17 +303,7 @@ loop do
     end
   end
 
-  response = ''
-  loop do
-    prompt "Play again?"
-    response = gets.chomp.downcase
-    if VALID_YES.include?(response) || VALID_NO.include?(response)
-      break
-    else
-      prompt "Invalid answer, try again."
-    end
-  end
-  break if VALID_NO.include?(response)
+  break unless play_again?
 end
 system 'clear'
 prompt("Thanks for playing tic tac toe.  Goodbye!")
