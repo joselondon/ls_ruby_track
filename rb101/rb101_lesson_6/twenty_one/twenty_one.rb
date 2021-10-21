@@ -17,9 +17,14 @@ def deal_card(deck)
   deck.slice!(deck.index(card))
 end
 
+def initial_deal(deck, hand)
+  2.times { |i| hand << deal_card(deck) }
+end
+
 deck = initialize_deck
 
 player_hand = []
+ai_hand = []
 
-player_hand << deal_card(deck)
-player_hand << deal_card(deck)
+initial_deal(deck, player_hand)
+initialize_deck(deck, ai_hand)
