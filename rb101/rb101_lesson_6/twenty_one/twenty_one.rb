@@ -1,4 +1,10 @@
 require 'pry'
+VALID_HIT = ['hit', 'h']
+VALID_STAY = ['stay', 's']
+
+def prompt(message)
+  puts "=> #{message}"
+end
 
 def initialize_deck
   deck = []
@@ -26,7 +32,20 @@ def display_player_hand(player_hand)
 end
 
 def display_dealer_hand(dealer_hand)
-  puts "Dealer has: ???? and  #{dealer_hand[1][0]}"
+  puts "Dealer has: ???? and #{dealer_hand[1][0]}"
+end
+
+def ask_player_hit_or_stay?
+    prompt "Hit or stay?"
+  loop do
+    player_choice = gets.chomp.downcase
+    break if valid_choice?(player_choice)
+    prompt "Please enter either '(h)it' or '(s)tay'"
+  end
+end
+
+def valid_choice?(choice)
+  VALID_HIT.include?(choice) || VALID_STAY.include?(choice)
 end
 
 deck = initialize_deck
@@ -39,3 +58,7 @@ initial_deal(deck, dealer_hand)
 
 display_dealer_hand(dealer_hand)
 display_player_hand(player_hand)
+puts
+ask_player_hit_or_stay?()
+
+
