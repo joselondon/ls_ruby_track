@@ -16,6 +16,6 @@
 
 **Player Hand:** Starts two cards BOTH VISIBLE
 
-**Dealer Hand:** Starts two cars ONE HIDDEN ONE VISSIBLE FURTHER CARDS ARE VISIBLE
+**Dealer Hand:** Starts two cards ONE HIDDEN ONE VISSIBLE FURTHER CARDS ARE VISIBLE
 
 **Both hands have an upper limit of 21; beyond which the hand is bust**
