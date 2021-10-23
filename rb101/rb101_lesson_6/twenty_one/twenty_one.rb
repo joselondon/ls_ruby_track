@@ -1,4 +1,4 @@
-require 'pry'
+require 'pry-byebug'
 VALID_HIT = ['hit', 'h']
 VALID_STAY = ['stay', 's']
 
@@ -37,28 +37,40 @@ end
 
 def ask_player_hit_or_stay?
     prompt "Hit or stay?"
+    choice = ''
   loop do
-    player_choice = gets.chomp.downcase
-    break if valid_choice?(player_choice)
+    choice = gets.chomp.downcase
+    break if valid_choice?(choice)
     prompt "Please enter either '(h)it' or '(s)tay'"
   end
+  choice
 end
 
 def valid_choice?(choice)
   VALID_HIT.include?(choice) || VALID_STAY.include?(choice)
 end
 
+def display_hands(dealer, player)
+  display_dealer_hand(dealer)
+  display_player_hand(player)
+end
+
 deck = initialize_deck
 
 player_hand = []
 dealer_hand = []
+scores = {dealer: 0,
+          player: 0}
 
 initial_deal(deck, player_hand)
 initial_deal(deck, dealer_hand)
 
-display_dealer_hand(dealer_hand)
-display_player_hand(player_hand)
-puts
-ask_player_hit_or_stay?()
+loop do
+  display_hands(dealer_hand, player_hand)
+  puts
+  choice = ask_player_hit_or_stay?()
+  break if VALID_STAY.include?(choice)
+end
+p "dealer turn"
 
 
