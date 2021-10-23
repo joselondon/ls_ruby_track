@@ -55,11 +55,16 @@ def display_hands(dealer, player)
   display_player_hand(player)
 end
 
-def players_round(dealer_hand, player_hand)
+def update_player_hand(player_hand, deck)
+  player_hand << deal_card(deck)
+end
+
+def players_round(dealer_hand, player_hand, deck)
   loop do
     display_hands(dealer_hand, player_hand)
     puts
     choice = ask_player_hit_or_stay?()
+    update_player_hand(player_hand, deck)
     break if VALID_STAY.include?(choice)
   end
 end
@@ -74,7 +79,9 @@ scores = {dealer: 0,
 initial_deal(deck, player_hand)
 initial_deal(deck, dealer_hand)
 
-players_round(dealer_hand, player_hand)
+players_round(dealer_hand, player_hand, deck)
+display_hands(dealer_hand, player_hand)
+
 
 p "dealer turn"
 
