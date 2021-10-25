@@ -1,6 +1,21 @@
 require 'pry-byebug'
 VALID_HIT = ['hit', 'h']
 VALID_STAY = ['stay', 's']
+SCORES = {
+  'Ace' => [1, 11],
+  '2' => 2,
+  '3' => 3,
+  '4' => 4,
+  '5' => 5,
+  '6' => 6,
+  '7' => 7,
+  '8' => 8,
+  '9' => 9,
+  '10' => 10,
+  'Jack' => 10,
+  'Queen' => 10,
+  'King' => 10
+}
 
 def prompt(message)
   puts "=> #{message}"
@@ -64,9 +79,17 @@ def players_round(dealer_hand, player_hand, deck)
     display_hands(dealer_hand, player_hand)
     puts
     choice = ask_player_hit_or_stay?()
-    update_player_hand(player_hand, deck)
-    break if VALID_STAY.include?(choice)
+    if VALID_STAY.include?(choice)
+      break
+    else
+      update_player_hand(player_hand, deck)
+    end
+    calculate_hand(player_hand)
   end
+end
+
+def calculate_hand(hand)
+  # sum each 2nd element score
 end
 
 deck = initialize_deck
