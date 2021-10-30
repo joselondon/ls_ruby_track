@@ -1,21 +1,7 @@
 require 'pry-byebug'
 VALID_HIT = ['hit', 'h']
 VALID_STAY = ['stay', 's']
-SCORES = {
-  'Ace' => [1, 11],
-  '2' => 2,
-  '3' => 3,
-  '4' => 4,
-  '5' => 5,
-  '6' => 6,
-  '7' => 7,
-  '8' => 8,
-  '9' => 9,
-  '10' => 10,
-  'Jack' => 10,
-  'Queen' => 10,
-  'King' => 10
-}
+COURTS_CARDS = ["Jack", "Queen", "King"]
 
 def prompt(message)
   puts "=> #{message}"
@@ -26,10 +12,10 @@ def initialize_deck
   ranks = %w{Ace 2 3 4 5 6 7 8 9 10 Jack Queen King}
   suits = %w{Spades Hearts Diamonds Clubs}
   suits.each do |suit|
-    ranks.size.times do |i|
-      deck << [ranks[i], suit]
+      ranks.size.times do |i|
+        deck << [ranks[i], suit]
+      end
     end
-  end
   deck
 end
 
@@ -88,8 +74,32 @@ def players_round(dealer_hand, player_hand, deck)
   end
 end
 
-def calculate_hand(hand)
-  # sum each 2nd element score
+def calc_ace(hand, ace = 11)
+  ace = 1 if calc_hand_excl_aces(hand) > 10
+  ace
+end
+
+def calculate_sum_of_pip_cards (hand)
+  value_of_ints = hand.flatten.map {|e| e.to_i}.sum
+end
+
+def calc_hand_excl_aces(hand)
+  value_of_pips = calculate_sum_of_pip_cards(hand)
+  courts = hand.flatten.map do |e|
+    val = 0
+    if COURTS_CARDS.include?(e)
+      val += 10
+    elsif e == "Ace"
+      e = 0
+    end
+    val
+  end
+  value_of_courts = courts.sum
+  value_of_courts + value_of_pips
+end
+
+def busted?(hand)
+  false
 end
 
 deck = initialize_deck
@@ -101,10 +111,17 @@ scores = {dealer: 0,
 
 initial_deal(deck, player_hand)
 initial_deal(deck, dealer_hand)
-
-players_round(dealer_hand, player_hand, deck)
-display_hands(dealer_hand, player_hand)
-
+binding.pry
+loop do
+  display_hands(dealer_hand, player_hand)
+  choice = ask_player_hit_or_stay?()
+  if VALID_STAY.include?(choice) || busted?(player_hand)
+    break
+  else 
+    update_player_hand(player_hand, deck)
+  end
+  calc_hand_excl_aces(player_hand)
+end
 
 p "dealer turn"
 
