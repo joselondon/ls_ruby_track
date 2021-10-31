@@ -79,13 +79,12 @@ def calc_ace(hand, ace = 11)
   ace
 end
 
-def calculate_sum_of_pip_cards (hand)
+def calc_sum_of_pip_cards(hand)
   value_of_ints = hand.flatten.map {|e| e.to_i}.sum
 end
 
-def calc_hand_excl_aces(hand)
-  value_of_pips = calculate_sum_of_pip_cards(hand)
-  courts = hand.flatten.map do |e|
+def calc_sum_of_court_cards(hand)
+  sum = hand.flatten.map do |e|
     val = 0
     if COURTS_CARDS.include?(e)
       val += 10
@@ -94,8 +93,12 @@ def calc_hand_excl_aces(hand)
     end
     val
   end
-  value_of_courts = courts.sum
-  value_of_courts + value_of_pips
+end
+
+def calc_hand_excl_aces(hand)
+  value_of_pips = calc_sum_of_pip_cards(hand)
+  value_of_courts = calc_sum_of_court_cards(hand)
+  value_of_courts.sum + value_of_pips
 end
 
 def busted?(hand)
@@ -111,7 +114,6 @@ scores = {dealer: 0,
 
 initial_deal(deck, player_hand)
 initial_deal(deck, dealer_hand)
-binding.pry
 loop do
   display_hands(dealer_hand, player_hand)
   choice = ask_player_hit_or_stay?()
