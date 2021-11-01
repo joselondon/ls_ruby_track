@@ -1,4 +1,4 @@
-require 'pry-byebug'
+# require 'pry-byebug'
 VALID_HIT = ['hit', 'h']
 VALID_STAY = ['stay', 's']
 COURTS_CARDS = ["Jack", "Queen", "King"]
@@ -29,11 +29,31 @@ def initial_deal(deck, hand)
 end
 
 def display_player_hand(player_hand)
-  puts "You have: #{player_hand[0][0]} and #{player_hand[1][0]}"
+  print "You have: "
+  player_hand.each do |card|
+    if card == player_hand.last
+      puts " and #{card[0]}"
+    elsif card == player_hand.first
+      print "#{card[0]}"
+    else 
+      print ", #{card[0]}" 
+    end
+  end
 end
 
 def display_dealer_hand(dealer_hand)
-  puts "Dealer has: ???? and #{dealer_hand[1][0]}"
+  print "Dealer has: "
+  dealer_hand.each do |card|
+    if card == dealer_hand.last
+      puts " and #{card[0]}"
+    elsif card == dealer_hand.first
+      print "????"
+    else 
+      print ", #{card[0]}" 
+    end
+  end
+
+  #puts "Dealer has: ???? and #{dealer_hand[1][0]}"
 end
 
 def ask_player_hit_or_stay?
@@ -57,7 +77,10 @@ def display_hands(dealer, player)
 end
 
 def update_player_hand(player_hand, deck)
-  player_hand << deal_card(deck)
+  card = deal_card(deck)
+  player_hand << card
+  puts "Player dealt:  #{card[0]} of #{card[1]}"
+  sleep(2)
 end
 
 def players_round(dealer_hand, player_hand, deck)
@@ -115,6 +138,7 @@ scores = {dealer: 0,
 initial_deal(deck, player_hand)
 initial_deal(deck, dealer_hand)
 loop do
+  system 'clear'
   display_hands(dealer_hand, player_hand)
   choice = ask_player_hit_or_stay?()
   if VALID_STAY.include?(choice) || busted?(player_hand)
