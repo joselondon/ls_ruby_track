@@ -1,4 +1,4 @@
-# require 'pry-byebug'
+require 'pry-byebug'
 VALID_HIT = ['hit', 'h']
 VALID_STAY = ['stay', 's']
 COURTS_CARDS = ["Jack", "Queen", "King"]
@@ -52,8 +52,6 @@ def display_dealer_hand(dealer_hand)
       print ", #{card[0]}" 
     end
   end
-
-  #puts "Dealer has: ???? and #{dealer_hand[1][0]}"
 end
 
 def ask_player_hit_or_stay?
@@ -83,20 +81,6 @@ def update_player_hand(player_hand, deck)
   sleep(2)
 end
 
-def players_round(dealer_hand, player_hand, deck)
-  loop do
-    display_hands(dealer_hand, player_hand)
-    puts
-    choice = ask_player_hit_or_stay?()
-    if VALID_STAY.include?(choice)
-      break
-    else
-      update_player_hand(player_hand, deck)
-    end
-    calculate_hand(player_hand)
-  end
-end
-
 def calc_ace(hand, ace = 11)
   ace = 1 if calc_hand_excl_aces(hand) > 10
   ace
@@ -124,8 +108,13 @@ def calc_hand_excl_aces(hand)
   value_of_courts.sum + value_of_pips
 end
 
+def calc_hand(hand)
+  calc_hand_excl_aces(hand) + calc_ace(hand)
+end
+
 def busted?(hand)
-  false
+  (calc_ace(hand) + calc_sum_of_court_cards(hand).sum +
+  calc_sum_of_pip_cards(hand)) > 21
 end
 
 deck = initialize_deck
@@ -141,12 +130,15 @@ loop do
   system 'clear'
   display_hands(dealer_hand, player_hand)
   choice = ask_player_hit_or_stay?()
-  if VALID_STAY.include?(choice) || busted?(player_hand)
+  if VALID_STAY.include?(choice)
     break
   else 
     update_player_hand(player_hand, deck)
   end
-  calc_hand_excl_aces(player_hand)
+  if calc_hand(player_hand) > 21 
+    puts "Bust dealer wins"
+    break
+  end
 end
 
 p "dealer turn"
