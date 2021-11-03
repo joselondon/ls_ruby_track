@@ -155,7 +155,11 @@ end
 
 if winner == ''
   loop do
-    if dealers_choice?(dealer_hand, deck) == 'stay'
+    if  busted?(dealer_hand)
+      puts "Dealer is bust! Player Wins"
+      winner = 'player'
+      break
+    elsif dealers_choice?(dealer_hand, deck) == 'stay'
       puts "Dealer chooses to stay"
       break
     else
