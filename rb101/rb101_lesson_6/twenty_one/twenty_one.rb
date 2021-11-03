@@ -74,10 +74,10 @@ def display_hands(dealer, player)
   display_player_hand(player)
 end
 
-def update_player_hand(player_hand, deck)
+def update_hand(hand, deck, player)
   card = deal_card(deck)
-  player_hand << card
-  puts "Player dealt:  #{card[0]} of #{card[1]}"
+  hand << card
+  puts "#{player} dealt:  #{card[0]} of #{card[1]}"
   sleep(2)
 end
 
@@ -117,15 +117,26 @@ def busted?(hand)
   calc_sum_of_pip_cards(hand)) > 21
 end
 
+def dealers_choice?(dealers_hand, deck)
+  choice = nil
+  if calc_hand(dealers_hand) >= 17
+    choice = 'stay'
+  else
+    choice = 'hit'
+  end
+end
+
 deck = initialize_deck
 
 player_hand = []
 dealer_hand = []
 scores = {dealer: 0,
           player: 0}
+winner = ''
 
 initial_deal(deck, player_hand)
 initial_deal(deck, dealer_hand)
+
 loop do
   system 'clear'
   display_hands(dealer_hand, player_hand)
@@ -133,14 +144,28 @@ loop do
   if VALID_STAY.include?(choice)
     break
   else 
-    update_player_hand(player_hand, deck)
+    update_hand(player_hand, deck, 'player')
   end
-  if calc_hand(player_hand) > 21 
-    puts "Bust dealer wins"
+  if busted?(player_hand)
+    puts "Busted!  Dealer Wins"
+    winner = 'dealer'
     break
   end
 end
 
-p "dealer turn"
+if winner == ''
+  loop do
+    if dealers_choice?(dealer_hand, deck) == 'stay'
+      puts "Dealer chooses to stay"
+      break
+    else
+      update_hand(dealer_hand, deck, 'dealer')
+    end
+  end
+end
+
+p 'the end'
+
+
 
 
