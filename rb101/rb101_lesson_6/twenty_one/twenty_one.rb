@@ -2,6 +2,8 @@ require 'pry-byebug'
 VALID_HIT = ['hit', 'h']
 VALID_STAY = ['stay', 's']
 COURTS_CARDS = ["Jack", "Queen", "King"]
+scores = {dealer: 0,
+          player: 0}
 
 def prompt(message)
   puts "=> #{message}"
@@ -74,15 +76,19 @@ def display_hands(dealer, player)
   display_player_hand(player)
 end
 
-def update_hand(hand, deck, player)
+def update_hand(hand, deck, player_string)
   card = deal_card(deck)
   hand << card
-  puts "#{player} dealt:  #{card[0]} of #{card[1]}"
+  puts "#{player_string} dealt:  #{card[0]} of #{card[1]}"
   sleep(2)
 end
 
 def calc_ace(hand, ace = 11)
-  ace = 1 if calc_hand_excl_aces(hand) > 10
+  if !hand.flatten.include?('Ace')
+    return 0
+  elsif calc_hand_excl_aces(hand) > 10
+    ace = 1
+  end
   ace
 end
 
@@ -126,12 +132,33 @@ def dealers_choice?(dealers_hand, deck)
   end
 end
 
+def calc_scores(player_hand, dealer_hand, scores_hash)
+  scores_hash[:player] = calc_hand(player_hand)
+  scores_hash[:dealer] = calc_hand(dealer_hand)
+end
+
+def calc_winner(scores_hash)
+  if scores_hash[:player] > scores_hash[:dealer]
+    'player'
+  elsif
+    scores_hash[:player] < scores_hash[:dealer]
+    'dealer'
+  else
+    'draw'
+  end
+end
+
+def display_winner(winner, scores_hash)
+  puts "Player hand value: #{scores_hash[:player]}"
+  puts "Dealer hand value: #{scores_hash[:dealer]}"
+  puts "Winner is: #{winner}"
+end
+
+
 deck = initialize_deck
 
 player_hand = []
 dealer_hand = []
-scores = {dealer: 0,
-          player: 0}
 winner = ''
 
 initial_deal(deck, player_hand)
@@ -146,6 +173,7 @@ loop do
   else 
     update_hand(player_hand, deck, 'player')
   end
+
   if busted?(player_hand)
     puts "Busted!  Dealer Wins"
     winner = 'dealer'
@@ -154,6 +182,7 @@ loop do
 end
 
 if winner == ''
+  binding.pry
   loop do
     if  busted?(dealer_hand)
       puts "Dealer is bust! Player Wins"
@@ -168,8 +197,8 @@ if winner == ''
   end
 end
 
-p 'the end'
-
-
-
-
+if winner == ''
+  calc_scores(player_hand, dealer_hand, scores)
+  winner = calc_winner(scores)
+  display_winner(winner, scores)
+end
