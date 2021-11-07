@@ -151,6 +151,7 @@ end
 def display_winner(winner, scores_hash)
   puts "Player hand value: #{scores_hash[:player]}"
   puts "Dealer hand value: #{scores_hash[:dealer]}"
+  puts
   puts "Winner is: #{winner}"
 end
 
@@ -182,8 +183,11 @@ loop do
 end
 
 if winner == ''
-  binding.pry
   loop do
+    sleep(2)
+    system 'clear'
+    display_hands(dealer_hand, player_hand)
+    puts
     if  busted?(dealer_hand)
       puts "Dealer is bust! Player Wins"
       winner = 'player'
