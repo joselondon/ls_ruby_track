@@ -1,6 +1,7 @@
 VALID_HIT = ['hit', 'h']
 VALID_STAY = ['stay', 's']
 COURTS_CARDS = ["Jack", "Queen", "King"]
+STAND_TIMER = 2
 scores = { dealer: 0,
            player: 0 }
 
@@ -172,7 +173,7 @@ loop do
     break
   else
     update_hand(player_hand, deck, 'player')
-    sleep(2)
+    sleep(STAND_TIMER)
   end
 
   if busted?(player_hand)
@@ -197,11 +198,11 @@ if winner == ''
       break
     elsif dealers_choice?(dealer_hand) == 'stay'
       puts "Dealer chooses to stay"
-      sleep(2)
+      sleep(STAND_TIMER)
       break
     else
       update_hand(dealer_hand, deck, 'dealer')
-      sleep(2)
+      sleep(STAND_TIMER)
     end
   end
 end
