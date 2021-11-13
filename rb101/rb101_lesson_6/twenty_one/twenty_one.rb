@@ -30,28 +30,26 @@ def initial_deal(deck, hand)
   2.times { hand << deal_card(deck) }
 end
 
-def display_player_hand(player_hand)
-  print "You have: "
-  player_hand.each do |card|
-    if card == player_hand.last
-      puts " and #{card[0]}"
-    elsif card == player_hand.first
-      print card[0].to_s
-    else
-      print ", #{card[0]}"
-    end
+def has_have(player)
+  if player.downcase == 'player'
+    'You have: '
+  elsif player.downcase == 'dealer'
+    'Dealer has: '
+  else
+    '[INVALID] has/have: '
   end
 end
 
-def display_dealer_hand(dealer_hand, hide = true)
-  print "Dealer has: "
-  dealer_hand.each do |card|
-    if card == dealer_hand.last
+def display_hand(player_str, hand, hide = true)
+  print "#{has_have(player_str)}"
+  hand.each do |card|
+    if card == hand.last
       puts "and #{card[0]}"
-    elsif card == dealer_hand.first && hide == true
-      print "[HIDDEN] "
+    elsif card == hand.first && player_str.downcase == 'Dealer' &&
+          hide == true
+          print "[HIDDEN] "
     else
-      print "#{card[0]},"
+      print "#{card[0]}, "
     end
   end
 end
@@ -163,8 +161,8 @@ initial_deal(deck, dealer_hand)
 
 loop do
   system 'clear'
-  display_dealer_hand(dealer_hand)
-  display_player_hand(player_hand)
+  display_hand('Dealer', dealer_hand)
+  display_hand('Player', player_hand)
 
   choice = ask_player_hit_or_stay?
   sleep(0.5)
@@ -178,8 +176,8 @@ loop do
 
   if busted?(player_hand)
     system 'clear'
-    display_dealer_hand(dealer_hand, false)
-    display_player_hand(player_hand)
+    display_hand('Dealer', dealer_hand, false)
+    display_hand('Player', player_hand)
     puts "You are busted!  Dealer Wins"
     winner = 'dealer'
     break
@@ -189,8 +187,8 @@ end
 if winner == ''
   loop do
     system 'clear'
-    display_dealer_hand(dealer_hand, false)
-    display_player_hand(player_hand)
+    display_hand('Dealer', dealer_hand, false)
+    display_hand('Player', player_hand)
     puts
     if busted?(dealer_hand)
       puts "Dealer is bust! Player Wins"
@@ -209,8 +207,8 @@ end
 
 if winner == ''
   system 'clear'
-  display_dealer_hand(dealer_hand, false)
-  display_player_hand(player_hand)
+  display_hand('Dealer', dealer_hand, false)
+  display_hand('Player', player_hand)
   puts
   calc_scores(player_hand, dealer_hand, scores)
   winner = calc_winner(scores)
