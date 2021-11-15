@@ -44,7 +44,7 @@ def display_hand(player_str, hand, hide = true)
   print "#{has_have(player_str)}"
   hand.each do |card|
     if card == hand.last
-      puts "and #{card[0]}"
+      puts "and #{card[0]}.  Hand value = #{calc_hand(hand)}"
     elsif card == hand.first && player_str.downcase == 'Dealer' &&
           hide == true
           print "[HIDDEN] "
@@ -67,11 +67,6 @@ end
 
 def valid_choice?(choice)
   VALID_HIT.include?(choice) || VALID_STAY.include?(choice)
-end
-
-def display_hands(dealer, player)
-  display_dealer_hand(dealer)
-  display_player_hand(player)
 end
 
 def update_hand(hand, deck, player_string)
