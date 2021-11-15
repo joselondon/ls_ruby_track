@@ -75,6 +75,7 @@ def update_hand(hand, deck, player_string)
   puts "#{player_string} dealt:  #{card[0]} of #{card[1]}"
 end
 
+# Contains a bug more in that only one ace is calculated.  TODO look at iterating over flattened array to tackle all Aces
 def calc_ace(hand, ace = 11)
   if !hand.flatten.include?('Ace')
     return 0
