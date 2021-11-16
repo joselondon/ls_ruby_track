@@ -1,3 +1,4 @@
+require 'pry-byebug'
 VALID_HIT = ['hit', 'h']
 VALID_STAY = ['stay', 's']
 COURTS_CARDS = ["Jack", "Queen", "King"]
@@ -75,14 +76,24 @@ def update_hand(hand, deck, player_string)
   puts "#{player_string} dealt:  #{card[0]} of #{card[1]}"
 end
 
-# Contains a bug more in that only one ace is calculated.  TODO look at iterating over flattened array to tackle all Aces
+# Iteraton does not take account of value of hand with one Ace already calculated.  Maybe recursion needed?
 def calc_ace(hand, ace = 11)
-  if !hand.flatten.include?('Ace')
-    return 0
-  elsif calc_hand_excl_aces(hand) > 10
-    ace = 1
+  flattened = hand.flatten
+  ace_score = 0
+  flattened.each do |card|
+    if card == 'Ace'
+      calc_hand_excl_aces(hand) > 10 ? ace_score += 1 : ace_score += 11
+    else
+      ace_score += 0
+    end
   end
-  ace
+  ace_score
+#  if !hand.flatten.include?('Ace')
+#    return 0
+#  elsif calc_hand_excl_aces(hand) > 10
+#    ace = 1
+#  end
+#  ace
 end
 
 def calc_sum_of_pip_cards(hand)
@@ -148,7 +159,8 @@ end
 
 deck = initialize_deck
 
-player_hand = []
+player_hand = [["Ace", "Hearts"], ["Ace", "Spades"]]
+binding.pry
 dealer_hand = []
 winner = ''
 
