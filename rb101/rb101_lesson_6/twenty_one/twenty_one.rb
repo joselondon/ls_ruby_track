@@ -1,4 +1,3 @@
-require 'pry-byebug'
 VALID_HIT = ['hit', 'h']
 VALID_STAY = ['stay', 's']
 COURTS_CARDS = ["Jack", "Queen", "King"]
@@ -76,24 +75,23 @@ def update_hand(hand, deck, player_string)
   puts "#{player_string} dealt:  #{card[0]} of #{card[1]}"
 end
 
-# Iteraton does not take account of value of hand with one Ace already calculated.  Maybe recursion needed?
-def calc_ace(hand, ace = 11)
+def calc_ace(hand)
   flattened = hand.flatten
-  ace_score = 0
-  flattened.each do |card|
-    if card == 'Ace'
-      calc_hand_excl_aces(hand) > 10 ? ace_score += 1 : ace_score += 11
-    else
-      ace_score += 0
+  aces_left = flattened.count("Ace")
+  aces_value = 0
+  until aces_left <= 0
+    flattened.each do |card|
+      if card == "Ace"
+        if calc_hand_excl_aces(hand) + aces_value > 10
+          aces_value += 1
+        else
+          aces_value += 11
+        end
+      end
+      aces_left -= 1
     end
   end
-  ace_score
-#  if !hand.flatten.include?('Ace')
-#    return 0
-#  elsif calc_hand_excl_aces(hand) > 10
-#    ace = 1
-#  end
-#  ace
+  aces_value
 end
 
 def calc_sum_of_pip_cards(hand)
@@ -159,8 +157,7 @@ end
 
 deck = initialize_deck
 
-player_hand = [["Ace", "Hearts"], ["Ace", "Spades"]]
-binding.pry
+player_hand = []
 dealer_hand = []
 winner = ''
 
@@ -171,7 +168,6 @@ loop do
   system 'clear'
   display_hand('Dealer', dealer_hand)
   display_hand('Player', player_hand)
-
   choice = ask_player_hit_or_stay?
   sleep(0.5)
   system 'clear'
