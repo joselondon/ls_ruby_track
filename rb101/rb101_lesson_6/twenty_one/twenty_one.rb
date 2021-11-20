@@ -1,3 +1,4 @@
+require 'pry-byebug'
 VALID_HIT = ['hit', 'h']
 VALID_STAY = ['stay', 's']
 COURTS_CARDS = ["Jack", "Queen", "King"]
@@ -41,6 +42,7 @@ def has_have(player)
 end
 
 def display_hand(player_str, hand, hide = true)
+  binding.pry
   print "#{has_have(player_str)}"
   hand.each do |card|
     if card == hand.last
