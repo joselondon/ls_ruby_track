@@ -3,6 +3,7 @@ VALID_HIT = ['hit', 'h']
 VALID_STAY = ['stay', 's']
 COURTS_CARDS = ["Jack", "Queen", "King"]
 STAND_TIMER = 2
+VALID_YES = ['y', 'yes']
 scores = { dealer: 0,
            player: 0 }
 
@@ -156,6 +157,13 @@ def display_winner(winner, scores_hash)
   puts "Winner is: #{winner}"
 end
 
+def play_again?
+  prompt "Enter '(y)es' to play again, or any other key to exit"
+  response = gets.chomp.downcase
+  VALID_YES.include?(response)
+end
+
+loop do
 deck = initialize_deck
 
 player_hand = []
@@ -165,57 +173,60 @@ winner = ''
 initial_deal(deck, player_hand)
 initial_deal(deck, dealer_hand)
 
-loop do
-  system 'clear'
-  display_hand('Dealer', dealer_hand)
-  display_hand('Player', player_hand)
-  choice = ask_player_hit_or_stay?
-  sleep(0.5)
-  system 'clear'
-  if VALID_STAY.include?(choice)
-    break
-  else
-    update_hand(player_hand, deck, 'player')
-    sleep(STAND_TIMER)
-  end
-
-  if busted?(player_hand)
-    system 'clear'
-    display_hand('Dealer', dealer_hand, false)
-    display_hand('Player', player_hand)
-    puts "You are busted!  Dealer Wins"
-    winner = 'dealer'
-    break
-  end
-end
-
-if winner == ''
   loop do
+    system 'clear'
+    display_hand('Dealer', dealer_hand)
+    display_hand('Player', player_hand)
+    choice = ask_player_hit_or_stay?
+    sleep(0.5)
+    system 'clear'
+    if VALID_STAY.include?(choice)
+      break
+    else
+      update_hand(player_hand, deck, 'player')
+      sleep(STAND_TIMER)
+    end
+
+    if busted?(player_hand)
+      system 'clear'
+      display_hand('Dealer', dealer_hand, false)
+      display_hand('Player', player_hand)
+      puts "You are busted!  Dealer Wins"
+      winner = 'dealer'
+      break
+    end
+  end
+
+  if winner == ''
+    loop do
+      system 'clear'
+      display_hand('Dealer', dealer_hand, false)
+      display_hand('Player', player_hand)
+      puts
+      if busted?(dealer_hand)
+        puts "Dealer is bust! Player Wins"
+        winner = 'player'
+        break
+      elsif dealers_choice?(dealer_hand) == 'stay'
+        puts "Dealer chooses to stay"
+        sleep(STAND_TIMER)
+        break
+      else
+        update_hand(dealer_hand, deck, 'dealer')
+        sleep(STAND_TIMER)
+      end
+    end
+  end
+
+  if winner == ''
     system 'clear'
     display_hand('Dealer', dealer_hand, false)
     display_hand('Player', player_hand)
     puts
-    if busted?(dealer_hand)
-      puts "Dealer is bust! Player Wins"
-      winner = 'player'
-      break
-    elsif dealers_choice?(dealer_hand) == 'stay'
-      puts "Dealer chooses to stay"
-      sleep(STAND_TIMER)
-      break
-    else
-      update_hand(dealer_hand, deck, 'dealer')
-      sleep(STAND_TIMER)
-    end
+    calc_scores(player_hand, dealer_hand, scores)
+    winner = calc_winner(scores)
+    display_winner(winner, scores)
   end
+  break if play_again? == false
 end
-
-if winner == ''
-  system 'clear'
-  display_hand('Dealer', dealer_hand, false)
-  display_hand('Player', player_hand)
-  puts
-  calc_scores(player_hand, dealer_hand, scores)
-  winner = calc_winner(scores)
-  display_winner(winner, scores)
-end
+puts "Thanks for playing Twenty One.  Goodbye!"
