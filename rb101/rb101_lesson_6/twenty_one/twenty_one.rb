@@ -45,8 +45,10 @@ end
 def display_hand(player_str, hand, hide = true)
   print "#{has_have(player_str)}"
   hand.each do |card|
-    if card == hand.last
+    if card == hand.last && hide == false
       puts "and #{card[0]}.  Hand value = #{calc_hand(hand)}"
+    elsif card == hand.last && hide == true
+      puts "and #{card[0]}."
     elsif card == hand.first && player_str.downcase == 'dealer' &&
           hide == true
           print "[HIDDEN] "
@@ -176,7 +178,7 @@ initial_deal(deck, dealer_hand)
   loop do
     system 'clear'
     display_hand('Dealer', dealer_hand)
-    display_hand('Player', player_hand)
+    display_hand('Player', player_hand, false)
     choice = ask_player_hit_or_stay?
     sleep(0.5)
     system 'clear'
@@ -190,7 +192,7 @@ initial_deal(deck, dealer_hand)
     if busted?(player_hand)
       system 'clear'
       display_hand('Dealer', dealer_hand, false)
-      display_hand('Player', player_hand)
+      display_hand('Player', player_hand, false)
       puts "You are busted!  Dealer Wins"
       winner = 'dealer'
       break
@@ -201,7 +203,7 @@ initial_deal(deck, dealer_hand)
     loop do
       system 'clear'
       display_hand('Dealer', dealer_hand, false)
-      display_hand('Player', player_hand)
+      display_hand('Player', player_hand, false)
       puts
       if busted?(dealer_hand)
         puts "Dealer is bust! Player Wins"
@@ -221,7 +223,7 @@ initial_deal(deck, dealer_hand)
   if winner == ''
     system 'clear'
     display_hand('Dealer', dealer_hand, false)
-    display_hand('Player', player_hand)
+    display_hand('Player', player_hand, false)
     puts
     calc_scores(player_hand, dealer_hand, scores)
     winner = calc_winner(scores)
@@ -229,4 +231,6 @@ initial_deal(deck, dealer_hand)
   end
   break if play_again? == false
 end
+sleep(STAND_TIMER)
+system 'clear'
 puts "Thanks for playing Twenty One.  Goodbye!"
