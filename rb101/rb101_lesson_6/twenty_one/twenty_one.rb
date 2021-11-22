@@ -42,12 +42,11 @@ def has_have(player)
 end
 
 def display_hand(player_str, hand, hide = true)
-  binding.pry
   print "#{has_have(player_str)}"
   hand.each do |card|
     if card == hand.last
       puts "and #{card[0]}.  Hand value = #{calc_hand(hand)}"
-    elsif card == hand.first && player_str.downcase == 'Dealer' &&
+    elsif card == hand.first && player_str.downcase == 'dealer' &&
           hide == true
           print "[HIDDEN] "
     else
