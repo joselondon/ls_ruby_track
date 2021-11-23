@@ -103,21 +103,21 @@ def calc_sum_of_pip_cards(hand)
 end
 
 def calc_sum_of_court_cards(hand)
-  hand.flatten.map do |e|
-    val = 0
+  value = 0
+  flattened = hand.flatten.map do |e|
     if COURTS_CARDS.include?(e)
-      val += 10
+      value += 10
     elsif e == "Ace"
       0
     end
-    val
   end
+  value
 end
 
 def calc_hand_excl_aces(hand)
   value_of_pips = calc_sum_of_pip_cards(hand)
   value_of_courts = calc_sum_of_court_cards(hand)
-  value_of_courts.sum + value_of_pips
+  value_of_courts + value_of_pips
 end
 
 def calc_hand(hand)
@@ -125,7 +125,7 @@ def calc_hand(hand)
 end
 
 def busted?(hand)
-  (calc_ace(hand) + calc_sum_of_court_cards(hand).sum +
+  (calc_ace(hand) + calc_sum_of_court_cards(hand) +
   calc_sum_of_pip_cards(hand)) > 21
 end
 
@@ -174,7 +174,6 @@ winner = ''
 
 initial_deal(deck, player_hand)
 initial_deal(deck, dealer_hand)
-
   loop do
     system 'clear'
     display_hand('Dealer', dealer_hand)
