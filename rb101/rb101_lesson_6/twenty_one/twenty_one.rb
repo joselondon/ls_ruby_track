@@ -2,6 +2,8 @@ require 'pry-byebug'
 VALID_HIT = ['hit', 'h']
 VALID_STAY = ['stay', 's']
 COURTS_CARDS = ["Jack", "Queen", "King"]
+MAX_VALID_SCORE = 21
+DEALER_AUTO_STAY_SCORE = 17
 STAND_TIMER = 2
 VALID_YES = ['y', 'yes']
 scores = { dealer: 0,
@@ -126,11 +128,11 @@ end
 
 def busted?(hand)
   (calc_ace(hand) + calc_sum_of_court_cards(hand) +
-  calc_sum_of_pip_cards(hand)) > 21
+  calc_sum_of_pip_cards(hand)) > MAX_VALID_SCORE
 end
 
 def dealers_choice?(dealers_hand)
-  if calc_hand(dealers_hand) >= 17
+  if calc_hand(dealers_hand) >= DEALER_AUTO_STAY_SCORE
     'stay'
   else
     'hit'
