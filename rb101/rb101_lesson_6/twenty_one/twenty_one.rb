@@ -8,6 +8,7 @@ STAND_TIMER = 2
 VALID_YES = ['y', 'yes']
 scores = { dealer: 0,
            player: 0 }
+players = ['dealer', 'player']
 
 def prompt(message)
   puts "=> #{message}"
@@ -229,6 +230,7 @@ def goodbye
   puts "Thanks for playing Twenty One.  Goodbye!"
 end
 
+# main game loop
 loop do
   deck = initialize_deck
 
