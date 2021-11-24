@@ -8,7 +8,6 @@ STAND_TIMER = 2
 VALID_YES = ['y', 'yes']
 scores = { dealer: 0,
            player: 0 }
-players = ['dealer', 'player']
 
 def prompt(message)
   puts "=> #{message}"
@@ -35,7 +34,7 @@ def initial_deal(deck, hand)
   2.times { hand << deal_card(deck) }
 end
 
-def has_have(player)
+def have?(player)
   if player.downcase == 'player'
     'You have: '
   elsif player.downcase == 'dealer'
@@ -46,7 +45,7 @@ def has_have(player)
 end
 
 def display_hand(player_str, hand, hide = true)
-  print "#{has_have(player_str)}"
+  print "#{have?(player_str)}"
   hand.each do |card|
     if card == hand.last && hide == false
       puts "and #{card[0]}.  Hand value = #{calc_hand(hand)}"
@@ -89,11 +88,11 @@ def calc_ace(hand)
   until aces_left <= 0
     flattened.each do |card|
       if card == "Ace"
-        if calc_hand_excl_aces(hand) + aces_value > 10
-          aces_value += 1
-        else
-          aces_value += 11
-        end
+        aces_value += if calc_hand_excl_aces(hand) + aces_value > 10
+                        1
+                     else 
+                        11
+                     end
       end
       aces_left -= 1
     end
