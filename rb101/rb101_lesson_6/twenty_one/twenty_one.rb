@@ -131,7 +131,7 @@ def busted?(hand)
   calc_sum_of_pip_cards(hand)) > MAX_VALID_SCORE
 end
 
-def player_turn(dealer_hand, player_hand,deck)
+def player_turn(dealer_hand, player_hand, deck, winner)
   loop do
     system 'clear'
     display_hand('Dealer', dealer_hand)
@@ -145,14 +145,12 @@ def player_turn(dealer_hand, player_hand,deck)
       update_hand(player_hand, deck, 'player')
       sleep(STAND_TIMER)
     end
-    player_hand = [["King", "Hearts"], ["Two", "Hearts"], ["Queen", "Hearts"]]
-    binding.pry
     if busted?(player_hand)
       system 'clear'
       display_hand('Dealer', dealer_hand, false)
       display_hand('Player', player_hand, false)
       puts "You are busted!  Dealer Wins"
-      winner = 'dealer'
+      winner << 'dealer'
       break
     end
   end
@@ -166,7 +164,7 @@ def dealers_choice?(dealers_hand)
   end
 end
 
-def dealers_turn(dealer_hand, player_hand, deck)
+def dealer_turn(dealer_hand, player_hand, deck, winner)
   loop do
     system 'clear'
     display_hand('Dealer', dealer_hand, false)
@@ -174,7 +172,7 @@ def dealers_turn(dealer_hand, player_hand, deck)
     puts
     if busted?(dealer_hand)
       puts "Dealer is bust! Player Wins"
-      winner = 'player'
+      winner << 'player'
       break
     elsif dealers_choice?(dealer_hand) == 'stay'
       puts "Dealer chooses to stay"
@@ -215,72 +213,38 @@ def play_again?
   VALID_YES.include?(response)
 end
 
-loop do
-deck = initialize_deck
-
-player_hand = []
-dealer_hand = []
-winner = ''
-
-initial_deal(deck, player_hand)
-initial_deal(deck, dealer_hand)
-
-player_turn(dealer_hand, player_hand,deck)
-#  loop do
-#    system 'clear'
-#    display_hand('Dealer', dealer_hand)
-#    display_hand('Player', player_hand, false)
-#    choice = ask_player_hit_or_stay?
-#    sleep(0.5)
-#    system 'clear'
-#    if VALID_STAY.include?(choice)
-#      break
-#    else
-#      update_hand(player_hand, deck, 'player')
-#      sleep(STAND_TIMER)
-#    end
-#
-#    if busted?(player_hand)
-#      system 'clear'
-#      display_hand('Dealer', dealer_hand, false)
-#      display_hand('Player', player_hand, false)
-#      puts "You are busted!  Dealer Wins"
-#      winner = 'dealer'
-#      break
-#    end
-#  end
-if winner == '' 
-   loop do
-     system 'clear'
-     display_hand('Dealer', dealer_hand, false)
-     display_hand('Player', player_hand, false)
-     puts
-     if busted?(dealer_hand)
-       puts "Dealer is bust! Player Wins"
-       winner = 'player'
-       break
-     elsif dealers_choice?(dealer_hand) == 'stay'
-       puts "Dealer chooses to stay"
-       sleep(STAND_TIMER)
-       break
-     else
-       update_hand(dealer_hand, deck, 'dealer')
-       sleep(STAND_TIMER)
-     end
-   end
+def end_game(winner, dealer_hand, player_hand, scores)
+  system 'clear'
+  display_hand('Dealer', dealer_hand, false)
+  display_hand('Player', player_hand, false)
+  puts
+  calc_scores(player_hand, dealer_hand, scores)
+  winner = calc_winner(scores)
+  display_winner(winner, scores)
 end
 
-  if winner == ''
-    system 'clear'
-    display_hand('Dealer', dealer_hand, false)
-    display_hand('Player', player_hand, false)
-    puts
-    calc_scores(player_hand, dealer_hand, scores)
-    winner = calc_winner(scores)
-    display_winner(winner, scores)
-  end
+def goodbye
+  sleep(STAND_TIMER)
+  system 'clear'
+  puts "Thanks for playing Twenty One.  Goodbye!"
+end
+
+loop do
+  deck = initialize_deck
+
+  player_hand = []
+  dealer_hand = []
+  winner = []
+
+  initial_deal(deck, player_hand)
+  initial_deal(deck, dealer_hand)
+
+  player_turn(dealer_hand, player_hand,deck, winner)
+  dealer_turn(dealer_hand, player_hand, deck, winner) if winner.empty?
+
+  end_game(winner, dealer_hand, player_hand, scores) if winner.empty?
+
   break if play_again? == false
 end
-sleep(STAND_TIMER)
-system 'clear'
-puts "Thanks for playing Twenty One.  Goodbye!"
+
+goodbye()
