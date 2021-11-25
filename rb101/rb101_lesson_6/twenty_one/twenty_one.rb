@@ -44,15 +44,15 @@ def have?(player)
   end
 end
 
-def display_hand_value?(hand, hide = true, card)
-    card == (hand.last && hide == false)
+def display_hand_value?(hand, card, hide = true)
+    card == hand.last && hide == true
 end
 
-def display_and?(hand, hide = true, card)
+def display_and?(hand, card, hide = true)
   card == hand.last && hide == true
 end
 
-def hidden_dealer_card_logic(player_str, hand, hide = true, card)
+def hidden_dealer_card_logic(player_str, hand, card, hide = true)
   card == hand.first && player_str.downcase == 'dealer' &&
                                                hide == true
 end
@@ -60,33 +60,17 @@ end
 def display_hand(player_str, hand, hide = true)
   print "#{have?(player_str)}"
   hand.each do |card|
-    if display_hand_value?(hand, hide = true, card)
+    if display_hand_value?(hand, card, hide = true)
       puts "and #{card[0]}.  Hand value = #{calc_hand(hand)}"
-    elsif display_and?(hand, hide = true, card)
+    elsif display_and?(hand, card, hide = true)
       puts "and #{card[0]}."
-    elsif hidden_dealer_card_logic(player_str, hand, hide = true, card)
+    elsif hidden_dealer_card_logic(player_str, hand, card, hide = true)
       print "[HIDDEN] "
     else
       print "#{card[0]}, "
     end
   end
 end
-
-#def display_hand(player_str, hand, hide = true)
-#  print "#{have?(player_str)}"
-#  hand.each do |card|
-#    if card == hand.last && hide == false
-#      puts "and #{card[0]}.  Hand value = #{calc_hand(hand)}"
-#    elsif card == hand.last && hide == true
-#      puts "and #{card[0]}."
-#    elsif card == hand.first && player_str.downcase == 'dealer' &&
-#          hide == true
-#          print "[HIDDEN] "
-#    else
-#      print "#{card[0]}, "
-#    end
-#  end
-#end
 
 def ask_player_hit_or_stay?
   prompt "Hit or stay?"
