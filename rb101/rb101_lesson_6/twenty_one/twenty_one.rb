@@ -44,27 +44,28 @@ def have?(player)
   end
 end
 
-def display_hand_value?(hand, card, hide = true)
-    card == hand.last && hide == true
+def display_hand_value?(hand, card, player_str)
+  (card == hand.last && player_str == 'Player') || (card == 'last' &&
+   player_str == 'Dealer')
 end
 
-def display_and?(hand, card, hide = true)
-  card == hand.last && hide == true
+def display_and?(hand, card)
+  card == hand.last
 end
 
 def hidden_dealer_card_logic(player_str, hand, card, hide = true)
   card == hand.first && player_str.downcase == 'dealer' &&
-                                               hide == true
+    hide == true
 end
 
 def display_hand(player_str, hand, hide = true)
-  print "#{have?(player_str)}"
+  print have?(player_str).to_s
   hand.each do |card|
-    if display_hand_value?(hand, card, hide = true)
+    if display_hand_value?(hand, card, player_str)
       puts "and #{card[0]}.  Hand value = #{calc_hand(hand)}"
-    elsif display_and?(hand, card, hide = true)
+    elsif display_and?(hand, card)
       puts "and #{card[0]}."
-    elsif hidden_dealer_card_logic(player_str, hand, card, hide = true)
+    elsif hidden_dealer_card_logic(player_str, hand, card, hide)
       print "[HIDDEN] "
     else
       print "#{card[0]}, "
@@ -180,7 +181,7 @@ def dealer_turn(dealer_hand, player_hand, deck, winner)
   loop do
     system 'clear'
     display_hand('Dealer', dealer_hand, false)
-    display_hand('Player', player_hand, false)
+    display_hand('Player', player_hand)
     puts
     if busted?(dealer_hand)
       puts "Dealer is bust! Player Wins"
