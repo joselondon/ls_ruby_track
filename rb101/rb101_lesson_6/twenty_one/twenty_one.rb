@@ -75,8 +75,8 @@ end
 
 def display_hands(plr_str, dlr_str, plr_hnd, dlr_hnd, hide)
   system 'clear'
-  display_hand(plr_str, plr_hnd)
   display_hand(dlr_str, dlr_hnd, hide)
+  display_hand(plr_str, plr_hnd)
 end
 
 def ask_player_hit_or_stay?
@@ -154,19 +154,18 @@ def disply_deal_bust
   "Dealer is bust! Player Wins!"
 end
 
-def gen_display_busted(player_str, player_hand, dealer_hand, hide)
+def gen_display_busted(player_str, player_hand, dealer_hand, hide, winner)
   system 'clear'
   display_hand('Dealer', dealer_hand, hide)
   display_hand('Player', player_hand)
   puts player_str == 'Player' ? disply_plyr_bust : disply_deal_bust
+  winner << 'dealer'
 end
 
+# rubocop:disable Metrics/MethodLength: Method has too many lines
 def player_turn(dealer_hand, player_hand, deck, winner)
   loop do
     display_hands('Player', 'Dealer', player_hand, dealer_hand, true)
-#    system 'clear'
-#    display_hand('Dealer', dealer_hand)
-#    display_hand('Player', player_hand, false)
     choice = ask_player_hit_or_stay?
     sleep(0.5)
     system 'clear'
@@ -177,12 +176,12 @@ def player_turn(dealer_hand, player_hand, deck, winner)
       sleep(STAND_TIMER)
     end
     if busted?(player_hand)
-      gen_display_busted('Player', player_hand, dealer_hand, false)
-       winner << 'dealer'
+      gen_display_busted('Player', player_hand, dealer_hand, false, winner)
       break
     end
   end
 end
+# rubocop:enable Metrics/MethodLength: Method has too many lines
 
 def dealers_choice?(dealers_hand)
   if calc_hand(dealers_hand) >= DEALER_AUTO_STAY_SCORE
