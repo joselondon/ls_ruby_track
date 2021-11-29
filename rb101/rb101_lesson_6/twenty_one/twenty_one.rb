@@ -73,6 +73,12 @@ def display_hand(player_str, hand, hide = true)
   end
 end
 
+def display_hands(plr_str, dlr_str, plr_hnd, dlr_hnd, hide)
+  system 'clear'
+  display_hand(plr_str, plr_hnd)
+  display_hand(dlr_str, dlr_hnd, hide)
+end
+
 def ask_player_hit_or_stay?
   prompt "Hit or stay?"
   choice = ''
@@ -101,11 +107,7 @@ def calc_ace(hand)
   until aces_left <= 0
     flattened.each do |card|
       if card == "Ace"
-        aces_value += if calc_hand_excl_aces(hand) + aces_value > 10
-                        1
-                     else 
-                        11
-                     end
+        aces_value += calc_hand_excl_aces(hand) + aces_value > 10 ? 1 : 11
       end
       aces_left -= 1
     end
@@ -119,7 +121,7 @@ end
 
 def calc_sum_of_court_cards(hand)
   value = 0
-  flattened = hand.flatten.map do |e|
+  hand.flatten.map do |e|
     if COURTS_CARDS.include?(e)
       value += 10
     elsif e == "Ace"
@@ -144,11 +146,27 @@ def busted?(hand)
   calc_sum_of_pip_cards(hand)) > MAX_VALID_SCORE
 end
 
+def disply_plyr_bust
+  "You are busted!  Dealer Wins"
+end
+
+def disply_deal_bust
+  "Dealer is bust! Player Wins!"
+end
+
+def gen_display_busted(player_str, player_hand, dealer_hand, hide)
+  system 'clear'
+  display_hand('Dealer', dealer_hand, hide)
+  display_hand('Player', player_hand)
+  puts player_str == 'Player' ? disply_plyr_bust : disply_deal_bust
+end
+
 def player_turn(dealer_hand, player_hand, deck, winner)
   loop do
-    system 'clear'
-    display_hand('Dealer', dealer_hand)
-    display_hand('Player', player_hand, false)
+    display_hands('Player', 'Dealer', player_hand, dealer_hand, true)
+#    system 'clear'
+#    display_hand('Dealer', dealer_hand)
+#    display_hand('Player', player_hand, false)
     choice = ask_player_hit_or_stay?
     sleep(0.5)
     system 'clear'
@@ -159,11 +177,8 @@ def player_turn(dealer_hand, player_hand, deck, winner)
       sleep(STAND_TIMER)
     end
     if busted?(player_hand)
-      system 'clear'
-      display_hand('Dealer', dealer_hand, false)
-      display_hand('Player', player_hand, false)
-      puts "You are busted!  Dealer Wins"
-      winner << 'dealer'
+      gen_display_busted('Player', player_hand, dealer_hand, false)
+       winner << 'dealer'
       break
     end
   end
