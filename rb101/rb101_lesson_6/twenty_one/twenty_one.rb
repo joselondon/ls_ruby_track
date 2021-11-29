@@ -44,16 +44,16 @@ def have?(player)
   end
 end
 
-def display_hand_value?(hand, card, player_str)
-  (card == hand.last && player_str == 'Player') || (card == 'last' &&
-   player_str == 'Dealer')
+def display_hand_value?(hand, card, player_str, hide)
+  (card == hand.last && player_str == 'Player') || (card == hand.last &&
+   player_str == 'Dealer' && hide == false)
 end
 
 def display_and?(hand, card)
   card == hand.last
 end
 
-def hidden_dealer_card_logic(player_str, hand, card, hide = true)
+def hidden_dealer_card_logic(player_str, hand, card, hide)
   card == hand.first && player_str.downcase == 'dealer' &&
     hide == true
 end
@@ -61,7 +61,7 @@ end
 def display_hand(player_str, hand, hide = true)
   print have?(player_str).to_s
   hand.each do |card|
-    if display_hand_value?(hand, card, player_str)
+    if display_hand_value?(hand, card, player_str, hide)
       puts "and #{card[0]}.  Hand value = #{calc_hand(hand)}"
     elsif display_and?(hand, card)
       puts "and #{card[0]}."
