@@ -159,7 +159,7 @@ def gen_display_busted(player_str, player_hand, dealer_hand, hide, winner)
   display_hand('Dealer', dealer_hand, hide)
   display_hand('Player', player_hand)
   puts player_str == 'Player' ? disply_plyr_bust : disply_deal_bust
-  winner << 'dealer'
+  winner << player_str
 end
 
 # rubocop:disable Metrics/MethodLength: Method has too many lines
@@ -193,13 +193,10 @@ end
 
 def dealer_turn(dealer_hand, player_hand, deck, winner)
   loop do
-    system 'clear'
-    display_hand('Dealer', dealer_hand, false)
-    display_hand('Player', player_hand)
+    display_hands('Player', 'Dealer', player_hand, dealer_hand, false)
     puts
     if busted?(dealer_hand)
-      puts "Dealer is bust! Player Wins"
-      winner << 'player'
+      gen_display_busted('Dealer', player_hand, dealer_hand, false, winner)
       break
     elsif dealers_choice?(dealer_hand) == 'stay'
       puts "Dealer chooses to stay"
