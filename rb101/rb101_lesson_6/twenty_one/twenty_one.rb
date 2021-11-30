@@ -5,6 +5,8 @@ MAX_VALID_SCORE = 21
 DEALER_AUTO_STAY_SCORE = 17
 STAND_TIMER = 2
 VALID_YES = ['y', 'yes']
+RANKS = %w(Ace 2 3 4 5 6 7 8 9 10 Jack Queen King)
+SUITS = %w(Spades Hearts Diamonds Clubs)
 scores = { dealer: 0,
            player: 0 }
 
@@ -14,11 +16,9 @@ end
 
 def initialize_deck
   deck = []
-  ranks = %w(Ace 2 3 4 5 6 7 8 9 10 Jack Queen King)
-  suits = %w(Spades Hearts Diamonds Clubs)
-  suits.each do |suit|
-    ranks.size.times do |i|
-      deck << [ranks[i], suit]
+  SUITS.each do |suit|
+    RANKS.size.times do |i|
+      deck << [RANKS[i], suit]
     end
   end
   deck
