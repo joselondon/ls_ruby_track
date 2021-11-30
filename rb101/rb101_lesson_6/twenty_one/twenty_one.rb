@@ -1,4 +1,3 @@
-require 'pry-byebug'
 VALID_HIT = ['hit', 'h']
 VALID_STAY = ['stay', 's']
 COURTS_CARDS = ["Jack", "Queen", "King"]
@@ -237,7 +236,7 @@ def play_again?
   VALID_YES.include?(response)
 end
 
-def end_game(winner, dealer_hand, player_hand, scores)
+def end_game(dealer_hand, player_hand, scores)
   system 'clear'
   display_hand('Dealer', dealer_hand, false)
   display_hand('Player', player_hand, false)
@@ -264,12 +263,12 @@ loop do
   initial_deal(deck, player_hand)
   initial_deal(deck, dealer_hand)
 
-  player_turn(dealer_hand, player_hand,deck, winner)
+  player_turn(dealer_hand, player_hand, deck, winner)
   dealer_turn(dealer_hand, player_hand, deck, winner) if winner.empty?
 
-  end_game(winner, dealer_hand, player_hand, scores) if winner.empty?
+  end_game(dealer_hand, player_hand, scores) if winner.empty?
 
   break if play_again? == false
 end
 
-goodbye()
+goodbye
