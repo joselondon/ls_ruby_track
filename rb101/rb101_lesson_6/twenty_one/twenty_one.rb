@@ -7,8 +7,6 @@ STAND_TIMER = 2
 VALID_YES = ['y', 'yes']
 RANKS = %w(Ace 2 3 4 5 6 7 8 9 10 Jack Queen King)
 SUITS = %w(Spades Hearts Diamonds Clubs)
-scores = { dealer: 0,
-           player: 0 }
 
 def prompt(message)
   puts "=> #{message}"
@@ -140,10 +138,14 @@ def calc_hand(hand)
   calc_hand_excl_aces(hand) + calc_ace(hand)
 end
 
-def busted?(hand)
-  (calc_ace(hand) + calc_sum_of_court_cards(hand) +
-  calc_sum_of_pip_cards(hand)) > MAX_VALID_SCORE
+def busted?(scores_hash, player_id)
+  scores_hash[player_id] > MAX_VALID_SCORE
 end
+
+# def busted?(hand)
+#   (calc_ace(hand) + calc_sum_of_court_cards(hand) +
+#   calc_sum_of_pip_cards(hand)) > MAX_VALID_SCORE
+# end
 
 def disply_plyr_bust
   "You are busted!  Dealer Wins"
@@ -162,7 +164,7 @@ def gen_display_busted(player_str, player_hand, dealer_hand, hide, winner)
 end
 
 # rubocop:disable Metrics/MethodLength: Method has too many lines
-def player_turn(dealer_hand, player_hand, deck, winner)
+def player_turn(dealer_hand, player_hand, deck, winner, scores_hash, player_id)
   loop do
     display_hands('Player', 'Dealer', player_hand, dealer_hand, true)
     choice = ask_player_hit_or_stay?
@@ -174,7 +176,7 @@ def player_turn(dealer_hand, player_hand, deck, winner)
       update_hand(player_hand, deck, 'player')
       sleep(STAND_TIMER)
     end
-    if busted?(player_hand)
+    if busted?(scores_hash, player_id)
       gen_display_busted('Player', player_hand, dealer_hand, false, winner)
       break
     end
@@ -253,6 +255,9 @@ def goodbye
 end
 
 # main game loop
+scores = { dealer: 0,
+           player: 0 }
+
 loop do
   deck = initialize_deck
 
@@ -263,7 +268,7 @@ loop do
   initial_deal(deck, player_hand)
   initial_deal(deck, dealer_hand)
 
-  player_turn(dealer_hand, player_hand, deck, winner)
+  player_turn(dealer_hand, player_hand, deck, winner, scores, :player)
   dealer_turn(dealer_hand, player_hand, deck, winner) if winner.empty?
 
   end_game(dealer_hand, player_hand, scores) if winner.empty?
