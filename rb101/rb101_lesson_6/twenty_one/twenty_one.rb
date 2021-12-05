@@ -1,3 +1,4 @@
+require 'pry-byebug'
 VALID_HIT = ['hit', 'h']
 VALID_STAY = ['stay', 's']
 COURTS_CARDS = ["Jack", "Queen", "King"]
@@ -192,11 +193,12 @@ def dealers_choice?(dealers_hand)
   end
 end
 
-def dealer_turn(dealer_hand, player_hand, deck, winner)
+def dealer_turn(dealer_hand, player_hand, deck, winner, scores_hash, player_id)
   loop do
     display_hands('Player', 'Dealer', player_hand, dealer_hand, false)
     puts
-    if busted?(dealer_hand)
+    binding.pry
+    if busted?(scores_hash, player_id) 
       gen_display_busted('Dealer', player_hand, dealer_hand, false, winner)
       break
     elsif dealers_choice?(dealer_hand) == 'stay'
@@ -269,7 +271,7 @@ loop do
   initial_deal(deck, dealer_hand)
 
   player_turn(dealer_hand, player_hand, deck, winner, scores, :player)
-  dealer_turn(dealer_hand, player_hand, deck, winner) if winner.empty?
+  dealer_turn(dealer_hand, player_hand, deck, winner, scores, :dealer) if winner.empty?
 
   end_game(dealer_hand, player_hand, scores) if winner.empty?
 
