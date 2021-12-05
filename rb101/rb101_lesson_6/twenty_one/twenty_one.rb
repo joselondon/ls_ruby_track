@@ -144,7 +144,7 @@ def busted?(scores_hash, player_id)
 end
 
 # def busted?(hand)
-#   (calc_ace(hand) + calc_sum_of_court_cards(hand) +
+#   (calc_ace(hand) + calc_sum_of_court_cards(hand) 
 #   calc_sum_of_pip_cards(hand)) > MAX_VALID_SCORE
 # end
 
@@ -197,7 +197,6 @@ def dealer_turn(dealer_hand, player_hand, deck, winner, scores_hash, player_id)
   loop do
     display_hands('Player', 'Dealer', player_hand, dealer_hand, false)
     puts
-    binding.pry
     if busted?(scores_hash, player_id) 
       gen_display_busted('Dealer', player_hand, dealer_hand, false, winner)
       break
@@ -212,9 +211,8 @@ def dealer_turn(dealer_hand, player_hand, deck, winner, scores_hash, player_id)
   end
 end
 
-def calc_scores(player_hand, dealer_hand, scores_hash)
-  scores_hash[:player] = calc_hand(player_hand)
-  scores_hash[:dealer] = calc_hand(dealer_hand)
+def update_score(hand, scores_hash, player_id)
+  scores_hash[player_id] = calc_hand(hand)
 end
 
 def calc_winner(scores_hash)
@@ -240,14 +238,15 @@ def play_again?
   VALID_YES.include?(response)
 end
 
-def end_game(dealer_hand, player_hand, scores)
+def end_game(dealer_hand, player_hand, scores_hash, player_id, dealer_id)
   system 'clear'
   display_hand('Dealer', dealer_hand, false)
   display_hand('Player', player_hand, false)
   puts
-  calc_scores(player_hand, dealer_hand, scores)
-  winner = calc_winner(scores)
-  display_winner(winner, scores)
+  update_score(dealer_hand, scores_hash, dealer_id)
+  update_score(player_hand, scores_hash, player_id)
+  winner = calc_winner(scores_hash)
+  display_winner(winner, scores_hash)
 end
 
 def goodbye
@@ -273,7 +272,7 @@ loop do
   player_turn(dealer_hand, player_hand, deck, winner, scores, :player)
   dealer_turn(dealer_hand, player_hand, deck, winner, scores, :dealer) if winner.empty?
 
-  end_game(dealer_hand, player_hand, scores) if winner.empty?
+  end_game(dealer_hand, player_hand, scores, :player, :dealer) if winner.empty?
 
   break if play_again? == false
 end
