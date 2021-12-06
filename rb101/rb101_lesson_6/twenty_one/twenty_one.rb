@@ -143,11 +143,6 @@ def busted?(scores_hash, player_id)
   scores_hash[player_id] > MAX_VALID_SCORE
 end
 
-# def busted?(hand)
-#   (calc_ace(hand) + calc_sum_of_court_cards(hand) 
-#   calc_sum_of_pip_cards(hand)) > MAX_VALID_SCORE
-# end
-
 def disply_plyr_bust
   "You are busted!  Dealer Wins"
 end
@@ -175,6 +170,7 @@ def player_turn(dealer_hand, player_hand, deck, winner, scores_hash, player_id)
       break
     else
       update_hand(player_hand, deck, 'player')
+      scores_hash[player_id] = calc_hand(player_hand)
       sleep(STAND_TIMER)
     end
     if busted?(scores_hash, player_id)
@@ -206,6 +202,7 @@ def dealer_turn(dealer_hand, player_hand, deck, winner, scores_hash, player_id)
       break
     else
       update_hand(dealer_hand, deck, 'dealer')
+      scores_hash[player_id] = calc_hand(dealer_hand)
       sleep(STAND_TIMER)
     end
   end
