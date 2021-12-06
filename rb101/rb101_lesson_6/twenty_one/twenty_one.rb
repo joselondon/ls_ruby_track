@@ -32,19 +32,19 @@ def initial_deal(deck, hand)
   2.times { hand << deal_card(deck) }
 end
 
-def have?(player)
-  if player.downcase == 'player'
+def have?(player_id)
+  if player_id == :player
     'You have: '
-  elsif player.downcase == 'dealer'
+  elsif player_id == :dealer
     'Dealer has: '
   else
     '[INVALID] has/have: '
   end
 end
 
-def display_hand_value?(hand, card, player_str, hide)
-  (card == hand.last && player_str == 'Player') || (card == hand.last &&
-   player_str == 'Dealer' && hide == false)
+def display_hand_value?(hand, card, player_id, hide)
+  (card == hand.last && player_id == :player) || (card == hand.last &&
+   player_id == :dealer && hide == false)
 end
 
 def display_and?(hand, card)
@@ -56,14 +56,14 @@ def hidden_dealer_card_logic(player_str, hand, card, hide)
     hide == true
 end
 
-def display_hand(player_str, hand, hide = true)
-  print have?(player_str).to_s
+def display_hand(player_id, hand, hide = true)
+  print have?(player_id).to_s
   hand.each do |card|
-    if display_hand_value?(hand, card, player_str, hide)
+    if display_hand_value?(hand, card, player_id, hide)
       puts "and #{card[0]}.  Hand value = #{calc_hand(hand)}"
     elsif display_and?(hand, card)
       puts "and #{card[0]}."
-    elsif hidden_dealer_card_logic(player_str, hand, card, hide)
+    elsif hidden_dealer_card_logic(player_id, hand, card, hide)
       print "[HIDDEN] "
     else
       print "#{card[0]}, "
@@ -71,10 +71,10 @@ def display_hand(player_str, hand, hide = true)
   end
 end
 
-def display_hands(plr_str, dlr_str, plr_hnd, dlr_hnd, hide)
+def display_hands(plr_id, dlr_id, plr_hnd, dlr_hnd, hide)
   system 'clear'
-  display_hand(dlr_str, dlr_hnd, hide)
-  display_hand(plr_str, plr_hnd)
+  display_hand(dlr_id, dlr_hnd, hide)
+  display_hand(plr_id, plr_hnd)
 end
 
 def ask_player_hit_or_stay?
@@ -153,8 +153,8 @@ end
 
 def gen_display_busted(player_str, player_hand, dealer_hand, hide, winner)
   system 'clear'
-  display_hand('Dealer', dealer_hand, hide)
-  display_hand('Player', player_hand)
+  display_hand(:dealer, dealer_hand, hide)
+  display_hand(:player, player_hand)
   puts player_str == 'Player' ? disply_plyr_bust : disply_deal_bust
   winner << player_str
 end
@@ -162,14 +162,14 @@ end
 # rubocop:disable Metrics/MethodLength: Method has too many lines
 def player_turn(dealer_hand, player_hand, deck, winner, scores_hash, player_id)
   loop do
-    display_hands('Player', 'Dealer', player_hand, dealer_hand, true)
+    display_hands(:player, :dealer, player_hand, dealer_hand, true)
     choice = ask_player_hit_or_stay?
     sleep(0.5)
     system 'clear'
     if VALID_STAY.include?(choice)
       break
     else
-      update_hand(player_hand, deck, 'player')
+      update_hand(player_hand, deck, :player)
       scores_hash[player_id] = calc_hand(player_hand)
       sleep(STAND_TIMER)
     end
@@ -191,10 +191,10 @@ end
 
 def dealer_turn(dealer_hand, player_hand, deck, winner, scores_hash, player_id)
   loop do
-    display_hands('Player', 'Dealer', player_hand, dealer_hand, false)
+    display_hands(:player, :dealer, player_hand, dealer_hand, false)
     puts
     if busted?(scores_hash, player_id) 
-      gen_display_busted('Dealer', player_hand, dealer_hand, false, winner)
+      gen_display_busted(:dealer, player_hand, dealer_hand, false, winner)
       break
     elsif dealers_choice?(dealer_hand) == 'stay'
       puts "Dealer chooses to stay"
@@ -237,8 +237,8 @@ end
 
 def end_game(dealer_hand, player_hand, scores_hash, player_id, dealer_id)
   system 'clear'
-  display_hand('Dealer', dealer_hand, false)
-  display_hand('Player', player_hand, false)
+  display_hand(:dealer, dealer_hand, false)
+  display_hand(:player, player_hand, false)
   puts
   update_score(dealer_hand, scores_hash, dealer_id)
   update_score(player_hand, scores_hash, player_id)
