@@ -36,6 +36,7 @@ def have?(player)
   if player.downcase == :player
     'You have: '
   elsif player.downcase == :dealer
+
     'Dealer has: '
   else
     '[INVALID] has/have: '
@@ -56,6 +57,7 @@ def hidden_dealer_card_logic(player_id, hand, card, hide)
   hide == true
 end
 
+
 def display_hand(player_id, hand, scores_hash, hide = true)
   print have?(player_id).to_s
   hand.each do |card|
@@ -75,6 +77,7 @@ def display_hands(plr_id, dlr_id, plr_hnd, dlr_hnd, scores_hash, hide)
   system 'clear'
   display_hand(dlr_id, dlr_hnd, hide)
   display_hand(plr_id, plr_hnd, scores_hash)
+
 end
 
 def ask_player_hit_or_stay?
@@ -162,6 +165,7 @@ end
 # rubocop:disable Metrics/MethodLength: Method has too many lines
 def player_turn(dealer_hand, player_hand, deck, winner, scores_hash, player_id)
   loop do
+
     display_hands(:player, :dealer, player_hand, dealer_hand, scores_hash, true)
     choice = ask_player_hit_or_stay?
     sleep(0.5)
@@ -169,7 +173,7 @@ def player_turn(dealer_hand, player_hand, deck, winner, scores_hash, player_id)
     if VALID_STAY.include?(choice)
       break
     else
-      update_hand(player_hand, deck, 'player')
+      update_hand(player_hand, deck, :player)
       scores_hash[player_id] = calc_hand(player_hand)
       sleep(STAND_TIMER)
     end
