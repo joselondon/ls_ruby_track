@@ -54,11 +54,10 @@ end
 
 def hidden_dealer_card_logic(player_id, hand, card, hide)
   card == hand.first && player_id == :dealer &&
-  hide == true
+    hide == true
 end
 
-
-def display_hand(player_id, hand, scores_hash, hide = true)
+def display_hand(player_id, hand, hide = true)
   print have?(player_id).to_s
   hand.each do |card|
     if display_hand_value?(hand, card, player_id, hide)
@@ -73,10 +72,10 @@ def display_hand(player_id, hand, scores_hash, hide = true)
   end
 end
 
-def display_hands(plr_id, dlr_id, plr_hnd, dlr_hnd, scores_hash, hide)
+def display_hands(plr_id, dlr_id, plr_hnd, dlr_hnd, hide)
   system 'clear'
   display_hand(dlr_id, dlr_hnd, hide)
-  display_hand(plr_id, plr_hnd, scores_hash)
+  display_hand(plr_id, plr_hnd)
 
 end
 
@@ -156,8 +155,8 @@ end
 
 def gen_display_busted(player_id, player_hand, dealer_hand, scores_hash, winner, hide)
   system 'clear'
-  display_hand(:dealer, dealer_hand, scores_hash, hide)
-  display_hand(:player, player_hand, scores_hash)
+  display_hand(:dealer, dealer_hand, hide)
+  display_hand(:player, player_hand)
   puts player_id == 'Player' ? disply_plyr_bust : disply_deal_bust
   winner << player_id
 end
@@ -166,7 +165,7 @@ end
 def player_turn(dealer_hand, player_hand, deck, winner, scores_hash, player_id)
   loop do
 
-    display_hands(:player, :dealer, player_hand, dealer_hand, scores_hash, true)
+    display_hands(:player, :dealer, player_hand, dealer_hand, true)
     choice = ask_player_hit_or_stay?
     sleep(0.5)
     system 'clear'
@@ -195,7 +194,7 @@ end
 
 def dealer_turn(dealer_hand, player_hand, deck, winner, scores_hash, player_id, dealer_id)
   loop do
-    display_hands(player_id, dealer_id, player_hand, dealer_hand, scores_hash, false)
+    display_hands(player_id, dealer_id, player_hand, dealer_hand, false)
     puts
     if busted?(scores_hash, player_id) 
       gen_display_busted(dealer_id, player_hand, dealer_hand, scores_hash, winner, false)
@@ -241,8 +240,8 @@ end
 
 def end_game(dealer_hand, player_hand, scores_hash, player_id, dealer_id)
   system 'clear'
-  display_hand(dealer_id, dealer_hand, scores_hash, false)
-  display_hand(player_id, player_hand, scores_hash, false)
+  display_hand(dealer_id, dealer_hand, false)
+  display_hand(player_id, player_hand, false)
   puts
   update_score(dealer_hand, scores_hash, dealer_id)
   update_score(player_hand, scores_hash, player_id)
