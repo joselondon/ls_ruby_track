@@ -241,8 +241,8 @@ end
 
 def end_game(dealer_hand, player_hand, scores_hash, player_id, dealer_id)
   system 'clear'
-  display_hand(dealer_id, dealer_hand, false)
-  display_hand(player_id, player_hand, false)
+  display_hand(dealer_id, dealer_hand, scores_hash, false)
+  display_hand(player_id, player_hand, scores_hash, false)
   puts
   update_score(dealer_hand, scores_hash, dealer_id)
   update_score(player_hand, scores_hash, player_id)
@@ -257,24 +257,20 @@ def goodbye
 end
 
 # main game loop
-scores = { dealer: 0,
-           player: 0 }
+
 
 loop do
+  scores = { dealer: 0,
+             player: 0 }
   deck = initialize_deck
-
   player_hand = []
   dealer_hand = []
   winner = []
-
   initial_deal(deck, player_hand)
   initial_deal(deck, dealer_hand)
-
   player_turn(dealer_hand, player_hand, deck, winner, scores, :player)
   dealer_turn(dealer_hand, player_hand, deck, winner, scores, :player, :dealer) if winner.empty?
-
   end_game(dealer_hand, player_hand, scores, :player, :dealer) if winner.empty?
-
   break if play_again? == false
 end
 
