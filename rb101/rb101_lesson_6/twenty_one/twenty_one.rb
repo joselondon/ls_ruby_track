@@ -153,7 +153,7 @@ def disply_deal_bust
   "Dealer is bust! Player Wins!"
 end
 
-def gen_display_busted(player_id, player_hand, dealer_hand, scores_hash, winner, hide)
+def gen_display_busted(player_id, player_hand, dealer_hand, winner, hide)
   system 'clear'
   display_hand(:dealer, dealer_hand, hide)
   display_hand(:player, player_hand)
@@ -177,7 +177,7 @@ def player_turn(dealer_hand, player_hand, deck, winner, scores_hash, player_id)
       sleep(STAND_TIMER)
     end
     if busted?(scores_hash, player_id)
-      gen_display_busted('Player', player_hand, dealer_hand, scores_hash, winner, false)
+      gen_display_busted('Player', player_hand, dealer_hand, winner, false)
       break
     end
   end
@@ -196,8 +196,8 @@ def dealer_turn(dealer_hand, player_hand, deck, winner, scores_hash, player_id, 
   loop do
     display_hands(player_id, dealer_id, player_hand, dealer_hand, false)
     puts
-    if busted?(scores_hash, player_id) 
-      gen_display_busted(dealer_id, player_hand, dealer_hand, scores_hash, winner, false)
+    if busted?(scores_hash, player_id)
+      gen_display_busted(dealer_id, player_hand, dealer_hand, winner, false)
       break
     elsif dealers_choice?(dealer_hand) == 'stay'
       puts "Dealer chooses to stay"
