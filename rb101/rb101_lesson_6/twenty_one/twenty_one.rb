@@ -76,7 +76,6 @@ def display_hands(plr_id, dlr_id, plr_hnd, dlr_hnd, hide)
   system 'clear'
   display_hand(dlr_id, dlr_hnd, hide)
   display_hand(plr_id, plr_hnd)
-
 end
 
 def ask_player_hit_or_stay?
@@ -97,7 +96,7 @@ end
 def update_hand(hand, deck, player_id)
   card = deal_card(deck)
   hand << card
-  puts "#{player_id.to_s} dealt:  #{card[0]} of #{card[1]}"
+  puts "#{player_id} dealt:  #{card[0]} of #{card[1]}"
 end
 
 def calc_ace(hand)
@@ -161,10 +160,19 @@ def gen_display_busted(player_id, player_hand, dealer_hand, winner, hide)
   winner << player_id
 end
 
-# rubocop:disable Metrics/MethodLength: Method has too many lines
-def player_turn(dealer_hand, player_hand, deck, winner, scores_hash, player_id)
-  loop do
+def dealers_choice?(dealers_hand)
+  if calc_hand(dealers_hand) >= DEALER_AUTO_STAY_SCORE
+    'stay'
+  else
+    'hit'
+  end
+end
 
+# rubocop:disable Metrics/MethodLength: Method has too many lines
+# rubocop:disable Metrics/ParameterLists: Avoid parameter lists longer than 5 parameters
+def player_turn(dealer_hand, player_hand, deck,
+                winner, scores_hash, player_id)
+  loop do
     display_hands(:player, :dealer, player_hand, dealer_hand, true)
     choice = ask_player_hit_or_stay?
     sleep(0.5)
@@ -182,17 +190,9 @@ def player_turn(dealer_hand, player_hand, deck, winner, scores_hash, player_id)
     end
   end
 end
-# rubocop:enable Metrics/MethodLength: Method has too many lines
 
-def dealers_choice?(dealers_hand)
-  if calc_hand(dealers_hand) >= DEALER_AUTO_STAY_SCORE
-    'stay'
-  else
-    'hit'
-  end
-end
-
-def dealer_turn(dealer_hand, player_hand, deck, winner, scores_hash, player_id, dealer_id)
+def dealer_turn(dealer_hand, player_hand, deck, winner,
+                scores_hash, player_id, dealer_id)
   loop do
     display_hands(player_id, dealer_id, player_hand, dealer_hand, false)
     puts
@@ -210,6 +210,8 @@ def dealer_turn(dealer_hand, player_hand, deck, winner, scores_hash, player_id, 
     end
   end
 end
+# rubocop:enable Metrics/MethodLength: Method has too many lines
+# rubocop:enable Metrics/ParameterLists: Avoid parameter lists longer than 5 parameters
 
 def update_score(hand, scores_hash, player_id)
   scores_hash[player_id] = calc_hand(hand)
@@ -256,8 +258,6 @@ def goodbye
 end
 
 # main game loop
-
-
 loop do
   scores = { dealer: 0,
              player: 0 }
@@ -268,7 +268,10 @@ loop do
   initial_deal(deck, player_hand)
   initial_deal(deck, dealer_hand)
   player_turn(dealer_hand, player_hand, deck, winner, scores, :player)
-  dealer_turn(dealer_hand, player_hand, deck, winner, scores, :player, :dealer) if winner.empty?
+  if winner.empty?
+    dealer_turn(dealer_hand, player_hand, deck, winner, scores,
+                :player, :dealer)
+  end
   end_game(dealer_hand, player_hand, scores, :player, :dealer) if winner.empty?
   break if play_again? == false
 end
