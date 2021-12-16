@@ -8,6 +8,7 @@ STAND_TIMER = 2
 VALID_YES = ['y', 'yes']
 RANKS = %w(Ace 2 3 4 5 6 7 8 9 10 Jack Queen King)
 SUITS = %w(Spades Hearts Diamonds Clubs)
+WINNING_MATCH_SCORE = 5
 
 def prompt(message)
   puts "=> #{message}"
@@ -219,9 +220,9 @@ end
 
 def calc_winner(scores_hash)
   if scores_hash[:player] > scores_hash[:dealer]
-    'player'
+    :player
   elsif scores_hash[:player] < scores_hash[:dealer]
-    'dealer'
+    :dealer
   else
     'draw'
   end
@@ -259,21 +260,31 @@ end
 
 # main game loop
 loop do
-  scores = { dealer: 0,
-             player: 0 }
-  deck = initialize_deck
-  player_hand = []
-  dealer_hand = []
-  winner = []
-  initial_deal(deck, player_hand)
-  initial_deal(deck, dealer_hand)
-  player_turn(dealer_hand, player_hand, deck, winner, scores, :player)
-  if winner.empty?
-    dealer_turn(dealer_hand, player_hand, deck, winner, scores,
-                :player, :dealer)
+  games_score_tracker = {dealer: 0,
+                         player: 0}
+  loop do
+    scores = { dealer: 0,
+               player: 0 }
+    deck = initialize_deck
+    player_hand = []
+    dealer_hand = []
+    winner = []
+    initial_deal(deck, player_hand)
+    initial_deal(deck, dealer_hand)
+    player_turn(dealer_hand, player_hand, deck, winner, scores, :player)
+    if winner.empty?
+      dealer_turn(dealer_hand, player_hand, deck, winner, scores,
+                  :player, :dealer)
+    end
+    end_game(dealer_hand, player_hand, scores, :player, :dealer) if winner.empty?
+    if winner != 'draw' 
+      games_score_tracker[calc_winner(scores)] +=1
+    end
+    puts games_score_tracker
+    sleep(STAND_TIMER + 2)
+    break if games_score_tracker[:player] == WINNING_MATCH_SCORE ||
+       games_score_tracker[:dealer] == WINNING_MATCH_SCORE
   end
-  end_game(dealer_hand, player_hand, scores, :player, :dealer) if winner.empty?
   break if play_again? == false
 end
-
 goodbye
