@@ -241,6 +241,12 @@ def play_again?
   VALID_YES.include?(response)
 end
 
+def display_match_scores(match_tracker, dlr_id, plr_id)
+  puts "Player score:  #{match_tracker[plr_id]}"
+  puts "Dealer score:  #{match_tracker[dlr_id]}"
+  sleep(STAND_TIMER + 3)
+end
+
 def end_game(dealer_hand, player_hand, scores_hash, player_id, dealer_id)
   system 'clear'
   display_hand(dealer_id, dealer_hand, false)
@@ -249,6 +255,8 @@ def end_game(dealer_hand, player_hand, scores_hash, player_id, dealer_id)
   update_score(dealer_hand, scores_hash, dealer_id)
   update_score(player_hand, scores_hash, player_id)
   winner = calc_winner(scores_hash)
+  binding.pry
+  match_tracker[winner] += 1 if winner != 'draw'
   display_winner(winner, scores_hash)
 end
 
@@ -260,8 +268,8 @@ end
 
 # main game loop
 loop do
-  games_score_tracker = {dealer: 0,
-                         player: 0}
+  games_score_tracker = { dealer: 0,
+                          player: 0 }
   loop do
     scores = { dealer: 0,
                player: 0 }
@@ -276,14 +284,22 @@ loop do
       dealer_turn(dealer_hand, player_hand, deck, winner, scores,
                   :player, :dealer)
     end
-    end_game(dealer_hand, player_hand, scores, :player, :dealer) if winner.empty?
-    if winner != 'draw' 
-      games_score_tracker[calc_winner(scores)] +=1
+    if winner.empty?
+      end_game(dealer_hand, player_hand, scores,
+               :player, :dealer) 
     end
-    puts games_score_tracker
+
+ #   if calc_winner(scores) != 'draw'
+ #     games_score_tracker[calc_winner(scores)] += 1
+ #   end
     sleep(STAND_TIMER + 2)
-    break if games_score_tracker[:player] == WINNING_MATCH_SCORE ||
+
+    if games_score_tracker[:player] == WINNING_MATCH_SCORE ||
        games_score_tracker[:dealer] == WINNING_MATCH_SCORE
+      display_match_scores(games_score_tracker, :dealer, :player)
+       break
+    end
+    display_match_scores(games_score_tracker, :dealer, :player)
   end
   break if play_again? == false
 end
