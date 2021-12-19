@@ -174,14 +174,14 @@ end
 def player_turn(dealer_hand, player_hand, deck,
                 winner, scores_hash, player_id, dealer_id, games_score_tracker)
   loop do
-    display_hands(:player, :dealer, player_hand, dealer_hand, true)
+    display_hands(player_id, dealer_id, player_hand, dealer_hand, true)
     choice = ask_player_hit_or_stay?
     sleep(0.5)
     system 'clear'
     if VALID_STAY.include?(choice)
       break
     else
-      update_hand(player_hand, deck, :player)
+      update_hand(player_hand, deck, player_id)
       scores_hash[player_id] = calc_hand(player_hand)
       sleep(STAND_TIMER)
     end
