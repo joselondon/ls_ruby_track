@@ -280,7 +280,7 @@ loop do
     winner = []
     initial_deal(deck, player_hand)
     initial_deal(deck, dealer_hand)
-    player_turn(dealer_hand, player_hand, deck, winner, scores, :player, 
+    player_turn(dealer_hand, player_hand, deck, winner, scores, :player,
                 :dealer, games_score_tracker)
     if winner.empty?
       dealer_turn(dealer_hand, player_hand, deck, winner, scores,
@@ -288,18 +288,14 @@ loop do
     end
     if winner.empty?
       end_game(dealer_hand, player_hand, scores,
-               :player, :dealer) 
+               :player, :dealer)
     end
-
- #   if calc_winner(scores) != 'draw'
- #     games_score_tracker[calc_winner(scores)] += 1
- #   end
     sleep(STAND_TIMER + 2)
 
     if games_score_tracker[:player] == WINNING_MATCH_SCORE ||
        games_score_tracker[:dealer] == WINNING_MATCH_SCORE
       display_match_scores(games_score_tracker, :dealer, :player)
-       break
+      break
     end
     display_match_scores(games_score_tracker, :dealer, :player)
   end
