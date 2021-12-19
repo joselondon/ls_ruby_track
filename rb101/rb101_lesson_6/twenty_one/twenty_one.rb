@@ -172,7 +172,7 @@ end
 # rubocop:disable Metrics/MethodLength: Method has too many lines
 # rubocop:disable Metrics/ParameterLists: Avoid parameter lists longer than 5 parameters
 def player_turn(dealer_hand, player_hand, deck,
-                winner, scores_hash, player_id)
+                winner, scores_hash, player_id, dealer_id, games_score_tracker)
   loop do
     display_hands(:player, :dealer, player_hand, dealer_hand, true)
     choice = ask_player_hit_or_stay?
@@ -187,6 +187,7 @@ def player_turn(dealer_hand, player_hand, deck,
     end
     if busted?(scores_hash, player_id)
       gen_display_busted('Player', player_hand, dealer_hand, winner, false)
+      games_score_tracker[dealer_id] += 1
       break
     end
   end
@@ -279,7 +280,8 @@ loop do
     winner = []
     initial_deal(deck, player_hand)
     initial_deal(deck, dealer_hand)
-    player_turn(dealer_hand, player_hand, deck, winner, scores, :player)
+    player_turn(dealer_hand, player_hand, deck, winner, scores, :player, 
+                :dealer, games_score_tracker)
     if winner.empty?
       dealer_turn(dealer_hand, player_hand, deck, winner, scores,
                   :player, :dealer)
