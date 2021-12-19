@@ -172,7 +172,7 @@ end
 # rubocop:disable Metrics/MethodLength: Method has too many lines
 # rubocop:disable Metrics/ParameterLists: Avoid parameter lists longer than 5 parameters
 def player_turn(dealer_hand, player_hand, deck,
-                winner, scores_hash, player_id, dealer_id, games_score_tracker)
+                winner, scores_hash, player_id, dealer_id, match_tracker)
   loop do
     display_hands(player_id, dealer_id, player_hand, dealer_hand, true)
     choice = ask_player_hit_or_stay?
@@ -187,19 +187,20 @@ def player_turn(dealer_hand, player_hand, deck,
     end
     if busted?(scores_hash, player_id)
       gen_display_busted('Player', player_hand, dealer_hand, winner, false)
-      games_score_tracker[dealer_id] += 1
+      match_tracker[dealer_id] += 1
       break
     end
   end
 end
 
 def dealer_turn(dealer_hand, player_hand, deck, winner,
-                scores_hash, player_id, dealer_id)
+                scores_hash, player_id, dealer_id, match_tracker)
   loop do
     display_hands(player_id, dealer_id, player_hand, dealer_hand, false)
     puts
     if busted?(scores_hash, player_id)
       gen_display_busted(dealer_id, player_hand, dealer_hand, winner, false)
+      match_tracker[player_id] += 1
       break
     elsif dealers_choice?(dealer_hand) == 'stay'
       puts "Dealer chooses to stay"
@@ -248,7 +249,8 @@ def display_match_scores(match_tracker, dlr_id, plr_id)
   sleep(STAND_TIMER + 3)
 end
 
-def end_game(dealer_hand, player_hand, scores_hash, player_id, dealer_id)
+def end_game(dealer_hand, player_hand, scores_hash, player_id, dealer_id,
+             match_tracker)
   system 'clear'
   display_hand(dealer_id, dealer_hand, false)
   display_hand(player_id, player_hand, false)
@@ -256,7 +258,6 @@ def end_game(dealer_hand, player_hand, scores_hash, player_id, dealer_id)
   update_score(dealer_hand, scores_hash, dealer_id)
   update_score(player_hand, scores_hash, player_id)
   winner = calc_winner(scores_hash)
-  binding.pry
   match_tracker[winner] += 1 if winner != 'draw'
   display_winner(winner, scores_hash)
 end
@@ -284,11 +285,11 @@ loop do
                 :dealer, games_score_tracker)
     if winner.empty?
       dealer_turn(dealer_hand, player_hand, deck, winner, scores,
-                  :player, :dealer)
+                  :player, :dealer, games_score_tracker)
     end
     if winner.empty?
       end_game(dealer_hand, player_hand, scores,
-               :player, :dealer)
+               :player, :dealer, games_score_tracker)
     end
     sleep(STAND_TIMER + 2)
 
