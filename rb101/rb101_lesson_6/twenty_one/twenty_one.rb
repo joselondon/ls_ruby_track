@@ -249,6 +249,7 @@ def display_match_scores(match_tracker, dlr_id, plr_id)
   sleep(STAND_TIMER + 3)
 end
 
+# rubocop:disable Metrics/ParameterLists: Avoid parameter lists longer than 5 parameters
 def end_game(dealer_hand, player_hand, scores_hash, player_id, dealer_id,
              match_tracker)
   system 'clear'
@@ -260,6 +261,16 @@ def end_game(dealer_hand, player_hand, scores_hash, player_id, dealer_id,
   winner = calc_winner(scores_hash)
   match_tracker[winner] += 1 if winner != 'draw'
   display_winner(winner, scores_hash)
+end
+# rubocop:enable Metrics/ParameterLists: Avoid parameter lists longer than 5 parameters
+
+def match_winner?(match_tracker, plr_id, dlr_id)
+  match_tracker[plr_id] == WINNING_MATCH_SCORE ||
+    match_tracker[dlr_id] == WINNING_MATCH_SCORE
+end
+
+def calc_match_winner(match_tracker)
+  match_tracker.key(match_tracker.values.max).capitalize
 end
 
 def goodbye
@@ -293,12 +304,12 @@ loop do
     end
     sleep(STAND_TIMER + 2)
 
-    if games_score_tracker[:player] == WINNING_MATCH_SCORE ||
-       games_score_tracker[:dealer] == WINNING_MATCH_SCORE
+    if match_winner?(games_score_tracker, :player, :dealer)
       display_match_scores(games_score_tracker, :dealer, :player)
+      puts "#{calc_match_winner(games_score_tracker)} is the match-winner"
       break
     end
-    display_match_scores(games_score_tracker, :dealer, :player)
+    display_match_scores(games_score_tracker, :dealer, :player)\
   end
   break if play_again? == false
 end
