@@ -14,6 +14,26 @@ def prompt(message)
   puts "=> #{message}"
 end
 
+def display_welcome
+  puts "*** Welcome to Twenty One ***"
+  puts "Objective is to reach a score as close to #{MAX_VALID_SCORE}"
+  puts "without exceeding 21."
+  puts "Pip cards are worth their face value, and court card all worth 10."
+  puts "Aces are worth 2 or 11 whichever score does the best job of keeping"
+  puts "your score under #{MAX_VALID_SCORE}."
+  puts "Player goes first selecting 'hit' to draw another card or 'stay'"
+  puts "to halt for dealer's turn. If either player exceeeds 21 they bust"
+  puts "and lose the game. Dealer's tuen proceeds in a similar way however"
+  puts "the  dealer automatically stays at #{DEALER_AUTO_STAY_SCORE}."
+  puts "First player to win #{WINNING_MATCH_SCORE} games, wins the match!"
+  puts "Good luck!!!"
+end
+
+def hit_key_to_start
+  puts "Hit any key to start"
+  gets
+end
+
 def initialize_deck
   deck = []
   SUITS.each do |suit|
@@ -280,9 +300,13 @@ def goodbye
 end
 
 # main game loop
+display_welcome
+hit_key_to_start
+
 loop do
   games_score_tracker = { dealer: 0,
                           player: 0 }
+
   loop do
     scores = { dealer: 0,
                player: 0 }
