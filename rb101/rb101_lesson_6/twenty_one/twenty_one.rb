@@ -32,6 +32,7 @@ end
 def hit_key_to_start
   puts "Hit any key to start"
   gets
+  system 'clear'
 end
 
 def initialize_deck
