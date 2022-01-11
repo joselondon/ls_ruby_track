@@ -83,13 +83,13 @@ def display_hand(player_id, hand, hide = true)
   print have?(player_id).to_s
   hand.each do |card|
     if display_hand_value?(hand, card, player_id, hide)
-      puts "and #{card[0]}.  Hand value = #{calc_hand(hand)}"
+      puts "and #{card[0]} #{card[1]}.  Hand value = #{calc_hand(hand)}"
     elsif display_and?(hand, card)
-      puts "and #{card[0]}."
+      puts "and #{card[0]} #{card[1]}."
     elsif hidden_dealer_card_logic(player_id, hand, card, hide)
       print "[HIDDEN] "
     else
-      print "#{card[0]}, "
+      print "#{card[0]} #{card[1]}, "
     end
   end
 end
