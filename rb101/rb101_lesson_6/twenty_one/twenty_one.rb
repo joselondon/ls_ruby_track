@@ -15,6 +15,7 @@ def prompt(message)
 end
 
 def display_welcome
+  system 'clear'
   puts "*** Welcome to Twenty One ***"
   puts "Objective is to reach a score as close to #{MAX_VALID_SCORE}"
   puts "without exceeding 21."
@@ -30,7 +31,7 @@ def display_welcome
 end
 
 def hit_key_to_start
-  puts "Hit any key to start"
+  puts "Hit <ENTER> to continue."
   gets
   system 'clear'
 end
@@ -83,13 +84,13 @@ def display_hand(player_id, hand, hide = true)
   print have?(player_id).to_s
   hand.each do |card|
     if display_hand_value?(hand, card, player_id, hide)
-      puts "and #{card[0]} #{card[1]}.  Hand value = #{calc_hand(hand)}"
+      puts "and #{card[0]} #{card[1]}. Val: #{calc_hand(hand)}"
     elsif display_and?(hand, card)
       puts "and #{card[0]} #{card[1]}."
     elsif hidden_dealer_card_logic(player_id, hand, card, hide)
       print "[HIDDEN] "
     else
-      print "#{card[0]} #{card[1]}, "
+      print "#{card[0]} #{card[1]},"
     end
   end
 end
@@ -204,7 +205,7 @@ def player_turn(dealer_hand, player_hand, deck,
     else
       update_hand(player_hand, deck, player_id)
       scores_hash[player_id] = calc_hand(player_hand)
-      sleep(STAND_TIMER)
+      hit_key_to_start
     end
     if busted?(scores_hash, player_id)
       gen_display_busted('Player', player_hand, dealer_hand, winner, false)
@@ -225,7 +226,8 @@ def dealer_turn(dealer_hand, player_hand, deck, winner,
       break
     elsif dealers_choice?(dealer_hand) == 'stay'
       puts "Dealer chooses to stay"
-      sleep(STAND_TIMER)
+      hit_key_to_start
+      # sleep(STAND_TIMER)
       break
     else
       update_hand(dealer_hand, deck, dealer_id)
@@ -267,7 +269,8 @@ end
 def display_match_scores(match_tracker, dlr_id, plr_id)
   puts "Player score:  #{match_tracker[plr_id]}"
   puts "Dealer score:  #{match_tracker[dlr_id]}"
-  sleep(STAND_TIMER + 3)
+  hit_key_to_start
+  # sleep(STAND_TIMER + 3)
 end
 
 # rubocop:disable Metrics/ParameterLists: Avoid parameter lists longer than 5 parameters
