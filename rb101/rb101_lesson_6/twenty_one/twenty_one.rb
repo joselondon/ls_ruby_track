@@ -42,7 +42,8 @@ def initialize_deck
   deck = []
   SUITS.each do |suit|
     RANKS.size.times do |i|
-      deck << [RANKS[i], suit]
+#      deck << {RANKS[i] => suit}
+      deck << {suit: suit, value: RANKS[i]}
     end
   end
   deck
@@ -317,6 +318,7 @@ loop do
     scores = { dealer: 0,
                player: 0 }
     deck = initialize_deck
+    binding.pry
     player_hand = []
     dealer_hand = []
     winner = []
