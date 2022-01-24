@@ -16,18 +16,20 @@ end
 
 def display_welcome
   system 'clear'
-  puts "*** Welcome to Twenty One ***"
-  puts "Objective is to reach a score as close to #{MAX_VALID_SCORE}"
-  puts "without exceeding 21."
-  puts "Pip cards are worth their face value, and court card all worth 10."
-  puts "Aces are worth 2 or 11 whichever score does the best job of keeping"
-  puts "your score under #{MAX_VALID_SCORE}."
-  puts "Player goes first selecting 'hit' to draw another card or 'stay'"
-  puts "to halt for dealer's turn. If either player exceeeds 21 they bust"
-  puts "and lose the game. Dealer's tuen proceeds in a similar way however"
-  puts "the  dealer automatically stays at #{DEALER_AUTO_STAY_SCORE}."
-  puts "First player to win #{WINNING_MATCH_SCORE} games, wins the match!"
-  puts "Good luck!!!"
+  <<-WELCOME
+  *** Welcome to Twenty One ***
+  Objective is to reach a score as close to #{MAX_VALID_SCORE}
+  without exceeding 21.
+  Pip cards are worth their face value, and court card all worth 10.
+  Aces are worth 2 or 11 whichever score does the best job of keeping
+  your score under #{MAX_VALID_SCORE}.
+  Player goes first selecting 'hit' to draw another card or 'stay'
+  to halt for dealer's turn. If either player exceeeds #{MAX_VALID_SCORE} they
+  bust and lose the game. Dealer's tuen proceeds in a similar way however
+  the  dealer automatically stays at #{DEALER_AUTO_STAY_SCORE}.
+  First player to win #{WINNING_MATCH_SCORE} games, wins the match!
+  Good luck!!!
+  WELCOME
 end
 
 def hit_key_to_start
@@ -304,7 +306,7 @@ def goodbye
 end
 
 # main game loop
-display_welcome
+puts display_welcome
 hit_key_to_start
 
 loop do
