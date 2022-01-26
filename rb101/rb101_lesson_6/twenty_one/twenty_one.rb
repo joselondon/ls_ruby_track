@@ -42,8 +42,14 @@ def initialize_deck
   deck = []
   SUITS.each do |suit|
     RANKS.size.times do |i|
-#      deck << {RANKS[i] => suit}
-      deck << {suit: suit, value: RANKS[i]}
+      if RANKS[i] == 'Ace'
+        value = 0
+      elsif RANKS[i].to_i == 0
+        value = 10
+      else
+        value = RANKS[i].to_i
+      end
+      deck << {suit: suit, rank: RANKS[i], value: value}
     end
   end
   deck
@@ -125,46 +131,54 @@ def update_hand(hand, deck, player_id)
   puts "#{player_id} dealt:  #{card[0]} of #{card[1]}"
 end
 
-def calc_ace(hand)
-  flattened = hand.flatten
-  aces_left = flattened.count("Ace")
-  aces_value = 0
-  until aces_left <= 0
-    flattened.each do |card|
-      if card == "Ace"
-        aces_value += calc_hand_excl_aces(hand) + aces_value > 10 ? 1 : 11
-      end
-      aces_left -= 1
-    end
-  end
-  aces_value
-end
-
-def calc_sum_of_pip_cards(hand)
-  hand.flatten.map(&:to_i).sum
-end
-
-def calc_sum_of_court_cards(hand)
-  value = 0
-  hand.flatten.map do |e|
-    if COURTS_CARDS.include?(e)
-      value += 10
-    elsif e == "Ace"
-      0
-    end
-  end
-  value
-end
-
-def calc_hand_excl_aces(hand)
-  value_of_pips = calc_sum_of_pip_cards(hand)
-  value_of_courts = calc_sum_of_court_cards(hand)
-  value_of_courts + value_of_pips
-end
-
 def calc_hand(hand)
-  calc_hand_excl_aces(hand) + calc_ace(hand)
+  sum = 0
+  hand.each do |card|
+    sum += card[:value]
+  end
+  sum
 end
+
+#def calc_ace(hand)
+#  flattened = hand.flatten
+#  aces_left = flattened.count("Ace")
+#  aces_value = 0
+#  until aces_left <= 0
+#    flattened.each do |card|
+#      if card == "Ace"
+#        aces_value += calc_hand_excl_aces(hand) + aces_value > 10 ? 1 : 11
+#      end
+#      aces_left -= 1
+#    end
+#  end
+#  aces_value
+#end
+#
+#def calc_sum_of_pip_cards(hand)
+#  hand.flatten.map(&:to_i).sum
+#end
+#
+#def calc_sum_of_court_cards(hand)
+#  value = 0
+#  hand.flatten.map do |e|
+#    if COURTS_CARDS.include?(e)
+#      value += 10
+#    elsif e == "Ace"
+#      0
+#    end
+#  end
+#  value
+#end
+#
+#def calc_hand_excl_aces(hand)
+#  value_of_pips = calc_sum_of_pip_cards(hand)
+#  value_of_courts = calc_sum_of_court_cards(hand)
+#  value_of_courts + value_of_pips
+#end
+#
+#def calc_hand(hand)
+#  calc_hand_excl_aces(hand) + calc_ace(hand)
+#end
 
 def busted?(scores_hash, player_id)
   scores_hash[player_id] > MAX_VALID_SCORE
@@ -193,7 +207,6 @@ def dealers_choice?(dealers_hand)
     'hit'
   end
 end
-
 # rubocop:disable Metrics/MethodLength: Method has too many lines
 # rubocop:disable Metrics/ParameterLists: Avoid parameter lists longer than 5 parameters
 def player_turn(dealer_hand, player_hand, deck,
@@ -318,12 +331,12 @@ loop do
     scores = { dealer: 0,
                player: 0 }
     deck = initialize_deck
-    binding.pry
     player_hand = []
     dealer_hand = []
     winner = []
     initial_deal(deck, player_hand)
     initial_deal(deck, dealer_hand)
+    binding.pry
     player_turn(dealer_hand, player_hand, deck, winner, scores, :player,
                 :dealer, games_score_tracker)
     if winner.empty?
