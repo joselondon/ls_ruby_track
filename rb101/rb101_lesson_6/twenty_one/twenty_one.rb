@@ -14,7 +14,7 @@ def prompt(message)
   puts "=> #{message}"
 end
 
-def display_welcome
+def display_welcome 
   system 'clear'
   <<-WELCOME
   *** Welcome to Twenty One ***
