@@ -131,7 +131,7 @@ def update_hand(hand, deck, player_id)
   puts "#{player_id} dealt:  #{card[0]} of #{card[1]}"
 end
 
-def calc_hand(hand)
+def calc_hand_excl_aces(hand)
   sum = 0
   hand.each do |card|
     sum += card[:value]
@@ -139,20 +139,23 @@ def calc_hand(hand)
   sum
 end
 
-#def calc_ace(hand)
-#  flattened = hand.flatten
-#  aces_left = flattened.count("Ace")
-#  aces_value = 0
-#  until aces_left <= 0
-#    flattened.each do |card|
-#      if card == "Ace"
-#        aces_value += calc_hand_excl_aces(hand) + aces_value > 10 ? 1 : 11
-#      end
-#      aces_left -= 1
-#    end
-#  end
-#  aces_value
-#end
+def calc_aces(hand)
+  aces_left = hand.count {|card| card[:rank]}
+  aces_value = 0
+  until aces_left <= 0
+    hand.each do |card|
+      if card[:rank] == "Ace"
+        aces_value += calc_hand_excl_aces(hand) + aces_value > 10 ? 1 : 11
+      end
+      aces_left -= 1
+    end
+  end
+  aces_value
+end
+
+def calc_hand(hand)
+  calc_hand_excl_aces(hand) + calc_aces(hand)
+end
 #
 #def calc_sum_of_pip_cards(hand)
 #  hand.flatten.map(&:to_i).sum
@@ -220,7 +223,7 @@ def player_turn(dealer_hand, player_hand, deck,
       break
     else
       update_hand(player_hand, deck, player_id)
-      scores_hash[player_id] = calc_hand(player_hand)
+      scores_hash[player_id] = calc_hand_excl_aces(player_hand) + calc_aces(player_hand)
       hit_key_to_start
     end
     if busted?(scores_hash, player_id)
@@ -336,7 +339,6 @@ loop do
     winner = []
     initial_deal(deck, player_hand)
     initial_deal(deck, dealer_hand)
-    binding.pry
     player_turn(dealer_hand, player_hand, deck, winner, scores, :player,
                 :dealer, games_score_tracker)
     if winner.empty?
