@@ -42,13 +42,13 @@ def initialize_deck
   deck = []
   SUITS.each do |suit|
     RANKS.size.times do |i|
-      if RANKS[i] == 'Ace'
-        value = 0
-      elsif RANKS[i].to_i == 0
-        value = 10
-      else
-        value = RANKS[i].to_i
-      end
+      value = if RANKS[i] == 'Ace'
+                0
+              elsif RANKS[i].to_i == 0
+                10
+              else
+                RANKS[i].to_i
+              end
       deck << { suit: suit, rank: RANKS[i], value: value }
     end
   end
