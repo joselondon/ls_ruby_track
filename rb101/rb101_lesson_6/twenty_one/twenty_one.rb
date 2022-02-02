@@ -75,10 +75,9 @@ def have?(player)
   end
 end
 
-def display_hand_value?(game_data, card, hide)
-  (card == game_data[player][hand].last && [game_data][player][id] == 
-   :player) || (card == hand.last && game_data[player][id] ==
-   :dealer && hide == false)
+def display_hand_value?(hand, card, player_id, hide)
+  (card == hand.last && player_id == :player) || (card == hand.last &&
+   player_id == :dealer && hide == false)
 end
 
 def display_and?(hand, card)
@@ -90,10 +89,10 @@ def hidden_dealer_card_logic(player_id, hand, card, hide)
     hide == true
 end
 
-def display_hand(game_data, hide = true)
-  print have?(game_data[:player][:id]).to_s
-  game_data[:player][:hand].each do |card|
-    if display_hand_value?(game_data, card, hide)
+def display_hand(player_id, hand, hide = true)
+  print have?(player_id).to_s
+  hand.each do |card|
+    if display_hand_value?(hand, card, player_id, hide)
       puts "and #{card[:rank]} #{card[:suit]}. Val: #{calc_hand(hand)}"
     elsif display_and?(hand, card)
       puts "and #{card[:rank]} #{card[:suit]}."
@@ -105,9 +104,9 @@ def display_hand(game_data, hide = true)
   end
 end
 
-def display_hands(game_data, hide)
+def display_hands(plr_id, dlr_id, plr_hnd, dlr_hnd, hide)
   system 'clear'
-  display_hand(game_data, hide)
+  display_hand(dlr_id, dlr_hnd, hide)
   display_hand(plr_id, plr_hnd)
 end
 
@@ -188,9 +187,10 @@ end
 
 # rubocop:disable Metrics/MethodLength: Method has too many lines
 # rubocop:disable Metrics/ParameterLists: Avoid parameter lists longer than 5 parameters
-def player_turn(game_data, deck, winner, games_score_tracker)
+def player_turn(dealer_hand, player_hand, deck,
+                winner, scores_hash, player_id, dealer_id, match_tracker)
   loop do
-    display_hands(game_data, true)
+    display_hands(player_id, dealer_id, player_hand, dealer_hand, true)
     choice = ask_player_hit_or_stay?
     sleep(0.5)
     system 'clear'
@@ -306,22 +306,16 @@ loop do
   games_score_tracker = { dealer: 0,
                           player: 0 }
   loop do
-    game_data = { player: { hand: [],
-                            score: 0,
-                            id: :player },
-                  dealer: { hand: [],
-                            score: 0,
-                            id: :dealer }
-                }
-#    scores = { dealer: 0,
-#               player: 0 }
+    scores = { dealer: 0,
+               player: 0 }
     deck = initialize_deck
-#    player_hand = []
-#    dealer_hand = []
+    player_hand = []
+    dealer_hand = []
     winner = []
-    initial_deal(deck, game_data[:player][:hand])
-    initial_deal(deck, game_data[:dealer][:hand])
-    player_turn(game_data, deck, winner, games_score_tracker)
+    initial_deal(deck, player_hand)
+    initial_deal(deck, dealer_hand)
+    player_turn(dealer_hand, player_hand, deck, winner, scores, :player,
+                :dealer, games_score_tracker)
     if winner.empty?
       dealer_turn(dealer_hand, player_hand, deck, winner, scores,
                   :player, :dealer, games_score_tracker)
