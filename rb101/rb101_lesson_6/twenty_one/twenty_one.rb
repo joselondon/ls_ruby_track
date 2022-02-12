@@ -169,7 +169,7 @@ def disply_deal_bust
   "Dealer is bust! Player Wins!"
 end
 
-def gen_display_busted(player_id, data, winner, hide)
+def gen_display_busted(player_id, data, winner)
   system 'clear'
   display_hand(:dealer, data[:dealer][:hand], false)
   display_hand(:player, data[:player][:hand])
@@ -186,7 +186,6 @@ def dealers_choice?(dealers_hand)
 end
 
 # rubocop:disable Metrics/MethodLength: Method has too many lines
-# rubocop:disable Metrics/ParameterLists: Avoid parameter lists longer than 5 parameters
 def player_turn(data, deck, winner, match_tracker)
   loop do
     display_hands(data, true)
@@ -198,11 +197,11 @@ def player_turn(data, deck, winner, match_tracker)
     else
       update_hand(data[:player][:hand], deck, :player)
       data[:player][:score] = calc_hand_excl_aces(data[:player][:hand]) +
-                               calc_aces(data[:player][:hand])
+                              calc_aces(data[:player][:hand])
       hit_key_to_start
     end
     if busted?(data, :player)
-      gen_display_busted('Player', data, winner, false)
+      gen_display_busted('Player', data, winner)
       match_tracker[:dealer] += 1
       break
     end
@@ -214,7 +213,7 @@ def dealer_turn(data, deck, match_tracker, winner)
     display_hands(data, false)
     puts
     if busted?(data, :dealer)
-      gen_display_busted(:dealer, data, winner, false)
+      gen_display_busted(:dealer, data, winner)
       match_tracker[:player] += 1
       break
     elsif dealers_choice?(data[:dealer][:hand]) == 'stay'
@@ -230,7 +229,6 @@ def dealer_turn(data, deck, match_tracker, winner)
   end
 end
 # rubocop:enable Metrics/MethodLength: Method has too many lines
-# rubocop:enable Metrics/ParameterLists: Avoid parameter lists longer than 5 parameters
 
 def update_score(data, player_id)
   data[player_id][:score] = calc_hand(data[player_id][:hand])
@@ -265,7 +263,6 @@ def display_match_scores(match_tracker, dlr_id, plr_id)
   hit_key_to_start
 end
 
-# rubocop:disable Metrics/ParameterLists: Avoid parameter lists longer than 5 parameters
 def end_game(data, match_tracker)
   system 'clear'
   display_hand(:dealer, data[:dealer][:hand], false)
@@ -277,7 +274,6 @@ def end_game(data, match_tracker)
   match_tracker[winner] += 1 if winner != 'draw'
   display_winner(winner, data)
 end
-# rubocop:enable Metrics/ParameterLists: Avoid parameter lists longer than 5 parameters
 
 def match_winner?(match_tracker, plr_id, dlr_id)
   match_tracker[plr_id] == WINNING_MATCH_SCORE ||
@@ -304,11 +300,10 @@ loop do
   loop do
     game_data = { player: { hand: [],
                             score: 0,
-                            id: :player},
+                            id: :player },
                   dealer: { hand: [],
                             score: 0,
-                            id: :dealer}
-                }
+                            id: :dealer } }
     deck = initialize_deck
     winner = []
     initial_deal(deck, game_data[:player][:hand])
