@@ -215,7 +215,7 @@ def dealer_turn(data, deck, match_tracker, winner)
     puts
     if busted?(data, :dealer)
       gen_display_busted(:dealer, data, winner, false)
-      match_tracker[:dealer] += 1
+      match_tracker[:player] += 1
       break
     elsif dealers_choice?(data[:dealer][:hand]) == 'stay'
       puts "Dealer chooses to stay"
@@ -263,7 +263,6 @@ def display_match_scores(match_tracker, dlr_id, plr_id)
   puts "Player score:  #{match_tracker[plr_id]}"
   puts "Dealer score:  #{match_tracker[dlr_id]}"
   hit_key_to_start
-  # sleep(STAND_TIMER + 3)
 end
 
 # rubocop:disable Metrics/ParameterLists: Avoid parameter lists longer than 5 parameters
@@ -321,7 +320,7 @@ loop do
     if winner.empty?
       end_game(game_data, games_score_tracker)
     end
-    sleep(STAND_TIMER + 2)
+    sleep(STAND_TIMER)
     if match_winner?(games_score_tracker, :player, :dealer)
       display_match_scores(games_score_tracker, :dealer, :player)
       puts "#{calc_match_winner(games_score_tracker)} is the match-winner"
