@@ -104,10 +104,10 @@ def display_hand(player_id, hand, hide = true)
   end
 end
 
-def display_hands(plr_id, dlr_id, plr_hnd, dlr_hnd, hide)
+def display_hands(data, hide)
   system 'clear'
-  display_hand(dlr_id, dlr_hnd, hide)
-  display_hand(plr_id, plr_hnd)
+  display_hand(:dealer, data[:dealer][:hand], hide)
+  display_hand(:player, data[:player][:hand])
 end
 
 def ask_player_hit_or_stay?
@@ -157,8 +157,8 @@ def calc_hand(hand)
   calc_hand_excl_aces(hand) + calc_aces(hand)
 end
 
-def busted?(scores_hash, player_id)
-  scores_hash[player_id] > MAX_VALID_SCORE
+def busted?(scores_data, player_id)
+  scores_data[player_id][:score] > MAX_VALID_SCORE
 end
 
 def disply_plyr_bust
@@ -169,10 +169,10 @@ def disply_deal_bust
   "Dealer is bust! Player Wins!"
 end
 
-def gen_display_busted(player_id, player_hand, dealer_hand, winner, hide)
+def gen_display_busted(player_id, data, winner, hide)
   system 'clear'
-  display_hand(:dealer, dealer_hand, hide)
-  display_hand(:player, player_hand)
+  display_hand(:dealer, data[:dealer][:hand], hide)
+  display_hand(:player, data[:dealer][:hand])
   puts player_id == 'Player' ? disply_plyr_bust : disply_deal_bust
   winner << player_id
 end
@@ -187,46 +187,44 @@ end
 
 # rubocop:disable Metrics/MethodLength: Method has too many lines
 # rubocop:disable Metrics/ParameterLists: Avoid parameter lists longer than 5 parameters
-def player_turn(dealer_hand, player_hand, deck,
-                winner, scores_hash, player_id, dealer_id, match_tracker)
+def player_turn(data, deck, winner, match_tracker)
   loop do
-    display_hands(player_id, dealer_id, player_hand, dealer_hand, true)
+    display_hands(data, true)
     choice = ask_player_hit_or_stay?
     sleep(0.5)
     system 'clear'
     if VALID_STAY.include?(choice)
       break
     else
-      update_hand(player_hand, deck, player_id)
-      scores_hash[player_id] = calc_hand_excl_aces(player_hand) +
-                               calc_aces(player_hand)
+      update_hand(data[:player][:hand], deck, :player)
+      data[:player][:score] = calc_hand_excl_aces(data[:player][:hand]) +
+                               calc_aces(data[:player][:hand])
       hit_key_to_start
     end
-    if busted?(scores_hash, player_id)
-      gen_display_busted('Player', player_hand, dealer_hand, winner, false)
-      match_tracker[dealer_id] += 1
+    if busted?(data, :player)
+      gen_display_busted('Player', data, winner, false)
+      match_tracker[:dealer] += 1
       break
     end
   end
 end
 
-def dealer_turn(dealer_hand, player_hand, deck, winner,
-                scores_hash, player_id, dealer_id, match_tracker)
+def dealer_turn(data, deck, winner)
   loop do
-    display_hands(player_id, dealer_id, player_hand, dealer_hand, false)
+    display_hands(data, false)
     puts
-    if busted?(scores_hash, player_id)
-      gen_display_busted(dealer_id, player_hand, dealer_hand, winner, false)
+    if busted?(data, :dealer)
+      gen_display_busted(:dealer, data, winner, false)
       match_tracker[player_id] += 1
       break
-    elsif dealers_choice?(dealer_hand) == 'stay'
+    elsif dealers_choice?(data[:dealer][:hand]) == 'stay'
       puts "Dealer chooses to stay"
       hit_key_to_start
       # sleep(STAND_TIMER)
       break
     else
-      update_hand(dealer_hand, deck, dealer_id)
-      scores_hash[player_id] = calc_hand(dealer_hand)
+      update_hand(data[:dealer][:hand], deck, :dealer)
+      data[:dealer][:score] = calc_hand(data[:dealer][:hand])
       sleep(STAND_TIMER)
     end
   end
@@ -234,23 +232,23 @@ end
 # rubocop:enable Metrics/MethodLength: Method has too many lines
 # rubocop:enable Metrics/ParameterLists: Avoid parameter lists longer than 5 parameters
 
-def update_score(hand, scores_hash, player_id)
-  scores_hash[player_id] = calc_hand(hand)
+def update_score(data, player_id)
+  data[player_id][:score] = calc_hand(data[player_id][:hand])
 end
 
-def calc_winner(scores_hash)
-  if scores_hash[:player] > scores_hash[:dealer]
+def calc_winner(data)
+  if data[:player][:score] > data[:dealer][:score]
     :player
-  elsif scores_hash[:player] < scores_hash[:dealer]
+  elsif data[:player][:score] < data[:dealer][:score]
     :dealer
   else
     'draw'
   end
 end
 
-def display_winner(winner, scores_hash)
-  puts "Player hand value: #{scores_hash[:player]}"
-  puts "Dealer hand value: #{scores_hash[:dealer]}"
+def display_winner(winner, data)
+  puts "Player hand value: #{data[:player][:score]}"
+  puts "Dealer hand value: #{data[:dealer][:score]}"
   puts
   puts "Winner is: #{winner}"
 end
@@ -269,17 +267,16 @@ def display_match_scores(match_tracker, dlr_id, plr_id)
 end
 
 # rubocop:disable Metrics/ParameterLists: Avoid parameter lists longer than 5 parameters
-def end_game(dealer_hand, player_hand, scores_hash, player_id, dealer_id,
-             match_tracker)
+def end_game(data, match_tracker)
   system 'clear'
-  display_hand(dealer_id, dealer_hand, false)
-  display_hand(player_id, player_hand, false)
+  display_hand(:dealer, data[:dealer][:hand], false)
+  display_hand(:player, data[:player][:hand], false)
   puts
-  update_score(dealer_hand, scores_hash, dealer_id)
-  update_score(player_hand, scores_hash, player_id)
-  winner = calc_winner(scores_hash)
+  update_score(data, :dealer)
+  update_score(data, :player)
+  winner = calc_winner(data)
   match_tracker[winner] += 1 if winner != 'draw'
-  display_winner(winner, scores_hash)
+  display_winner(winner, data)
 end
 # rubocop:enable Metrics/ParameterLists: Avoid parameter lists longer than 5 parameters
 
@@ -306,23 +303,29 @@ loop do
   games_score_tracker = { dealer: 0,
                           player: 0 }
   loop do
-    scores = { dealer: 0,
-               player: 0 }
+    game_data = { player: { hand: [],
+                            score: 0,
+                            id: :player},
+                  dealer: { hand: [],
+                            score: 0,
+                            id: :dealer}
+                }
+#    scores = { dealer: 0,
+#               player: 0 }
     deck = initialize_deck
-    player_hand = []
-    dealer_hand = []
+#    player_hand = []
+#    dealer_hand = []
     winner = []
-    initial_deal(deck, player_hand)
-    initial_deal(deck, dealer_hand)
-    player_turn(dealer_hand, player_hand, deck, winner, scores, :player,
-                :dealer, games_score_tracker)
+    initial_deal(deck, game_data[:player][:hand])
+    initial_deal(deck, game_data[:dealer][:hand])
+    player_turn(game_data, deck, winner, games_score_tracker)
     if winner.empty?
-      dealer_turn(dealer_hand, player_hand, deck, winner, scores,
-                  :player, :dealer, games_score_tracker)
+      dealer_turn(game_data, deck, winner)
     end
     if winner.empty?
-      end_game(dealer_hand, player_hand, scores,
-               :player, :dealer, games_score_tracker)
+      end_game(game_data, games_score_tracker)
+      #end_game(dealer_hand, player_hand, scores,
+      #         :player, :dealer, games_score_tracker)
     end
     sleep(STAND_TIMER + 2)
 
