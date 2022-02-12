@@ -209,13 +209,13 @@ def player_turn(data, deck, winner, match_tracker)
   end
 end
 
-def dealer_turn(data, deck, winner)
+def dealer_turn(data, deck, match_tracker, winner)
   loop do
     display_hands(data, false)
     puts
     if busted?(data, :dealer)
       gen_display_busted(:dealer, data, winner, false)
-      match_tracker[player_id] += 1
+      match_tracker[:dealer] += 1
       break
     elsif dealers_choice?(data[:dealer][:hand]) == 'stay'
       puts "Dealer chooses to stay"
@@ -225,6 +225,7 @@ def dealer_turn(data, deck, winner)
     else
       update_hand(data[:dealer][:hand], deck, :dealer)
       data[:dealer][:score] = calc_hand(data[:dealer][:hand])
+      data[:dealer][:hand] << {:suit=>"Clubs", :rank=>"Jack", :value=>18}
       sleep(STAND_TIMER)
     end
   end
@@ -310,25 +311,18 @@ loop do
                             score: 0,
                             id: :dealer}
                 }
-#    scores = { dealer: 0,
-#               player: 0 }
     deck = initialize_deck
-#    player_hand = []
-#    dealer_hand = []
     winner = []
     initial_deal(deck, game_data[:player][:hand])
     initial_deal(deck, game_data[:dealer][:hand])
     player_turn(game_data, deck, winner, games_score_tracker)
     if winner.empty?
-      dealer_turn(game_data, deck, winner)
+      dealer_turn(game_data, deck, games_score_tracker, winner)
     end
     if winner.empty?
       end_game(game_data, games_score_tracker)
-      #end_game(dealer_hand, player_hand, scores,
-      #         :player, :dealer, games_score_tracker)
     end
     sleep(STAND_TIMER + 2)
-
     if match_winner?(games_score_tracker, :player, :dealer)
       display_match_scores(games_score_tracker, :dealer, :player)
       puts "#{calc_match_winner(games_score_tracker)} is the match-winner"
