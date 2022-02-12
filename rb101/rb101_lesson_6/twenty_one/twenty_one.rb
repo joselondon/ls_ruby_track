@@ -171,8 +171,8 @@ end
 
 def gen_display_busted(player_id, data, winner, hide)
   system 'clear'
-  display_hand(:dealer, data[:dealer][:hand], hide)
-  display_hand(:player, data[:dealer][:hand])
+  display_hand(:dealer, data[:dealer][:hand], false)
+  display_hand(:player, data[:player][:hand])
   puts player_id == 'Player' ? disply_plyr_bust : disply_deal_bust
   winner << player_id
 end
@@ -225,7 +225,6 @@ def dealer_turn(data, deck, match_tracker, winner)
     else
       update_hand(data[:dealer][:hand], deck, :dealer)
       data[:dealer][:score] = calc_hand(data[:dealer][:hand])
-      data[:dealer][:hand] << {:suit=>"Clubs", :rank=>"Jack", :value=>18}
       sleep(STAND_TIMER)
     end
   end
