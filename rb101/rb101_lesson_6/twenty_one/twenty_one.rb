@@ -197,8 +197,7 @@ def player_turn(data, deck, winner, match_tracker)
       break
     else
       update_hand(data[:player][:hand], deck, :player)
-      data[:player][:score] = calc_hand_excl_aces(data[:player][:hand]) +
-                              calc_aces(data[:player][:hand])
+      update_score(data, :player)
       hit_key_to_start
     end
     if busted?(data, :player)
@@ -220,7 +219,6 @@ def dealer_turn(data, deck, match_tracker, winner)
     elsif dealers_choice?(data[:dealer][:hand]) == 'stay'
       puts "Dealer chooses to stay"
       hit_key_to_start
-      # sleep(STAND_TIMER)
       break
     else
       update_hand(data[:dealer][:hand], deck, :dealer)
