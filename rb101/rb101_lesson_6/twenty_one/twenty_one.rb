@@ -185,14 +185,15 @@ def dealers_choice?(dealers_hand)
   end
 end
 
-# rubocop:disable Metrics/MethodLength: Method has too many lines
+def choose_hit_or_stay(data)
+  display_hands(data, true)
+  ask_player_hit_or_stay?
+end
+
 def player_turn(data, deck, winner, match_tracker)
   loop do
-    display_hands(data, true)
-    choice = ask_player_hit_or_stay?
-    sleep(0.5)
     system 'clear'
-    if VALID_STAY.include?(choice)
+    if VALID_STAY.include?(choose_hit_or_stay(data))
       break
     else
       update_hand(data[:player][:hand], deck, :player)
@@ -228,7 +229,6 @@ def dealer_turn(data, deck, match_tracker, winner)
     end
   end
 end
-# rubocop:enable Metrics/MethodLength: Method has too many lines
 
 def update_score(data, player_id)
   data[player_id][:score] = calc_hand(data[player_id][:hand])
