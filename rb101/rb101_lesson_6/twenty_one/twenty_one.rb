@@ -222,7 +222,7 @@ def dealer_turn(data, deck, match_tracker, winner)
       break
     else
       update_hand(data[:dealer][:hand], deck, :dealer)
-      data[:dealer][:score] = calc_hand(data[:dealer][:hand])
+      update_score(data, :dealer)
       sleep(STAND_TIMER)
     end
   end
