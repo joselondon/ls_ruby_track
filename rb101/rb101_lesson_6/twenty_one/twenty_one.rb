@@ -336,6 +336,6 @@ loop do
     end
     display_match_scores(games_score_tracker, :dealer, :player)\
   end
-  break if play_again? == false
+  break unless play_again?
 end
 goodbye
