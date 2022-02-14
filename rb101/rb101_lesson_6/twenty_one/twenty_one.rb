@@ -89,17 +89,29 @@ def hidden_dealer_card_logic(player_id, hand, card, hide)
     hide == true
 end
 
+def print_hand_value(hand, card)
+  puts "and #{card[:rank]} #{card[:suit]}. Val: #{calc_hand(hand)}"
+end
+
+def print_and(card)
+  puts "and #{card[:rank]} #{card[:suit]}."
+end
+
+def print_card(card)
+  print "#{card[:rank]} #{card[:suit]},"
+end
+
 def display_hand(player_id, hand, hide = true)
   print have?(player_id).to_s
   hand.each do |card|
     if display_hand_value?(hand, card, player_id, hide)
-      puts "and #{card[:rank]} #{card[:suit]}. Val: #{calc_hand(hand)}"
+      print_hand_value(hand, card)
     elsif display_and?(hand, card)
-      puts "and #{card[:rank]} #{card[:suit]}."
+      print_and(card)
     elsif hidden_dealer_card_logic(player_id, hand, card, hide)
       print "[HIDDEN] "
     else
-      print "#{card[:rank]} #{card[:suit]},"
+      print_card(card)
     end
   end
 end
@@ -208,17 +220,20 @@ def player_turn(data, deck, winner, match_tracker)
   end
 end
 
+def print_dealer_chooses_to_day
+  puts "Dealer chooses to stay"
+  hit_key_to_start
+end
+
 def dealer_turn(data, deck, match_tracker, winner)
   loop do
     display_hands(data, false)
-    puts
     if busted?(data, :dealer)
       gen_display_busted(:dealer, data, winner)
       match_tracker[:player] += 1
       break
     elsif dealers_choice?(data[:dealer][:hand]) == 'stay'
-      puts "Dealer chooses to stay"
-      hit_key_to_start
+      print_dealer_chooses_to_day
       break
     else
       update_hand(data[:dealer][:hand], deck, :dealer)
