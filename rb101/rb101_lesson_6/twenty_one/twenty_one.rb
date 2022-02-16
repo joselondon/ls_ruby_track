@@ -20,11 +20,11 @@ def display_welcome
   Objective is to reach a score as close to #{MAX_VALID_SCORE}
   without exceeding 21.
   Pip cards are worth their face value, and court card all worth 10.
-  Aces are worth 2 or 11 whichever score does the best job of keeping
+  Aces are worth 1 or 11 whichever score does the best job of keeping
   your score under #{MAX_VALID_SCORE}.
   Player goes first selecting 'hit' to draw another card or 'stay'
   to halt for dealer's turn. If either player exceeeds #{MAX_VALID_SCORE} they
-  bust and lose the game. Dealer's tuen proceeds in a similar way however
+  bust and lose the game. Dealer's turn proceeds in a similar way however
   the  dealer automatically stays at #{DEALER_AUTO_STAY_SCORE}.
   First player to win #{WINNING_MATCH_SCORE} games, wins the match!
   Good luck!!!
