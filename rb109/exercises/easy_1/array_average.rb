@@ -15,4 +15,4 @@ def average_float(arr)
   num / arr.length
 end
 
-puts average_float([1, 6])
+puts average_float([1, 6]) = 3.5
