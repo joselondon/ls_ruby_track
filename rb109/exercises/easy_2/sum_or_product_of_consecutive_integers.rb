@@ -12,4 +12,6 @@ when 's'
   puts "The sum of the integers between 1 and #{int} is #{sum}."
 when 'p'
   puts "The product of the integers between 1 and #{int} is #{product}."
+else
+  puts "Invalid operation."
 end
