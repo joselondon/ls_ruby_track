@@ -29,8 +29,29 @@ def oddities_two_2(array)
 end
 
 puts
-p oddities_two_2([2, 3, 4, 5, 6]) #== [3, 5]
-p oddities_two_2([1, 2, 3, 4, 5, 6]) #== [2, 4, 6]
-p oddities_two_2(['abc', 'def']) #== ['def']
-p oddities_two_2([123]) #== []
-p oddities_two_2([]) #== []
+p oddities_two_2([2, 3, 4, 5, 6]) == [3, 5]
+p oddities_two_2([1, 2, 3, 4, 5, 6]) == [2, 4, 6]
+p oddities_two_2(['abc', 'def']) == ['def']
+p oddities_two_2([123]) == []
+p oddities_two_2([]) == []
+
+def oddities_two_3(array)
+  index = 0
+  new_array = []
+  loop do
+    break if counter > (array.length + 1)
+    if (array[index] +1) % 2 == 0
+      new_array << array[index + 1]
+    end
+    index += 1
+  end
+  new_array
+end
+
+puts
+
+p oddities_two_2([2, 3, 4, 5, 6]) == [3, 5]
+p oddities_two_2([1, 2, 3, 4, 5, 6]) == [2, 4, 6]
+p oddities_two_2(['abc', 'def']) == ['def']
+p oddities_two_2([123]) == []
+p oddities_two_2([]) == []
