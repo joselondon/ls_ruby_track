@@ -1,15 +1,13 @@
 require 'pry'
 def running_total(arr)
-  new_arr = []
-  indx = 0
-  new_arr[indx] = arr[indx]
-  arr.each_with_index do |e, i|
-    if i != arr.length
-      new_arr << e + arr[i+1]
-    end
+  total = 0
+  arr.map do |element|
+    total += element
   end
-  new_arr
 end
 
-p running_total([2, 5, 13])
+p running_total([2, 5, 13]) == [2, 7, 20]
+p running_total([14, 11, 7, 15, 20]) == [14, 25, 32, 47, 67]
+p running_total([3]) == [3]
+p running_total([]) == []
 
