@@ -20,7 +20,24 @@ def integer_to_string(int)
   str_int
 end
 
+def signed_integer_to_string(int)
+  unsigned = int.abs
+  if int.negative?
+    integer_to_string(unsigned).prepend('-')
+  elsif int.positive?
+    integer_to_string(unsigned).prepend('+')
+  else
+    integer_to_string(unsigned)
+  end
+end
+
 p integer_to_string(4321)  == '4321'
 p integer_to_string(0)  == '0'
 p integer_to_string(5000)  == '5000'
 p integer_to_string(235213132) == '235213132'
+puts
+puts 'signed_integer_to_string'
+puts
+p signed_integer_to_string(4321) == '+4321'
+p signed_integer_to_string(-123) == '-123'
+p signed_integer_to_string(0) == '0'
