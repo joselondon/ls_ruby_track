@@ -21,14 +21,10 @@ def integer_to_string(int)
 end
 
 def signed_integer_to_string(int)
+  return '0' if int == 0
+  int < 0 ? sign = '-' : sign = '+'
   unsigned = int.abs
-  if int.negative?
-    integer_to_string(unsigned).prepend('-')
-  elsif int.positive?
-    integer_to_string(unsigned).prepend('+')
-  else
-    integer_to_string(unsigned)
-  end
+  sign + integer_to_string(unsigned)
 end
 
 p integer_to_string(4321)  == '4321'
