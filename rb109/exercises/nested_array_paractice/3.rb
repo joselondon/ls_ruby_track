@@ -11,6 +11,8 @@ arr3 = [['abc'], ['def'], {third: ['ghi']}]
 arr3[2][:third][0][0] #=> 'g'
 
 hsh1 = {'a' => ['d', 'e'], 'b' => ['f', 'g'], 'c' => ['h', 'i']}
+hsh1['b'][1]
 
 
 hsh2 = {first: {'d' => 3}, second: {'e' => 2, 'f' => 1}, third: {'g' => 0}}
+p hsh2[:third].key(0)
