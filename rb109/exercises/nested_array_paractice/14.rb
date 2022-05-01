@@ -13,13 +13,26 @@ hsh = {
 
 # expected result:  [["Red", "Green"], "MEDIUM", ["Red", "Green"], ["Orange"], "LARGE"]
 
-array = []
-hsh.each_pair do |name, value|
+# array = []
+# hsh.each_pair do |name, value|
+#   case value[:type]
+#   when 'fruit'
+#       array << value[:colors].map {|color| color.capitalize}
+#   when 'vegetable'
+#       array << value[:size].upcase
+#   end
+# end
+# 
+# p array
+# 
+# array = []
+
+array = hsh.map do |name, value|
   case value[:type]
   when 'fruit'
-      array << value[:colors].map {|color| color.capitalize}
+      value[:colors].map {|color| color.capitalize}
   when 'vegetable'
-      array << value[:size].upcase
+      value[:size].upcase
   end
 end
 
