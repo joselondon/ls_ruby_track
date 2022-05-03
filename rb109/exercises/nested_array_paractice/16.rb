@@ -18,13 +18,26 @@
 
 digits = %w(a b c d e f 1 2 3 4 5 6 7 8 9 0)
 
-one = ''
-two = ''
-three = ''
-four = ''
-five = ''
+first_str = ''
+second_str = ''
+third_str = ''
+fourth_str = ''
+fifth_str = ''
+d = "-"
 
-8.times do
-  one << digits.sample
+def str_generator(var, digits, length)
+  length.times do 
+    var << digits.sample
+  end
+  var
 end
 
+str_generator(first_str, digits, 8)
+str_generator(second_str, digits, 4)
+str_generator(third_str, digits, 4)
+str_generator(fourth_str, digits, 4)
+str_generator(fifth_str, digits, 12)
+
+uuid = first_str + d + second_str + d + third_str + d + fourth_str + d + fifth_str
+
+p uuid
