@@ -3,10 +3,8 @@ MINS_PER_DAY = 1440
 MIDNGHT_MINUTES = 0
 
 def hrs_mins(time)
-  ints = time.chars
-  hrs = (ints[0] + ints[1]).to_i
-  mins = (ints[3] + ints[4]).to_i
-  {hours: hrs, minutes: mins}
+  hours, mins = time.split(':')
+  {hours: hours.to_i, minutes: mins.to_i}
 end
 
 def calc_mins(time)
