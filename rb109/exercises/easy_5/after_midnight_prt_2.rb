@@ -2,7 +2,6 @@ MINS_PER_HOUR = 60
 MINS_PER_DAY = 1440
 MIDNGHT_MINUTES = 0
 
-
 def hrs_mins(time)
   ints = time.chars
   hrs = (ints[0] + ints[1]).to_i
