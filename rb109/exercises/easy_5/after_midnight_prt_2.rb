@@ -3,7 +3,7 @@ MINS_PER_DAY = 1440
 MIDNGHT_MINUTES = 0
 
 def hrs_mins(time)
-  hours, mins = time.split(':').map(&:to_i)
+  hours, mins = time.split(':').map{|str| str.to_i}
   {hours: hours, minutes: mins}
 end
 
