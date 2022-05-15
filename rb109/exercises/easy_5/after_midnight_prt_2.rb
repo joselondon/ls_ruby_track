@@ -20,9 +20,14 @@ def after_midnight(time)
   minutes < MINS_PER_DAY ? MIDNGHT_MINUTES + minutes : 0
 end
 
+def before_midnight(time)
+  minutes = calc_mins(time)
+  minutes == 0 ? 0 : MINS_PER_DAY - minutes.abs
+end
+
 p after_midnight('00:00') == 0
-# before_midnight('00:00') == 0
+p before_midnight('00:00') == 0
 p after_midnight('12:34') == 754
-# before_midnight('12:34') == 686
+p before_midnight('12:34') == 686
 p after_midnight('24:00')  == 0
-# before_midnight('24:00') == 0
+p before_midnight('24:00') == 0
