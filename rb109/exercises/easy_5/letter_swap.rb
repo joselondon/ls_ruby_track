@@ -6,3 +6,13 @@ You may assume that every word contains at least one letter, and that the string
 contain at least one word. You may also assume that each string contains nothing but words and spaces
 =end
 
+def swap(string)
+  words = string.split(' ')
+  new_words = words.each {|word| word[0], word[-1] = word[-1], word[0]}
+  new_words.join(' ')
+end
+
+
+p swap('Oh what a wonderful day it is') == 'hO thaw a londerfuw yad ti si'
+p swap('Abcde') == 'ebcdA'
+p swap('a') == 'a'
