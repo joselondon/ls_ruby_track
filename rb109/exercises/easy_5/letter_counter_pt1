@@ -8,7 +8,12 @@ Words consist of any string of characters that do not include a space.
 
 def word_sizes(string)
   count_hash = {}
+  # split into array of words
   string.split(' ')
+  # take each word (element)in array and 
+    # push elelment.length as key
+    # count word occurence in array and puch as key value
+  # return hash
   end
 end
 
