@@ -1,5 +1,5 @@
 def url?(str)
-  !!str.match(/(^https?:\/\/)\w+(.com$)/)
+  !!str.match(/(^https?:\/\/)\w+.com?$/)
 end
 
 
